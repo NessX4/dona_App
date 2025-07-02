@@ -32,43 +32,59 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+
 ## 🧑‍💻 Flujo de trabajo con Git y ramas
-⚠️ La rama main está protegida. NO hagas push directo a main. Usa ramas y Pull Requests.
 
-### Antes de empezar a trabajar haz: 
-# 1. Crear rama desde develop:
-```bash
-git checkout develop
+⚠️ La rama `main` está protegida. NO hagas push directo a `main`. Usa ramas y Pull Requests.
 
-```
+### Flujo de trabajo para el equipo:
+1. **Crear una nueva rama desde `develop`:**
+   ```bash
+   git checkout develop
+   git pull origin develop
+   git checkout -b user/app-o-crud-realizado
+   ```
 
-### Crear una nueva rama
-```bash
-git checkout -b nombre-de-tu-rama
-```
+2. **Hacer commits:**
+   ```bash
+   git add .
+   git commit -m "Descripción clara del cambio"
+   ```
 
-### text
-```bash
-text
-```
+3. **Subir la rama al repositorio remoto:**
+   - Sube tu rama al repositorio remoto:
+     ```bash
+     git push origin user/app-o-crud-realizado (nombre de tu rama creada)
+     ```
 
-### Guardar tus cambios y subirlos
-```bash
-git add .
-git commit -m "Descripción clara del cambio"
-git push origin nombre-de-tu-rama
-```
+4. **Crear un Pull Request hacia `develop`:**
+   - Ve a [GitHub](https://github.com/NessX4/dona_App/pulls).
+   - Base: develop  |  compare: Tu rama de trabajo (por ejemplo, user/app-o-crud-realizado)
+   - Escribe un título y descripción claros para el Pull Request.
+   - Solicita la revisión del owner y espera su aprobación.
 
-# 1. Crear rama desde develop:
-git checkout develop
-git pull origin develop
-git checkout -b feature/usuario-app/descripcion  # Ej: feature/juan-donations/fix-form
+---
+### Flujo de trabajo para el owner:
+1. **Subir cambios directamente a `develop-owner`:**
+   ```bash
+   git checkout develop-owner
+   git fetch origin
+   git pull origin develop
+   git merge develop
 
-# 2. Hacer commits:
-git add .
-git commit -m "fix(app:donations): corrige validación de formulario"
+   git add .
+   git commit -m "Descripción clara del cambio"
+   git push origin develop-owner
+   ```
 
-# 3. Subir y crear PR a DEVELOP:
-git push origin feature/usuario-app/descripcion
+2. **Fusionar cambios de `develop-owner` a `develop`:**
+     ```bash
+     git checkout develop
+     git pull origin develop
+     git merge develop-owner
+     git push origin develop
+     ```
 
-
+### Resumen:
+- El equipo sube cambios a `develop` mediante Pull Requests que owner aprueba.
+- Owner puede subir cambios directamente a `develop-owner` y luego decidir si fusionarlos en `develop` mediante Pull Requests o directamente.
