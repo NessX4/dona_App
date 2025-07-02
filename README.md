@@ -5,7 +5,7 @@ Plataforma para la gestión de donaciones alimentarias.
 ## 🚀 Cómo iniciar
 
 ```bash
-git clone https://github.com/tu_usuario/dona_app.git
+git clone https://github.com/NessX4/dona_App.git
 cd dona_app
 python -m venv env
 env\Scripts\activate
