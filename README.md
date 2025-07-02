@@ -35,6 +35,13 @@ python manage.py runserver
 ## 🧑‍💻 Flujo de trabajo con Git y ramas
 ⚠️ La rama main está protegida. NO hagas push directo a main. Usa ramas y Pull Requests.
 
+### Antes de empezar a trabajar haz: 
+# 1. Crear rama desde develop:
+```bash
+git checkout develop
+
+```
+
 ### Crear una nueva rama
 ```bash
 git checkout -b nombre-de-tu-rama
@@ -51,5 +58,17 @@ git add .
 git commit -m "Descripción clara del cambio"
 git push origin nombre-de-tu-rama
 ```
+
+# 1. Crear rama desde develop:
+git checkout develop
+git pull origin develop
+git checkout -b feature/usuario-app/descripcion  # Ej: feature/juan-donations/fix-form
+
+# 2. Hacer commits:
+git add .
+git commit -m "fix(app:donations): corrige validación de formulario"
+
+# 3. Subir y crear PR a DEVELOP:
+git push origin feature/usuario-app/descripcion
 
 
