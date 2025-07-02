@@ -38,10 +38,10 @@ python manage.py runserver
 ⚠️ La rama `main` está protegida. NO hagas push directo a `main`. Usa ramas y Pull Requests.
 
 ### Flujo de trabajo para el equipo:
-1. **Crear una nueva rama desde `develop`:**
+1. **Crear una nueva rama desde `develop-owner`:**
    ```bash
-   git checkout develop
-   git pull origin develop
+   git checkout develop-owner
+   git pull origin develop-owner
    git checkout -b user/app-o-crud-realizado
    ```
 
