@@ -59,6 +59,7 @@ python manage.py runserver
 
 4. **Crear un Pull Request hacia `develop`:**
    - Ve a [GitHub](https://github.com/NessX4/dona_App/pulls).
+   - Crea un Pull Request
    - Base: develop  |  compare: Tu rama de trabajo (por ejemplo, user/app-o-crud-realizado)
    - Escribe un título y descripción claros para el Pull Request.
    - Solicita la revisión del owner y espera su aprobación.
