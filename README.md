@@ -33,5 +33,24 @@ python manage.py runserver
 python manage.py runserver
 ```
 
+## 🧑‍💻 Flujo de trabajo con Git y ramas
+⚠️ La rama main está protegida. NO hagas push directo a main. Usa ramas y Pull Requests.
+
+### Crear una nueva rama
+```bash
+git checkout -b nombre-de-tu-rama
+```
+
+### text
+```bash
+text
+```
+
+### Guardar tus cambios y subirlos
+```bash
+git add .
+git commit -m "Descripción clara del cambio"
+git push origin nombre-de-tu-rama
+```
 
 
