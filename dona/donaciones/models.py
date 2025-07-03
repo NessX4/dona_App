@@ -1,24 +1,6 @@
 # donaciones/models.py
 from django.db import models
 
-class Donador(models.Model):
-    usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.CASCADE, related_name='donador')
-    nombre_lugar = models.CharField(max_length=100)
-    representante = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=20)
-    descripcion = models.TextField()
-    horario_apertura = models.TimeField()
-    horario_cierre = models.TimeField()
-
-class Receptor(models.Model):
-    usuario = models.OneToOneField('usuarios.Usuario', on_delete=models.CASCADE, related_name='receptor')
-    nombre_lugar = models.CharField(max_length=100)
-    encargado = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=20)
-    direccion = models.TextField()
-    capacidad = models.IntegerField()
-    horario_apertura = models.TimeField()
-    horario_cierre = models.TimeField()
 
 class EstadoDonacion(models.Model):
     nombre = models.CharField(max_length=50)
@@ -39,7 +21,7 @@ class Comida(models.Model):
     ingredientes = models.TextField()
 
 class Sucursal(models.Model):
-    donador = models.ForeignKey(Donador, on_delete=models.CASCADE)
+    donador = models.ForeignKey('usuarios.Donador', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
     direccion = models.TextField()
     telefono = models.CharField(max_length=20)
