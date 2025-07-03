@@ -14,6 +14,8 @@ cd dona_app
 python -m venv env
 env\Scripts\activate   # En Windows
 source env/bin/activate  # En Linux/Mac
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass  # Ejecutar ese comando si tienen errores al activar el entorno virtual
 ```
 
 ### Instala las dependencias:
