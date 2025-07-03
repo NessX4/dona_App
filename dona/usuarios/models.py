@@ -17,6 +17,25 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class Donador(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='donador')
+    nombre_lugar = models.CharField(max_length=100)
+    representante = models.CharField(max_length=100)
+    telefono = models.CharField(max_length=20)
+    descripcion = models.TextField()
+    horario_apertura = models.TimeField()
+    horario_cierre = models.TimeField()
+
+class Receptor(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='receptor')
+    nombre_lugar = models.CharField(max_length=100)
+    encargado = models.CharField(max_length=100)
+    telefono = models.CharField(max_length=20)
+    direccion = models.TextField()
+    capacidad = models.IntegerField()
+    horario_apertura = models.TimeField()
+    horario_cierre = models.TimeField()
 
 class Voluntario(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='voluntario')
