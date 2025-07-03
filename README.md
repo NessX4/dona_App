@@ -78,12 +78,6 @@ python manage.py runserver
    git push origin develop-owner
    ```
 
-2. **Fusionar cambios de `develop-owner` a `develop`:**
-     ```bash
-     git checkout develop-owner
-     git pull origin develop-owner
-     ```
-
 ### Resumen:
 - El equipo sube cambios a `develop` mediante Pull Requests que owner aprueba.
 - Owner puede subir cambios directamente a `develop-owner` y luego decidir si fusionarlos en `develop` mediante Pull Requests o directamente.
