@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Donador, Usuario, Rol
-from .forms import UsuarioDonadorForm, DonadorForm
+from .models import Donador, Usuario, Rol, Receptor, Voluntario, Administrador
+from .forms import UsuarioDonadorForm, DonadorForm, UsuarioReceptorForm, ReceptorForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
@@ -78,3 +78,55 @@ def login_view(request):
             messages.error(request, 'Correo o contraseña incorrectos')
     
     return render(request, 'usuarios/login.html')
+
+# Registro
+def registro_receptor(request):
+    if request.method == 'POST':
+        user_form = UsuarioReceptorForm(request.POST)
+        receptor_form = ReceptorForm(request.POST)
+        
+        if user_form.is_valid() and receptor_form.is_valid():
+            # Crear usuario
+            usuario = user_form.save(commit=False)
+            usuario.rol = Rol.objects.get(nombre='Receptor')  # Asegúrate que exista
+            usuario.save()
+            
+            # Crear receptor
+            receptor = receptor_form.save(commit=False)
+            receptor.usuario = usuario
+            receptor.save()
+            
+            return redirect('usuarios:lista_receptores')
+    else:
+        user_form = UsuarioReceptorForm()
+        receptor_form = ReceptorForm()
+
+    return render(request, 'usuarios/registro_receptor.html', {
+        'user_form': user_form,
+        'receptor_form': receptor_form
+    })
+
+# Lista
+class ReceptorListView(ListView):
+    model = Receptor
+    template_name = 'usuarios/lista_receptores.html'
+    context_object_name = 'receptores'
+    paginate_by = 10
+
+# Edición
+class ReceptorUpdateView(UpdateView):
+    model = Receptor
+    form_class = ReceptorForm
+    template_name = 'usuarios/editar_receptor.html'
+    success_url = reverse_lazy('usuarios:lista_receptores')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['usuario'] = self.object.usuario
+        return context
+
+# Eliminación
+class ReceptorDeleteView(DeleteView):
+    model = Receptor
+    template_name = 'usuarios/eliminar_receptor.html'
+    success_url = reverse_lazy('usuarios:lista_receptores')
