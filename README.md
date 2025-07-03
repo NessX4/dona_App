@@ -62,7 +62,7 @@ python manage.py runserver
 4. **Crear un Pull Request hacia `develop`:**
    - Ve a [GitHub](https://github.com/NessX4/dona_App/pulls).
    - Crea un Pull Request
-   - Base: develop  |  compare: Tu rama de trabajo (por ejemplo, user/app-o-crud-realizado)
+   - Base: develop-owner  |  compare: Tu rama de trabajo (por ejemplo, user/app-o-crud-realizado)
    - Escribe un título y descripción claros para el Pull Request.
    - Solicita la revisión del owner y espera su aprobación.
 
@@ -71,22 +71,12 @@ python manage.py runserver
 1. **Subir cambios directamente a `develop-owner`:**
    ```bash
    git checkout develop-owner
-   git fetch origin
-   git pull origin develop
-   git merge develop
+   git pull origin develop-owner
 
    git add .
    git commit -m "Descripción clara del cambio"
    git push origin develop-owner
    ```
-
-2. **Fusionar cambios de `develop-owner` a `develop`:**
-     ```bash
-     git checkout develop
-     git pull origin develop
-     git merge develop-owner
-     git push origin develop
-     ```
 
 ### Resumen:
 - El equipo sube cambios a `develop` mediante Pull Requests que owner aprueba.
