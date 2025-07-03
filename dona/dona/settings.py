@@ -38,10 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'usuarios',
+    'comentarios',
     'donaciones',
-    'zonas',
     'home',
+    'notificaciones',
+    'solicitudes',
+    'usuarios',
+    'zonas',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +83,7 @@ WSGI_APPLICATION = 'dona.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bd_donaapp_canon',
+        'NAME': 'dona_app_django',  # Updated to match the new database name
         'USER': 'postgres',
         'PASSWORD': '2305',
         'HOST': 'localhost',

@@ -1,9 +1,50 @@
+# Entorno virtual
 env/
+venv/
+ENV/
+.venv/
+
+# Archivos de Python compilados
 *.pyc
 __pycache__/
-*.log
+
+# Archivos del entorno de desarrollo
 *.sqlite3
-db.sqlite3
+*.log
+*.pot
+*.py[cod]
+*.swp
+*~
+
+# Configuración personal
+.vscode/
+.idea/
+*.code-workspace
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de migración cacheados
+**/__pycache__/
+*.py[cod]
+
+# Archivos sensibles o locales
+.env
 *.env
-/staticfiles/
-/media/
+secrets.json
+
+# Carpeta de static generada (si usas collectstatic)
+staticfiles/
+static/
+
+# Archivos generados por Django
+media/
+db.sqlite3
+
+# Archivos de prueba
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+pytest_cache/
