@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, UpdateView, DeleteView
+from django.views.generic import ListView, UpdateView, DeleteView, CreateView
 from django.urls import reverse_lazy
 from .models import Donador, Usuario, Rol, Receptor, Voluntario, Administrador
-from .forms import UsuarioDonadorForm, DonadorForm, UsuarioReceptorForm, ReceptorForm, UsuarioVoluntarioForm, VoluntarioForm
+from .forms import UsuarioDonadorForm, DonadorForm, UsuarioReceptorForm, ReceptorForm, UsuarioVoluntarioForm, VoluntarioForm, UsuarioGenForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
@@ -186,3 +186,44 @@ class VoluntarioDeleteView(DeleteView):
     model = Voluntario
     template_name = 'usuarios/eliminar_voluntario.html'
     success_url = reverse_lazy('usuarios:lista_voluntarios')
+    
+
+class UsuarioListView(ListView):
+    model = Usuario
+    template_name = 'usuarios/lista_usuarios.html'
+    context_object_name = 'usuarios'
+    paginate_by = 20
+    
+    def get_queryset(self):
+        return Usuario.objects.select_related('rol').all()
+
+class UsuarioCreateView(CreateView):
+    model = Usuario
+    form_class = UsuarioGenForm
+    template_name = 'usuarios/form_usuario.html'
+    success_url = reverse_lazy('usuarios:lista_usuarios')
+    
+    def form_valid(self, form):
+        # Asignar contraseña por defecto (deberías implementar algo más seguro)
+        usuario = form.save(commit=False)
+        usuario.contraseña = "passwordtemporal"  # El usuario deberá cambiar esto
+        usuario.save()
+        return super().form_valid(form)
+
+class UsuarioUpdateView(UpdateView):
+    model = Usuario
+    form_class = UsuarioGenForm
+    template_name = 'usuarios/form_usuario.html'
+    success_url = reverse_lazy('usuarios:lista_usuarios')
+
+class UsuarioDeleteView(DeleteView):
+    model = Usuario
+    template_name = 'usuarios/eliminar_usuario.html'
+    success_url = reverse_lazy('usuarios:lista_usuarios')
+    
+    def post(self, request, *args, **kwargs):
+        # Desactivar en lugar de borrar
+        usuario = self.get_object()
+        usuario.activo = False
+        usuario.save()
+        return redirect(self.success_url)

@@ -6,19 +6,26 @@ from .views import (registro_receptor, ReceptorListView,
                    ReceptorUpdateView, ReceptorDeleteView)
 from .views import (registro_voluntario, VoluntarioListView, 
                    VoluntarioUpdateView, VoluntarioDeleteView)
+from .views import (UsuarioListView, UsuarioCreateView, 
+                   UsuarioUpdateView, UsuarioDeleteView)
 
 app_name = 'usuarios'
 
 urlpatterns = [
+    # Login
+    path('login/', login_view, name='login'),
     # Roles 
     path('roles/', RolListView.as_view(), name='lista_roles'),
+    # CRUD Usuarios
+    path('usuarios/', UsuarioListView.as_view(), name='lista_usuarios'),
+    path('usuarios/crear/', UsuarioCreateView.as_view(), name='crear_usuario'),
+    path('usuarios/editar/<int:pk>/', UsuarioUpdateView.as_view(), name='editar_usuario'),
+    path('usuarios/eliminar/<int:pk>/', UsuarioDeleteView.as_view(), name='eliminar_usuario'),
     # Donadores CRUD
     path('donadores/', DonadorListView.as_view(), name='lista_donadores'),
     path('donadores/registro/', registro_donador, name='registro_donador'),
     path('donadores/editar/<int:pk>/', DonadorUpdateView.as_view(), name='editar_donador'),
     path('donadores/eliminar/<int:pk>/', DonadorDeleteView.as_view(), name='eliminar_donador'),
-    # Login
-    path('login/', login_view, name='login'),
     # Receptores CRUD
     path('receptores/', ReceptorListView.as_view(), name='lista_receptores'),
     path('receptores/registro/', registro_receptor, name='registro_receptor'),

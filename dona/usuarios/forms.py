@@ -2,6 +2,21 @@
 from django import forms
 from .models import Usuario, Donador, Rol, Receptor, Voluntario, Administrador
 
+class UsuarioGenForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['nombre', 'correo', 'rol', 'activo']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control'}),
+            'rol': forms.Select(attrs={'class': 'form-control'}),
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['correo'].disabled = True  # No cambiar email existente
+            
 # Formulario para el registro de un usuario donador
 class UsuarioDonadorForm(forms.ModelForm):
     contraseña = forms.CharField(widget=forms.PasswordInput())  
