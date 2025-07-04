@@ -1,0 +1,49 @@
+{% comment %} {% extends "base.html" %} {% endcomment %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/zonas.css' %}">
+<style>
+    /* Estilos específicos para zonas */
+    .container-zonas {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .actions {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 15px;
+    }
+    
+    .btn-zona {
+        padding: 10px 15px;
+        background-color: #c00107;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .btn-zona:hover {
+        background-color: #a00006;
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-zonas">
+    <h2>{% block zona_title %}Gestión de Zonas{% endblock %}</h2>
+    
+    {% block zona_content %}
+    <!-- Contenido específico de zonas irá aquí -->
+    {% endblock %}
+</div>
+{% endblock %}

@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),  # Landing page
     path('usuarios/', include('usuarios.urls')),
-
+    path('zonas/', include('zonas.urls')),        # Zonas y Ubicaciones
 ]
