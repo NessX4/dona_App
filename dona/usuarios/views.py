@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Donador, Usuario, Rol, Receptor, Voluntario, Administrador
-from .forms import UsuarioDonadorForm, DonadorForm, UsuarioReceptorForm, ReceptorForm
+from .forms import UsuarioDonadorForm, DonadorForm, UsuarioReceptorForm, ReceptorForm, UsuarioVoluntarioForm, VoluntarioForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
@@ -130,3 +130,59 @@ class ReceptorDeleteView(DeleteView):
     model = Receptor
     template_name = 'usuarios/eliminar_receptor.html'
     success_url = reverse_lazy('usuarios:lista_receptores')
+    
+
+# Registro
+def registro_voluntario(request):
+    if request.method == 'POST':
+        user_form = UsuarioVoluntarioForm(request.POST)
+        voluntario_form = VoluntarioForm(request.POST)
+        
+        if user_form.is_valid() and voluntario_form.is_valid():
+            # Crear usuario
+            usuario = user_form.save(commit=False)
+            usuario.rol = Rol.objects.get(nombre='Voluntario')  # Asegúrate que exista
+            usuario.save()
+            
+            # Crear voluntario
+            voluntario = voluntario_form.save(commit=False)
+            voluntario.usuario = usuario
+            voluntario.save()
+            
+            return redirect('usuarios:lista_voluntarios')
+    else:
+        user_form = UsuarioVoluntarioForm()
+        voluntario_form = VoluntarioForm()
+
+    return render(request, 'usuarios/registro_voluntario.html', {
+        'user_form': user_form,
+        'voluntario_form': voluntario_form
+    })
+
+# Lista
+class VoluntarioListView(ListView):
+    model = Voluntario
+    template_name = 'usuarios/lista_voluntarios.html'
+    context_object_name = 'voluntarios'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Voluntario.objects.select_related('usuario', 'zona').all()
+
+# Edición
+class VoluntarioUpdateView(UpdateView):
+    model = Voluntario
+    form_class = VoluntarioForm
+    template_name = 'usuarios/editar_voluntario.html'
+    success_url = reverse_lazy('usuarios:lista_voluntarios')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['usuario'] = self.object.usuario
+        return context
+
+# Eliminación
+class VoluntarioDeleteView(DeleteView):
+    model = Voluntario
+    template_name = 'usuarios/eliminar_voluntario.html'
+    success_url = reverse_lazy('usuarios:lista_voluntarios')

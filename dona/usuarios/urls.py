@@ -4,6 +4,8 @@ from .views import (registro_donador, DonadorListView,
                    DonadorUpdateView, DonadorDeleteView)
 from .views import (registro_receptor, ReceptorListView, 
                    ReceptorUpdateView, ReceptorDeleteView)
+from .views import (registro_voluntario, VoluntarioListView, 
+                   VoluntarioUpdateView, VoluntarioDeleteView)
 
 app_name = 'usuarios'
 
@@ -22,4 +24,9 @@ urlpatterns = [
     path('receptores/registro/', registro_receptor, name='registro_receptor'),
     path('receptores/editar/<int:pk>/', ReceptorUpdateView.as_view(), name='editar_receptor'),
     path('receptores/eliminar/<int:pk>/', ReceptorDeleteView.as_view(), name='eliminar_receptor'),
+    # Voluntarios CRUD
+    path('voluntarios/', VoluntarioListView.as_view(), name='lista_voluntarios'),
+    path('voluntarios/registro/', registro_voluntario, name='registro_voluntario'),
+    path('voluntarios/editar/<int:pk>/', VoluntarioUpdateView.as_view(), name='editar_voluntario'),
+    path('voluntarios/eliminar/<int:pk>/', VoluntarioDeleteView.as_view(), name='eliminar_voluntario'),
 ]

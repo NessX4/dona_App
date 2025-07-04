@@ -1,0 +1,44 @@
+{% extends 'usuarios/base.html' %}
+{% load static %}
+
+{% block title %}Lista de Voluntarios | DONA{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Lista de Voluntarios</h2>
+    
+    <div class="actions">
+        <a href="{% url 'usuarios:registro_voluntario' %}" class="btn">Nuevo Voluntario</a>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Teléfono</th>
+                <th>Zona</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for voluntario in voluntarios %}
+            <tr>
+                <td>{{ voluntario.usuario.nombre }}</td>
+                <td>{{ voluntario.usuario.correo }}</td>
+                <td>{{ voluntario.telefono }}</td>
+                <td>{{ voluntario.zona.nombre }}</td>
+                <td>
+                    <a href="{% url 'usuarios:editar_voluntario' voluntario.pk %}" class="btn-edit">Editar</a>
+                    <a href="{% url 'usuarios:eliminar_voluntario' voluntario.pk %}" class="btn-delete">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No hay voluntarios registrados</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

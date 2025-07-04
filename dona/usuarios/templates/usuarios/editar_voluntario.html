@@ -1,0 +1,28 @@
+{% extends 'usuarios/base.html' %}
+{% load static %}
+
+{% block title %}Editar Voluntario | DONA{% endblock %}
+
+{% block content %}
+<div class="registro-container">
+    <div class="registro-box">
+        <div class="logo">
+            <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA">
+            <h1>DONA</h1>
+        </div>
+        <h2>Editar Voluntario</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <fieldset>
+                <legend>Datos del Voluntario</legend>
+                {{ form.as_p }}
+            </fieldset>
+            
+            <button type="submit">Guardar Cambios</button>
+            <a href="{% url 'usuarios:lista_voluntarios' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

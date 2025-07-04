@@ -53,3 +53,26 @@ class ReceptorForm(forms.ModelForm):
             'capacidad': forms.NumberInput(attrs={'class': 'form-control'}),
             'direccion': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+        
+ # Formulario para el registro de un usuario voluntario       
+class UsuarioVoluntarioForm(forms.ModelForm):
+    contraseña = forms.CharField(widget=forms.PasswordInput())
+    
+    class Meta:
+        model = Usuario
+        fields = ['nombre', 'correo', 'contraseña']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control'}),
+            'contraseña': forms.PasswordInput(attrs={'class': 'form-control'}),
+        }
+
+# Formulario para el registro de un voluntario
+class VoluntarioForm(forms.ModelForm):
+    class Meta:
+        model = Voluntario
+        fields = ['telefono', 'zona']
+        widgets = {
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+            'zona': forms.Select(attrs={'class': 'form-control'}),
+        }
