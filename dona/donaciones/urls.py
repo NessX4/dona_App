@@ -13,4 +13,10 @@ urlpatterns = [
     # URLs para EstadoDonacion
     path('estados-donacion/', EstadoDonacionListView.as_view(), name='estado_donacion_list'),
     path('estados-donacion/<int:pk>/', EstadoDonacionDetailView.as_view(), name='estado_donacion_detail'),
+     # URLs para Publicacion
+    path('publicaciones/', PublicacionListView.as_view(), name='publicacion_list'),
+    path('publicaciones/crear/', PublicacionCreateView.as_view(), name='publicacion_create'),
+    path('publicaciones/<int:pk>/', PublicacionDetailView.as_view(), name='publicacion_detail'),
+    path('publicaciones/<int:pk>/editar/', PublicacionUpdateView.as_view(), name='publicacion_update'),
+    path('publicaciones/<int:pk>/eliminar/', PublicacionDeleteView.as_view(), name='publicacion_delete'),
 ]
