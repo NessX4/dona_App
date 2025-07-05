@@ -1,0 +1,13 @@
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Eliminar Sucursal</h2>
+    <p>¿Estás seguro de que deseas eliminar la sucursal "{{ object }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+        <a href="{% url 'donaciones:sucursal_detail' object.pk %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
