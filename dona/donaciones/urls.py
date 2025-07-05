@@ -10,4 +10,7 @@ urlpatterns = [
     path('sucursales/<int:pk>/', SucursalDetailView.as_view(), name='sucursal_detail'),
     path('sucursales/<int:pk>/editar/', SucursalUpdateView.as_view(), name='sucursal_update'),
     path('sucursales/<int:pk>/eliminar/', SucursalDeleteView.as_view(), name='sucursal_delete'),
+    # URLs para EstadoDonacion
+    path('estados-donacion/', EstadoDonacionListView.as_view(), name='estado_donacion_list'),
+    path('estados-donacion/<int:pk>/', EstadoDonacionDetailView.as_view(), name='estado_donacion_detail'),
 ]

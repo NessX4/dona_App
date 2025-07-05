@@ -1,6 +1,6 @@
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Sucursal
+from .models import Sucursal, EstadoDonacion
 from .forms import SucursalForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -40,3 +40,16 @@ class SucursalDeleteView(LoginRequiredMixin, DeleteView):
         from django.contrib import messages
         messages.success(self.request, self.success_message)
         return super().delete(request, *args, **kwargs)
+    
+    
+class EstadoDonacionListView(LoginRequiredMixin, ListView):
+    model = EstadoDonacion
+    template_name = 'donaciones/estado_donacion/list.html'
+    context_object_name = 'estados'
+    paginate_by = 10
+    ordering = ['nombre']
+
+class EstadoDonacionDetailView(LoginRequiredMixin, DetailView):
+    model = EstadoDonacion
+    template_name = 'donaciones/estado_donacion/detail.html'
+    context_object_name = 'estado'
