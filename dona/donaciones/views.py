@@ -1,6 +1,6 @@
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Sucursal, EstadoDonacion, Publicacion, Comida, ArchivoAdjunto
+from .models import Sucursal, EstadoDonacion, Publicacion, Comida, ArchivoAdjunto, CategoriaComida
 from .forms import SucursalForm, PublicacionForm, ComidaFormSet, ArchivoAdjuntoFormSet
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -155,3 +155,28 @@ class PublicacionDeleteView(LoginRequiredMixin, DeleteView):
         from django.contrib import messages
         messages.success(self.request, self.success_message)
         return super().delete(request, *args, **kwargs)
+    
+    
+class CategoriaComidaListView(LoginRequiredMixin, ListView):
+    model = CategoriaComida
+    template_name = 'donaciones/categoria_comida/list.html'
+    context_object_name = 'categorias'
+    paginate_by = 10
+    ordering = ['nombre']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Agregar estadísticas de uso si es necesario
+        return context
+
+class CategoriaComidaDetailView(LoginRequiredMixin, DetailView):
+    model = CategoriaComida
+    template_name = 'donaciones/categoria_comida/detail.html'
+    context_object_name = 'categoria'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Agregar comidas relacionadas
+        context['comidas'] = self.object.comida_set.all()[:10]  # Limitar a 10 resultados
+        context['total_comidas'] = self.object.comida_set.count()
+        return context

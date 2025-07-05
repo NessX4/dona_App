@@ -19,4 +19,7 @@ urlpatterns = [
     path('publicaciones/<int:pk>/', PublicacionDetailView.as_view(), name='publicacion_detail'),
     path('publicaciones/<int:pk>/editar/', PublicacionUpdateView.as_view(), name='publicacion_update'),
     path('publicaciones/<int:pk>/eliminar/', PublicacionDeleteView.as_view(), name='publicacion_delete'),
+    # URLs para CategoriaComida
+    path('categorias-comida/', CategoriaComidaListView.as_view(), name='categoria_comida_list'),
+    path('categorias-comida/<int:pk>/', CategoriaComidaDetailView.as_view(), name='categoria_comida_detail'),
 ]
