@@ -70,3 +70,20 @@ ArchivoAdjuntoFormSet = inlineformset_factory(
         'tipo': forms.Select(attrs={'class': 'form-control'}),
     }
 )
+
+class ComidaForm(forms.ModelForm):
+    class Meta:
+        model = Comida
+        fields = '__all__'
+        widgets = {
+            'publicacion': forms.Select(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'cantidad': forms.TextInput(attrs={'class': 'form-control'}),
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
+            'ingredientes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['publicacion'].queryset = self.fields['publicacion'].queryset.select_related('sucursal')
+        self.fields['categoria'].queryset = self.fields['categoria'].queryset.order_by('nombre')

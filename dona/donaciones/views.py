@@ -1,7 +1,7 @@
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Sucursal, EstadoDonacion, Publicacion, Comida, ArchivoAdjunto, CategoriaComida
-from .forms import SucursalForm, PublicacionForm, ComidaFormSet, ArchivoAdjuntoFormSet
+from .forms import SucursalForm, PublicacionForm, ComidaFormSet, ArchivoAdjuntoFormSet, ComidaForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -180,3 +180,50 @@ class CategoriaComidaDetailView(LoginRequiredMixin, DetailView):
         context['comidas'] = self.object.comida_set.all()[:10]  # Limitar a 10 resultados
         context['total_comidas'] = self.object.comida_set.count()
         return context
+    
+    
+class ComidaListView(LoginRequiredMixin, ListView):
+    model = Comida
+    template_name = 'donaciones/comida/list.html'
+    context_object_name = 'comidas'
+    paginate_by = 10
+    ordering = ['nombre']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Filtros opcionales
+        if 'publicacion' in self.request.GET:
+            queryset = queryset.filter(publicacion_id=self.request.GET['publicacion'])
+        if 'categoria' in self.request.GET:
+            queryset = queryset.filter(categoria_id=self.request.GET['categoria'])
+        return queryset.select_related('publicacion', 'categoria')
+
+class ComidaCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Comida
+    form_class = ComidaForm
+    template_name = 'donaciones/comida/create.html'
+    success_url = reverse_lazy('donaciones:comida_list')
+    success_message = "Comida creada exitosamente"
+
+class ComidaDetailView(LoginRequiredMixin, DetailView):
+    model = Comida
+    template_name = 'donaciones/comida/detail.html'
+    context_object_name = 'comida'
+
+class ComidaUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Comida
+    form_class = ComidaForm
+    template_name = 'donaciones/comida/update.html'
+    success_url = reverse_lazy('donaciones:comida_list')
+    success_message = "Comida actualizada exitosamente"
+
+class ComidaDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comida
+    template_name = 'donaciones/comida/delete.html'
+    success_url = reverse_lazy('donaciones:comida_list')
+    success_message = "Comida eliminada exitosamente"
+
+    def delete(self, request, *args, **kwargs):
+        from django.contrib import messages
+        messages.success(self.request, self.success_message)
+        return super().delete(request, *args, **kwargs)

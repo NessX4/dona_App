@@ -22,4 +22,10 @@ urlpatterns = [
     # URLs para CategoriaComida
     path('categorias-comida/', CategoriaComidaListView.as_view(), name='categoria_comida_list'),
     path('categorias-comida/<int:pk>/', CategoriaComidaDetailView.as_view(), name='categoria_comida_detail'),
+     # URLs para Comida
+    path('comidas/', ComidaListView.as_view(), name='comida_list'),
+    path('comidas/crear/', ComidaCreateView.as_view(), name='comida_create'),
+    path('comidas/<int:pk>/', ComidaDetailView.as_view(), name='comida_detail'),
+    path('comidas/<int:pk>/editar/', ComidaUpdateView.as_view(), name='comida_update'),
+    path('comidas/<int:pk>/eliminar/', ComidaDeleteView.as_view(), name='comida_delete'),
 ]

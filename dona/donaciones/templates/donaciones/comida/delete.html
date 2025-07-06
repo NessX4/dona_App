@@ -1,0 +1,20 @@
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Eliminar Comida</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">¿Estás seguro de que deseas eliminar esta comida?</h5>
+            <p class="card-text"><strong>Nombre:</strong> {{ object.nombre }}</p>
+            <p class="card-text"><strong>Publicación:</strong> {{ object.publicacion.titulo }}</p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+                <a href="{% url 'donaciones:comida_detail' object.pk %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
