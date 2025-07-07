@@ -1,0 +1,98 @@
+{% extends 'usuarios/base.html' %}
+{% load static %}
+
+{% block title %}Registro Donador | DONA{% endblock %}
+
+{% block content %}
+<div class="registro-container">
+    <div class="registro-box">
+        <div class="logo">
+            <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA">
+            <h1>DONA</h1>
+        </div>
+        <h2>Registro de Donador</h2>
+        
+        <form method="post" id="registroForm">
+            {% csrf_token %}
+            
+            <fieldset>
+                <legend>Datos de Usuario</legend>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ user_form.nombre.id_for_label }}">Nombre</label>
+                        {{ user_form.nombre }}
+                        {{ user_form.nombre.errors }}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ user_form.correo.id_for_label }}">Correo electrónico</label>
+                    {{ user_form.correo }}
+                    {{ user_form.correo.errors }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ user_form.contraseña.id_for_label }}">Contraseña</label>
+                    {{ user_form.contraseña }}
+                    <div class="password-hint">Mínimo 8 caracteres</div>
+                    {{ user_form.contraseña.errors }}
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Datos del Donador</legend>
+                
+                <div class="form-group">
+                    <label for="{{ donador_form.nombre_lugar.id_for_label }}">Nombre del Establecimiento</label>
+                    {{ donador_form.nombre_lugar }}
+                    {{ donador_form.nombre_lugar.errors }}
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ donador_form.representante.id_for_label }}">Representante</label>
+                        {{ donador_form.representante }}
+                        {{ donador_form.representante.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ donador_form.telefono.id_for_label }}">Teléfono</label>
+                        {{ donador_form.telefono }}
+                        {{ donador_form.telefono.errors }}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ donador_form.descripcion.id_for_label }}">Descripción</label>
+                    {{ donador_form.descripcion }}
+                    {{ donador_form.descripcion.errors }}
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ donador_form.horario_apertura.id_for_label }}">Horario Apertura</label>
+                        {{ donador_form.horario_apertura }}
+                        {{ donador_form.horario_apertura.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ donador_form.horario_cierre.id_for_label }}">Horario Cierre</label>
+                        {{ donador_form.horario_cierre }}
+                        {{ donador_form.horario_cierre.errors }}
+                    </div>
+                </div>
+            </fieldset>
+            
+            <div class="terms">
+                <input type="checkbox" id="terminos" name="terminos" required />
+                <label for="terminos">Acepto los <a href="#">términos</a></label>
+            </div>
+            
+            <button type="submit">Registrarse</button>
+            
+            <div class="login-link">
+                ¿Ya tienes cuenta? <a href="{% url 'usuarios:login' %}">Inicia sesión</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

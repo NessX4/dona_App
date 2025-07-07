@@ -1,0 +1,20 @@
+{% extends 'usuarios/base.html' %}
+{% load static %}
+
+{% block title %}Confirmar Desactivación | DONA{% endblock %}
+
+{% block content %}
+<div class="registro-container">
+    <div class="registro-box">
+        <h2>Confirmar Desactivación</h2>
+        <p>¿Estás seguro que deseas desactivar al usuario "{{ object.nombre }}"?</p>
+        <p class="warning">El usuario no podrá acceder al sistema pero sus datos se conservarán.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-delete">Confirmar Desactivación</button>
+            <a href="{% url 'usuarios:lista_usuarios' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'usuarios/base.html' %}
+{% load static %}
+
+{% block title %}Registro Voluntario | DONA{% endblock %}
+
+{% block content %}
+<div class="registro-container">
+    <div class="registro-box">
+        <div class="logo">
+            <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA">
+            <h1>DONA</h1>
+        </div>
+        <h2>Registro de Voluntario</h2>
+        
+        <form method="post" id="registroForm">
+            {% csrf_token %}
+            
+            <fieldset>
+                <legend>Datos de Usuario</legend>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ user_form.nombre.id_for_label }}">Nombre Completo</label>
+                        {{ user_form.nombre }}
+                        {{ user_form.nombre.errors }}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ user_form.correo.id_for_label }}">Correo electrónico</label>
+                    {{ user_form.correo }}
+                    {{ user_form.correo.errors }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ user_form.contraseña.id_for_label }}">Contraseña</label>
+                    {{ user_form.contraseña }}
+                    <div class="password-hint">Mínimo 8 caracteres</div>
+                    {{ user_form.contraseña.errors }}
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Datos del Voluntario</legend>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ voluntario_form.telefono.id_for_label }}">Teléfono</label>
+                        {{ voluntario_form.telefono }}
+                        {{ voluntario_form.telefono.errors }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ voluntario_form.zona.id_for_label }}">Zona</label>
+                        {{ voluntario_form.zona }}
+                        {{ voluntario_form.zona.errors }}
+                    </div>
+                </div>
+            </fieldset>
+            
+            <div class="terms">
+                <input type="checkbox" id="terminos" name="terminos" required />
+                <label for="terminos">Acepto los <a href="#">términos</a></label>
+            </div>
+            
+            <button type="submit">Registrarse</button>
+            
+            <div class="login-link">
+                ¿Ya tienes cuenta? <a href="{% url 'usuarios:login' %}">Inicia sesión</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

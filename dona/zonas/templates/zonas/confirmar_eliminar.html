@@ -1,0 +1,20 @@
+{% extends 'zonas/base.html' %}
+{% load static %}
+
+{% block title %}Confirmar Eliminación | DONA{% endblock %}
+
+{% block content %}
+<div class="registro-container">
+    <div class="registro-box">
+        <h2>Confirmar Eliminación</h2>
+        <p>¿Estás seguro que deseas eliminar "{{ object }}"?</p>
+        <p class="warning">Esta acción no se puede deshacer.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-delete">Confirmar Eliminación</button>
+            <a href="{% if 'zona' in request.path %}{% url 'zonas:lista_zonas' %}{% else %}{% url 'zonas:lista_ubicaciones' %}{% endif %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

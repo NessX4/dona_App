@@ -1,0 +1,47 @@
+{% extends 'zonas/base.html' %}
+{% load static %}
+
+{% block title %}{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Zona | DONA{% endblock %}
+
+{% block content %}
+<div class="registro-container">
+    <div class="registro-box">
+        <div class="logo">
+            <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA">
+            <h1>DONA</h1>
+        </div>
+        <h2>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Zona</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.nombre.id_for_label }}">Nombre</label>
+                {{ form.nombre }}
+                {{ form.nombre.errors }}
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="{{ form.codigo_postal.id_for_label }}">Código Postal</label>
+                    {{ form.codigo_postal }}
+                    {{ form.codigo_postal.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.ciudad.id_for_label }}">Ciudad</label>
+                    {{ form.ciudad }}
+                    {{ form.ciudad.errors }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.estado.id_for_label }}">Estado</label>
+                    {{ form.estado }}
+                    {{ form.estado.errors }}
+                </div>
+            </div>
+            
+            <button type="submit">Guardar</button>
+            <a href="{% url 'zonas:lista_zonas' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

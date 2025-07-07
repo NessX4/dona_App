@@ -1,0 +1,46 @@
+{% extends 'usuarios/base.html' %}
+{% load static %}
+
+{% block title %}Lista de Receptores | DONA{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Lista de Receptores (Refugios)</h2>
+    
+    <div class="actions">
+        <a href="{% url 'usuarios:registro_receptor' %}" class="btn">Nuevo Receptor</a>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Refugio</th>
+                <th>Encargado</th>
+                <th>Teléfono</th>
+                <th>Capacidad</th>
+                <th>Horario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for receptor in receptores %}
+            <tr>
+                <td>{{ receptor.nombre_lugar }}</td>
+                <td>{{ receptor.encargado }}</td>
+                <td>{{ receptor.telefono }}</td>
+                <td>{{ receptor.capacidad }}</td>
+                <td>{{ receptor.horario_apertura|time:"H:i" }} - {{ receptor.horario_cierre|time:"H:i" }}</td>
+                <td>
+                    <a href="{% url 'usuarios:editar_receptor' receptor.pk %}" class="btn-edit">Editar</a>
+                    <a href="{% url 'usuarios:eliminar_receptor' receptor.pk %}" class="btn-delete">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No hay receptores registrados</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
