@@ -34,7 +34,6 @@ Thumbs.db
 *.env
 secrets.json
 
-
 # Archivos generados por Django
 media/
 db.sqlite3
@@ -45,3 +44,6 @@ htmlcov/
 .tox/
 .nox/
 pytest_cache/
+
+# Ignorar el settings.py principal (sensible)
+/dona/settings.py
