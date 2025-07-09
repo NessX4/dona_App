@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notificaciones | DONA</title>
+    <link rel="stylesheet" href="{% static 'CSS/Notificaciones.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      /* Estilo temporal para el subrayado - Debería moverse al CSS principal */
+      .dashboard-header h1 {
+        position: relative;
+        display: inline-block;
+        padding-bottom: 8px;
+      }
+
+      .dashboard-header h1::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(
+          --primary,
+          #c00107
+        ); /* Fallback a rojo si --primary no está definido */
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+  <body>
+        <div class="sidebar">
+      <div class="logo">
+        <img src="../../Dona.jpg" alt="Logo DONA" />
+        <span>DONA</span>
+      </div>
+      <ul class="menu">
+        <li>
+          <a href="{% url 'landing' %}"
+            ><i class="fas fa-tachometer-alt"></i> Dashboard</a
+          >
+        </li>
+        <li>
+          <a href="{% url 'publicardoonacion' %}"
+            ><i class="fas fa-plus-circle"></i> Publicar Donación</a
+          >
+        </li>
+        <li class="active">
+          <a href="{% url 'Donaciones' %}"
+            ><i class="fas fa-donate"></i> Mis Donaciones</a
+          >
+        </li>
+        <li>
+          <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
+        </li>
+        <li>
+          <a href="{% url 'notificaciones' %}"
+            ><i class="fas fa-bell"></i> Notificaciones</a
+          >
+        </li>
+        <li>
+          <a href="{% url 'logout' %}"
+            ><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <div class="main-content">
+      <div class="dashboard-header">
+        <h1>Mis <span class="highlight">Notificaciones</span></h1>
+        <div class="user-info">
+          <img
+            src="https://via.placeholder.com/40"
+            alt="Usuario"
+            class="user-avatar"
+          />
+          <span class="user-name">Restaurante Ejemplo</span>
+        </div>
+      </div>
+
+      <div class="dashboard-card">
+        <div class="notifications-header">
+          <h3>Notificaciones Recientes</h3>
+          <button class="mark-all-read">
+            <i class="fas fa-check-double"></i> Marcar todas como leídas
+          </button>
+        </div>
+
+        <div class="notifications-list">
+          <!-- Notificación 1 -->
+          <div class="notification-item unread">
+            <div class="notification-icon">
+              <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <div class="notification-content">
+              <h4>Nueva solicitud de donación</h4>
+              <p>
+                Banco de Alimentos está interesado en tu donación de "Panadería
+                surtida".
+              </p>
+              <span class="notification-time">Hace 15 minutos</span>
+            </div>
+            <div class="notification-actions">
+              <button class="action-btn accept">
+                <i class="fas fa-check"></i>
+              </button>
+              <button class="action-btn decline">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Notificación 2 -->
+          <div class="notification-item">
+            <div class="notification-icon">
+              <i class="fas fa-truck"></i>
+            </div>
+            <div class="notification-content">
+              <h4>Donación en proceso</h4>
+              <p>
+                Tu donación de "Frutas frescas" ha sido aceptada por Refugio
+                Local. Se pondrán en contacto para coordinar la entrega.
+              </p>
+              <span class="notification-time">Ayer, 3:45 PM</span>
+            </div>
+          </div>
+
+          <!-- Notificación 3 -->
+          <div class="notification-item">
+            <div class="notification-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-content">
+              <h4>Donación completada</h4>
+              <p>
+                Tu donación de "Sopas congeladas" ha sido entregada
+                exitosamente. ¡Gracias por tu contribución!
+              </p>
+              <span class="notification-time">15/06/2023</span>
+            </div>
+            <div class="notification-actions">
+              <button class="action-btn rate">
+                <i class="fas fa-star"></i> Calificar
+              </button>
+            </div>
+          </div>
+
+          <!-- Notificación 4 -->
+          <div class="notification-item">
+            <div class="notification-icon">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="notification-content">
+              <h4>Recordatorio</h4>
+              <p>
+                Tu donación de "Ensaladas listas" expirará en 2 horas. ¿Deseas
+                extender su disponibilidad?
+              </p>
+              <span class="notification-time">Ayer, 10:30 AM</span>
+            </div>
+            <div class="notification-actions">
+              <button class="action-btn extend">Extender</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="notifications-footer">
+          <button class="load-more">
+            <i class="fas fa-sync-alt"></i> Cargar más notificaciones
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

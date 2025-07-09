@@ -8,6 +8,12 @@ from .views import (registro_voluntario, VoluntarioListView,
                    VoluntarioUpdateView, VoluntarioDeleteView)
 from .views import (UsuarioListView, UsuarioCreateView, 
                    UsuarioUpdateView, UsuarioDeleteView)
+from .views import (
+    AdministradorListView,
+    AdministradorCreateView,
+    AdministradorUpdateView,
+    AdministradorDeleteView,
+)
 
 app_name = 'usuarios'
 
@@ -36,4 +42,10 @@ urlpatterns = [
     path('voluntarios/registro/', registro_voluntario, name='registro_voluntario'),
     path('voluntarios/editar/<int:pk>/', VoluntarioUpdateView.as_view(), name='editar_voluntario'),
     path('voluntarios/eliminar/<int:pk>/', VoluntarioDeleteView.as_view(), name='eliminar_voluntario'),
+    # Admin crud
+    path('administradores/', AdministradorListView.as_view(), name='lista_administradores'),
+    path('administradores/registro/', AdministradorCreateView.as_view(), name='registro_administrador'),
+    path('administradores/editar/<int:pk>/', AdministradorUpdateView.as_view(), name='editar_administrador'),
+    path('administradores/eliminar/<int:pk>/', AdministradorDeleteView.as_view(), name='eliminar_administrador'),
+
 ]

@@ -23,4 +23,9 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls')),
     path('zonas/', include('zonas.urls')),        # Zonas y Ubicaciones
     path('donaciones/', include('donaciones.urls')),
+    path('comentarios/', include('comentarios.urls')), #comentarios
+    path('notificaciones/', include('notificaciones.urls')), #notis
+    path('solicitudes/', include('solicitudes.urls')), #solicitudes
+
+
 ]

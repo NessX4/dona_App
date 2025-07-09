@@ -91,3 +91,17 @@ class VoluntarioForm(forms.ModelForm):
             'telefono': forms.TextInput(attrs={'class': 'form-control'}),
             'zona': forms.Select(attrs={'class': 'form-control'}),
         }
+
+
+
+class AdministradorForm(forms.ModelForm):
+    contraseña = forms.CharField(widget=forms.PasswordInput(), required=True)
+
+    class Meta:
+        model = Administrador
+        fields = ['nombre', 'correo', 'contraseña', 'activo']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control'}),
+            'activo': forms.CheckboxInput(),
+        }

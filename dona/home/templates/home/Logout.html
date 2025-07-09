@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cerrando Sesión | DONA</title>
+    <link rel="stylesheet" href="{% static 'CSS/Logout.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="logout-container">
+      <div class="logout-message">
+        <div class="logout-icon">
+          <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <h1>Cerrando Sesión</h1>
+        <p>
+          Estamos terminando tu sesión de manera segura. Serás redirigido a la
+          página de inicio en breve.
+        </p>
+
+        <div class="loading-bar">
+          <div class="loading-progress"></div>
+        </div>
+
+        <p>
+          Si no eres redirigido automáticamente,
+          <a href="{% url 'loggin' %}">haz clic aquí</a>.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      // Redirigir después de 3 segundos
+      setTimeout(function () {
+        window.location.href = "{% url 'loggin' %}";
+      }, 3000);
+    </script>
+  </body>
+</html>
