@@ -34,9 +34,6 @@ Thumbs.db
 *.env
 secrets.json
 
-# Carpeta de static generada (si usas collectstatic)
-staticfiles/
-static/
 
 # Archivos generados por Django
 media/
