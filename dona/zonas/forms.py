@@ -2,6 +2,7 @@
 from django import forms
 from .models import Zona, Ubicacion
 
+
 class ZonaForm(forms.ModelForm):
     class Meta:
         model = Zona

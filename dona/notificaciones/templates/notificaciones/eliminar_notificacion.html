@@ -1,0 +1,14 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Eliminar Notificación | DONA{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>¿Estás seguro que quieres eliminar esta notificación?</h2>
+    <p>{{ object.mensaje }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirmar</button>
+        <a href="{% url 'notificaciones:lista_notificaciones' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
