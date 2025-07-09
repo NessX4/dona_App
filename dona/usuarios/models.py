@@ -51,6 +51,6 @@ class Administrador(models.Model):
     contraseña = models.CharField(max_length=255)
     fecha_registro = models.DateTimeField(auto_now_add=True)
     activo = models.BooleanField(default=True)
-
+ 
     def __str__(self):
         return self.nombre

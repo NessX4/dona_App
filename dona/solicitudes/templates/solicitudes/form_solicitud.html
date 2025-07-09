@@ -1,0 +1,24 @@
+{% extends 'usuarios/base.html' %}
+{% load static %}
+
+{% block title %}Formulario Solicitud | DONA{% endblock %}
+
+{% block content %}
+<div class="registro-container">
+    <div class="registro-box">
+        <div class="logo">
+            <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA">
+            <h1>DONA</h1>
+        </div>
+        <h2>Formulario de Solicitud</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit">Guardar</button>
+            <a href="{% url 'solicitudes:lista_solicitudes' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

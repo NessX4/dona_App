@@ -5,6 +5,7 @@ from .models import Donador, Usuario, Rol, Receptor, Voluntario, Administrador
 from .forms import UsuarioDonadorForm, DonadorForm, UsuarioReceptorForm, ReceptorForm, UsuarioVoluntarioForm, VoluntarioForm, UsuarioGenForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from .forms import AdministradorForm
 
 
 class RolListView(ListView):
@@ -226,4 +227,38 @@ class UsuarioDeleteView(DeleteView):
         usuario = self.get_object()
         usuario.activo = False
         usuario.save()
+        return redirect(self.success_url)
+    
+
+# Lista de administradores
+class AdministradorListView(ListView):
+    model = Administrador
+    template_name = 'usuarios/lista_administradores.html'
+    context_object_name = 'administradores'
+    paginate_by = 10
+
+# Crear administrador
+class AdministradorCreateView(CreateView):
+    model = Administrador
+    form_class = AdministradorForm
+    template_name = 'usuarios/registro_administrador.html'
+    success_url = reverse_lazy('usuarios:lista_administradores')
+
+# Editar administrador
+class AdministradorUpdateView(UpdateView):
+    model = Administrador
+    form_class = AdministradorForm
+    template_name = 'usuarios/editar_administrador.html'
+    success_url = reverse_lazy('usuarios:lista_administradores')
+
+# "Eliminar" administrador - desactivar
+class AdministradorDeleteView(DeleteView):
+    model = Administrador
+    template_name = 'usuarios/eliminar_administrador.html'
+    success_url = reverse_lazy('usuarios:lista_administradores')
+
+    def post(self, request, *args, **kwargs):
+        administrador = self.get_object()
+        administrador.activo = False
+        administrador.save()
         return redirect(self.success_url)

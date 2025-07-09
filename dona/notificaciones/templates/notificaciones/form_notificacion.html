@@ -1,0 +1,14 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Formulario Notificación | DONA{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>{% if object %}Editar{% else %}Crear{% endif %} Notificación</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar</button>
+        <a href="{% url 'notificaciones:lista_notificaciones' %}">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
