@@ -34,10 +34,6 @@ Thumbs.db
 *.env
 secrets.json
 
-# Carpeta de static generada (si usas collectstatic)
-staticfiles/
-static/
-
 # Archivos generados por Django
 media/
 db.sqlite3
@@ -48,3 +44,8 @@ htmlcov/
 .tox/
 .nox/
 pytest_cache/
+
+# Ignorar el settings.py principal (sensible)
+/dona/settings.py
+
+dona/dona/settings.py
