@@ -1,103 +1,83 @@
-{% extends 'usuarios/base.html' %}
+{% extends 'registro_base.html' %}
 {% load static %}
+
+{% block tab_receptor %}active{% endblock %}
+<!-- Resto del contenido... -->
 
 {% block title %}Registro Receptor | DONA{% endblock %}
 
-{% block content %}
-<div class="registro-container">
-    <div class="registro-box">
-        <div class="logo">
-            <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA">
-            <h1>DONA</h1>
-        </div>
-        <h2>Registro de Receptor</h2>
+{% block form_title %}Registro de Receptor{% endblock %}
+
+{% block form_content %}
+    <fieldset>
+        <legend>Datos de Usuario</legend>
         
-        <form method="post" id="registroForm">
-            {% csrf_token %}
-            
-            <fieldset>
-                <legend>Datos de Usuario</legend>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="{{ user_form.nombre.id_for_label }}">Nombre</label>
-                        {{ user_form.nombre }}
-                        {{ user_form.nombre.errors }}
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="{{ user_form.correo.id_for_label }}">Correo electrónico</label>
-                    {{ user_form.correo }}
-                    {{ user_form.correo.errors }}
-                </div>
-                
-                <div class="form-group">
-                    <label for="{{ user_form.contraseña.id_for_label }}">Contraseña</label>
-                    {{ user_form.contraseña }}
-                    <div class="password-hint">Mínimo 8 caracteres</div>
-                    {{ user_form.contraseña.errors }}
-                </div>
-            </fieldset>
-            
-            <fieldset>
-                <legend>Datos del Receptor (Refugio)</legend>
-                
-                <div class="form-group">
-                    <label for="{{ receptor_form.nombre_lugar.id_for_label }}">Nombre del Refugio</label>
-                    {{ receptor_form.nombre_lugar }}
-                    {{ receptor_form.nombre_lugar.errors }}
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="{{ receptor_form.encargado.id_for_label }}">Encargado</label>
-                        {{ receptor_form.encargado }}
-                        {{ receptor_form.encargado.errors }}
-                    </div>
-                    <div class="form-group">
-                        <label for="{{ receptor_form.telefono.id_for_label }}">Teléfono</label>
-                        {{ receptor_form.telefono }}
-                        {{ receptor_form.telefono.errors }}
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="{{ receptor_form.direccion.id_for_label }}">Dirección</label>
-                    {{ receptor_form.direccion }}
-                    {{ receptor_form.direccion.errors }}
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="{{ receptor_form.capacidad.id_for_label }}">Capacidad</label>
-                        {{ receptor_form.capacidad }}
-                        {{ receptor_form.capacidad.errors }}
-                    </div>
-                    <div class="form-group">
-                        <label for="{{ receptor_form.horario_apertura.id_for_label }}">Horario Apertura</label>
-                        {{ receptor_form.horario_apertura }}
-                        {{ receptor_form.horario_apertura.errors }}
-                    </div>
-                    <div class="form-group">
-                        <label for="{{ receptor_form.horario_cierre.id_for_label }}">Horario Cierre</label>
-                        {{ receptor_form.horario_cierre }}
-                        {{ receptor_form.horario_cierre.errors }}
-                    </div>
-                </div>
-            </fieldset>
-            
-            <div class="terms">
-                <input type="checkbox" id="terminos" name="terminos" required />
-                <label for="terminos">Acepto los <a href="#">términos</a></label>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ user_form.nombre.id_for_label }}">Nombre</label>
+                {{ user_form.nombre }}
+                {{ user_form.nombre.errors }}
             </div>
-            
-            <button type="submit">Registrarse</button>
-            
-            <div class="login-link">
-                ¿Ya tienes cuenta? <a href="{% url 'usuarios:login' %}">Inicia sesión</a>
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ user_form.correo.id_for_label }}">Correo electrónico</label>
+            {{ user_form.correo }}
+            {{ user_form.correo.errors }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ user_form.contraseña.id_for_label }}">Contraseña</label>
+            {{ user_form.contraseña }}
+            <div class="password-hint">Mínimo 8 caracteres</div>
+            {{ user_form.contraseña.errors }}
+        </div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>Datos del Receptor (Refugio)</legend>
+        
+        <div class="form-group">
+            <label for="{{ receptor_form.nombre_lugar.id_for_label }}">Nombre del Refugio</label>
+            {{ receptor_form.nombre_lugar }}
+            {{ receptor_form.nombre_lugar.errors }}
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ receptor_form.encargado.id_for_label }}">Encargado</label>
+                {{ receptor_form.encargado }}
+                {{ receptor_form.encargado.errors }}
             </div>
-        </form>
-    </div>
-</div>
+            <div class="form-group">
+                <label for="{{ receptor_form.telefono.id_for_label }}">Teléfono</label>
+                {{ receptor_form.telefono }}
+                {{ receptor_form.telefono.errors }}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ receptor_form.direccion.id_for_label }}">Dirección</label>
+            {{ receptor_form.direccion }}
+            {{ receptor_form.direccion.errors }}
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ receptor_form.capacidad.id_for_label }}">Capacidad</label>
+                {{ receptor_form.capacidad }}
+                {{ receptor_form.capacidad.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ receptor_form.horario_apertura.id_for_label }}">Horario Apertura</label>
+                {{ receptor_form.horario_apertura }}
+                {{ receptor_form.horario_apertura.errors }}
+            </div>
+            <div class="form-group">
+                <label for="{{ receptor_form.horario_cierre.id_for_label }}">Horario Cierre</label>
+                {{ receptor_form.horario_cierre }}
+                {{ receptor_form.horario_cierre.errors }}
+            </div>
+        </div>
+    </fieldset>
 {% endblock %}

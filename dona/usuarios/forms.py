@@ -93,15 +93,29 @@ class VoluntarioForm(forms.ModelForm):
         }
 
 
-
 class AdministradorForm(forms.ModelForm):
-    contraseña = forms.CharField(widget=forms.PasswordInput(), required=True)
+    contraseña = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        required=True,
+        help_text="La contraseña debe tener al menos 8 caracteres."
+    )
 
     class Meta:
-        model = Administrador
-        fields = ['nombre', 'correo', 'contraseña', 'activo']
+        model = Administrador  # Cambia de Usuario a Administrador
+        fields = ['nombre', 'correo', 'contraseña']
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'correo': forms.EmailInput(attrs={'class': 'form-control'}),
-            'activo': forms.CheckboxInput(),
         }
+
+    def clean_correo(self):
+        correo = self.cleaned_data.get('correo')
+        if Administrador.objects.filter(correo=correo).exists():
+            raise forms.ValidationError("Este correo ya está registrado")
+        return correo
+
+    def clean_contraseña(self):
+        contraseña = self.cleaned_data.get('contraseña')
+        if len(contraseña) < 8:
+            raise forms.ValidationError("La contraseña debe tener al menos 8 caracteres")
+        return contraseña

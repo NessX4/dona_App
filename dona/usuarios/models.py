@@ -46,6 +46,7 @@ class Voluntario(models.Model):
         return self.usuario.nombre
 
 class Administrador(models.Model):
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='administrador')
     nombre = models.CharField(max_length=100)
     correo = models.EmailField(unique=True)
     contraseña = models.CharField(max_length=255)
