@@ -1,49 +1,63 @@
-{% extends 'usuarios/base.html' %}
+{% extends 'registro_base.html' %}
 {% load static %}
 
-{% block title %}Registro Administrador | DONA{% endblock %}
+{% block title %}Registro de Administrador | DONA{% endblock %}
 
-{% block content %}
-<div class="registro-container">
-    <div class="registro-box">
-        <div class="logo">
-            <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA">
-            <h1>DONA</h1>
-        </div>
-        <h2>Registro de Administrador</h2>
+{% block tab_administrador %}active{% endblock %}
 
-        <form method="post">
-            {% csrf_token %}
-            
-            <div class="form-group">
-                <label for="{{ form.nombre.id_for_label }}">Nombre</label>
-                {{ form.nombre }}
+{% block form_title %}Registro de Administrador{% endblock %}
+
+{% block form_content %}
+    <div class="form-group">
+        <label for="{{ form.nombre.id_for_label }}">Nombre Completo</label>
+        {{ form.nombre }}
+        {% if form.nombre.errors %}
+            <div class="error-message">
                 {{ form.nombre.errors }}
             </div>
+        {% endif %}
+    </div>
 
-            <div class="form-group">
-                <label for="{{ form.correo.id_for_label }}">Correo electrónico</label>
-                {{ form.correo }}
+    <div class="form-group">
+        <label for="{{ form.correo.id_for_label }}">Correo Electrónico</label>
+        {{ form.correo }}
+        {% if form.correo.errors %}
+            <div class="error-message">
                 {{ form.correo.errors }}
             </div>
+        {% endif %}
+    </div>
 
-            <div class="form-group">
-                <label for="{{ form.contraseña.id_for_label }}">Contraseña</label>
-                {{ form.contraseña }}
+    <div class="form-group">
+        <label for="{{ form.contraseña.id_for_label }}">Contraseña</label>
+        {{ form.contraseña }}
+        {% if form.contraseña.errors %}
+            <div class="error-message">
                 {{ form.contraseña.errors }}
             </div>
-
-            <div class="terms">
-                <input type="checkbox" id="terminos" name="terminos" required />
-                <label for="terminos">Acepto los <a href="#">términos</a></label>
-            </div>
-
-            <button type="submit">Registrar Administrador</button>
-
-            <div class="login-link">
-                <a href="{% url 'usuarios:lista_administradores' %}">Volver a la lista</a>
-            </div>
-        </form>
+        {% endif %}
     </div>
-</div>
+
+    <div class="form-group">
+        <label for="confirm_password">Confirmar Contraseña</label>
+        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registroForm');
+    
+    form.addEventListener('submit', function(e) {
+        const password = document.getElementById('id_contraseña').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Las contraseñas no coinciden');
+        }
+    });
+});
+</script>
 {% endblock %}

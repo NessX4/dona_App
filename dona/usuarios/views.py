@@ -6,13 +6,55 @@ from .forms import UsuarioDonadorForm, DonadorForm, UsuarioReceptorForm, Recepto
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .forms import AdministradorForm
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import make_password
 
 
 class RolListView(ListView):
     model = Rol
     template_name = 'usuarios/lista_roles.html'
     context_object_name = 'roles'  # Nombre del objeto en el template
+ 
+def login_view(request):
+    if request.method == 'POST':
+        correo = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        try:
+            # Buscar usuario por correo
+            usuario = Usuario.objects.get(correo=correo)
+            
+            # Verificar contraseña y estado activo
+            if check_password(password, usuario.contraseña) and usuario.activo:
+                # Autenticación exitosa
+                request.session['usuario_id'] = usuario.id
+                request.session['usuario_nombre'] = usuario.nombre
+                request.session['usuario_rol'] = usuario.rol.nombre
+                # Redirigir a landing después de login exitoso
+                return redirect('landing')
+                
+                # # Redirigir según el rol
+                # if usuario.rol.nombre == 'Donador':
+                #     return redirect('pagina_donador')
+                # elif usuario.rol.nombre == 'Receptor':
+                #     return redirect('pagina_receptor')
+                # elif usuario.rol.nombre == 'Voluntario':
+                #     return redirect('pagina_voluntario')
+                # elif usuario.rol.nombre == 'Administrador':
+                #     return redirect('panel_administrador')
+                # else:
+                #     return redirect('home')
+            
+            elif not usuario.activo:
+                messages.error(request, 'Tu cuenta está desactivada. Contacta al administrador.')
+            else:
+                messages.error(request, 'Contraseña incorrecta')
+                
+        except Usuario.DoesNotExist:
+            messages.error(request, 'No existe un usuario con este correo electrónico')
     
+    return render(request, 'usuarios/login.html')
+   
 # Create (Registro)
 def registro_donador(request):
     if request.method == 'POST':
@@ -65,20 +107,6 @@ class DonadorDeleteView(DeleteView):
     template_name = 'usuarios/eliminar_donador.html'
     success_url = reverse_lazy('usuarios:lista_donadores')
   
-# Login View  
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('email')  # Usamos email como username
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # Cambia 'home' por tu URL de inicio
-        else:
-            messages.error(request, 'Correo o contraseña incorrectos')
-    
-    return render(request, 'usuarios/login.html')
 
 # Registro
 def registro_receptor(request):
@@ -242,7 +270,40 @@ class AdministradorCreateView(CreateView):
     model = Administrador
     form_class = AdministradorForm
     template_name = 'usuarios/registro_administrador.html'
-    success_url = reverse_lazy('usuarios:lista_administradores')
+    success_url = reverse_lazy('home:landing') 
+
+    def form_valid(self, form):
+        password = form.cleaned_data.get('contraseña')
+        confirm_password = self.request.POST.get('confirm_password')
+        
+        if password != confirm_password:
+            form.add_error('contraseña', 'Las contraseñas no coinciden')
+            return self.form_invalid(form)
+        
+        # Crear el administrador
+        administrador = form.save(commit=False)
+        administrador.contraseña = make_password(password)
+        
+        # Verificar si el correo ya está registrado
+        if Usuario.objects.filter(correo=administrador.correo).exists():
+            form.add_error('correo', 'Este correo ya está registrado')
+            return self.form_invalid(form)
+        
+        # Crear el usuario asociado
+        usuario = Usuario.objects.create(
+            nombre=administrador.nombre,
+            correo=administrador.correo,
+            contraseña=administrador.contraseña,
+            rol=Rol.objects.get(nombre='Administrador'),  # Asignar rol
+            activo=True
+        )
+        
+        administrador.usuario = usuario
+        administrador.save()
+        
+        messages.success(self.request, 'Administrador creado exitosamente')
+        return super().form_valid(form)
+
 
 # Editar administrador
 class AdministradorUpdateView(UpdateView):

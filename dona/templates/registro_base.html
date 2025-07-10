@@ -17,7 +17,7 @@
 <body>
     <div class="registro-container">
         <div class="registro-box">
-            <!-- Añade estas pestañas de navegación -->
+            <!-- Pestañas de navegación actualizadas -->
             <div class="registro-tabs-container">
                 <div class="registro-tabs">
                     <a href="{% url 'usuarios:registro_donador' %}" class="tab {% block tab_donador %}{% endblock %}">
@@ -31,6 +31,10 @@
                     <a href="{% url 'usuarios:registro_voluntario' %}" class="tab {% block tab_voluntario %}{% endblock %}">
                         <i class="fas fa-heart tab-icon"></i>
                         <span>Voluntario</span>
+                    </a>
+                    <a href="{% url 'usuarios:registro_administrador' %}" class="tab {% block tab_administrador %}{% endblock %}">
+                        <i class="fas fa-user-shield tab-icon"></i>
+                        <span>Administrador</span>
                     </a>
                 </div>
             </div>

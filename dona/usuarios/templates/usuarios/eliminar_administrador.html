@@ -1,16 +1,27 @@
-{% extends 'usuarios/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Eliminar Administrador | DONA{% endblock %}
-
 {% block content %}
-<div class="container">
-    <h2>¿Estás segura de eliminar al administrador "{{ object.nombre }}"?</h2>
-
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn-delete">Eliminar</button>
-        <a href="{% url 'usuarios:lista_administradores' %}" class="btn-cancel">Cancelar</a>
-    </form>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="text-center">Desactivar Administrador</h3>
+                </div>
+                <div class="card-body">
+                    <p class="lead">¿Estás seguro que deseas desactivar al administrador <strong>{{ object.nombre }}</strong>?</p>
+                    <p>Correo: {{ object.correo }}</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group text-center mt-4">
+                            <button type="submit" class="btn btn-danger">Sí, Desactivar</button>
+                            <a href="{% url 'usuarios:lista_administradores' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
