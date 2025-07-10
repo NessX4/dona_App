@@ -62,9 +62,10 @@ def registro_donador(request):
         donador_form = DonadorForm(request.POST)
         
         if user_form.is_valid() and donador_form.is_valid():
-            # Crear usuario
+            # Crear usuario con contraseña hasheada
             usuario = user_form.save(commit=False)
-            usuario.rol = Rol.objects.get(nombre='Donador')  # Asegúrate que exista este rol
+            usuario.rol = Rol.objects.get(nombre='Donador')
+            usuario.contraseña = make_password(usuario.contraseña)  # Hashear aquí
             usuario.save()
             
             # Crear donador
@@ -115,9 +116,10 @@ def registro_receptor(request):
         receptor_form = ReceptorForm(request.POST)
         
         if user_form.is_valid() and receptor_form.is_valid():
-            # Crear usuario
+            # Crear usuario con contraseña hasheada
             usuario = user_form.save(commit=False)
-            usuario.rol = Rol.objects.get(nombre='Receptor')  # Asegúrate que exista
+            usuario.rol = Rol.objects.get(nombre='Receptor')
+            usuario.contraseña = make_password(usuario.contraseña)  # Hashear aquí
             usuario.save()
             
             # Crear receptor
@@ -168,9 +170,10 @@ def registro_voluntario(request):
         voluntario_form = VoluntarioForm(request.POST)
         
         if user_form.is_valid() and voluntario_form.is_valid():
-            # Crear usuario
+            # Crear usuario con contraseña hasheada
             usuario = user_form.save(commit=False)
-            usuario.rol = Rol.objects.get(nombre='Voluntario')  # Asegúrate que exista
+            usuario.rol = Rol.objects.get(nombre='Voluntario')
+            usuario.contraseña = make_password(usuario.contraseña)  # Hashear aquí
             usuario.save()
             
             # Crear voluntario
@@ -233,9 +236,9 @@ class UsuarioCreateView(CreateView):
     success_url = reverse_lazy('usuarios:lista_usuarios')
     
     def form_valid(self, form):
-        # Asignar contraseña por defecto (deberías implementar algo más seguro)
         usuario = form.save(commit=False)
-        usuario.contraseña = "passwordtemporal"  # El usuario deberá cambiar esto
+        # Hashear la contraseña antes de guardar
+        usuario.contraseña = make_password("passwordtemporal")
         usuario.save()
         return super().form_valid(form)
 
@@ -244,6 +247,14 @@ class UsuarioUpdateView(UpdateView):
     form_class = UsuarioGenForm
     template_name = 'usuarios/form_usuario.html'
     success_url = reverse_lazy('usuarios:lista_usuarios')
+    
+    def form_valid(self, form):
+        usuario = form.save(commit=False)
+        # Si la contraseña fue modificada, hashearla
+        if 'contraseña' in form.changed_data:
+            usuario.contraseña = make_password(usuario.contraseña)
+        usuario.save()
+        return super().form_valid(form)
 
 class UsuarioDeleteView(DeleteView):
     model = Usuario
@@ -280,21 +291,20 @@ class AdministradorCreateView(CreateView):
             form.add_error('contraseña', 'Las contraseñas no coinciden')
             return self.form_invalid(form)
         
-        # Crear el administrador
+        # Crear el administrador con contraseña hasheada
         administrador = form.save(commit=False)
         administrador.contraseña = make_password(password)
         
-        # Verificar si el correo ya está registrado
         if Usuario.objects.filter(correo=administrador.correo).exists():
             form.add_error('correo', 'Este correo ya está registrado')
             return self.form_invalid(form)
         
-        # Crear el usuario asociado
+        # Crear el usuario asociado con contraseña hasheada
         usuario = Usuario.objects.create(
             nombre=administrador.nombre,
             correo=administrador.correo,
-            contraseña=administrador.contraseña,
-            rol=Rol.objects.get(nombre='Administrador'),  # Asignar rol
+            contraseña=make_password(password),  # Hashear aquí también
+            rol=Rol.objects.get(nombre='Administrador'),
             activo=True
         )
         
@@ -303,7 +313,7 @@ class AdministradorCreateView(CreateView):
         
         messages.success(self.request, 'Administrador creado exitosamente')
         return super().form_valid(form)
-
+    
 
 # Editar administrador
 class AdministradorUpdateView(UpdateView):
