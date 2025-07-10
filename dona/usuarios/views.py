@@ -30,8 +30,8 @@ def login_view(request):
                 request.session['usuario_id'] = usuario.id
                 request.session['usuario_nombre'] = usuario.nombre
                 request.session['usuario_rol'] = usuario.rol.nombre
-                # Redirigir a landing después de login exitoso
-                return redirect('landing')
+                # Redirigir a home después de login exitoso
+                return redirect('home')
                 
                 # # Redirigir según el rol
                 # if usuario.rol.nombre == 'Donador':
@@ -281,7 +281,7 @@ class AdministradorCreateView(CreateView):
     model = Administrador
     form_class = AdministradorForm
     template_name = 'usuarios/registro_administrador.html'
-    success_url = reverse_lazy('home:landing') 
+    success_url = reverse_lazy('home:home') 
 
     def form_valid(self, form):
         password = form.cleaned_data.get('contraseña')

@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DONA | {% block title %}Panel Restaurante{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'CSS/base_home.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Sidebar rediseñado según imagen -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA" class="logo-img" />
+            <h1 class="logo-text">DONA</h1>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-menu">
+                <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                    <a href="{% url 'home' %}" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item {% if request.resolver_match.url_name == 'publicardoonacion' %}active{% endif %}">
+                    <a href="{% url 'publicardoonacion' %}" class="nav-link">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Publicar Donación</span>
+                    </a>
+                </li>
+                <li class="nav-item {% if request.resolver_match.url_name == 'donaciones:publicacion_list' %}active{% endif %}">
+                    <a href="{% url 'donaciones:publicacion_list' %}" class="nav-link">
+                        <i class="fas fa-donate"></i>
+                        <span>Mis Donaciones</span>
+                    </a>
+                </li>
+                <li class="nav-item {% if request.resolver_match.url_name == 'perfil' %}active{% endif %}">
+                    <a href="{% url 'perfil' %}" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a>
+                </li>
+                <li class="nav-item {% if request.resolver_match.url_name == 'notificaciones' %}active{% endif %}">
+                    <a href="{% url 'notificaciones' %}" class="nav-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notificaciones</span>
+                        <span class="notification-badge">3</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <a href="{% url 'logout' %}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

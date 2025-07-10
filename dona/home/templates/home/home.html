@@ -1,0 +1,97 @@
+{% extends "base_home.html" %}
+{% load static %}
+
+{% block title %}Panel Restaurante{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'CSS/home.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="welcome-section">
+        <h1>Bienvenido, <span class="highlight">Restaurante Donador</span></h1>
+    </div>
+
+    <div class="stats-section">
+        <div class="stat-card">
+            <div class="stat-number">15</div>
+            <div class="stat-label">Donaciones realizadas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">12</div>
+            <div class="stat-label">Donaciones completadas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">8</div>
+            <div class="stat-label">Beneficiarios ayudados</div>
+        </div>
+    </div>
+
+    <div class="recent-donations">
+        <h2>Tus donaciones recientes</h2>
+        
+        <div class="status-tabs">
+            <div class="tab active">Disponibles</div>
+            <div class="tab">En proceso</div>
+            <div class="tab">Completadas</div>
+        </div>
+
+        <div class="donations-list">
+            <div class="donation-item">
+                <div class="donation-header">
+                    <h3>Panadería surtida</h3>
+                    <span class="status-badge available">Disponible</span>
+                </div>
+                <p class="donation-description">Variedad de panes y pasteles en buen estado</p>
+                <div class="donation-meta">
+                    <span><i class="fas fa-clock"></i> Hace 2 horas</span>
+                    <span><i class="fas fa-map-marker-alt"></i> 5 km</span>
+                </div>
+            </div>
+
+            <div class="donation-item">
+                <div class="donation-header">
+                    <h3>Frutas frescas</h3>
+                    <span class="status-badge available">Disponible</span>
+                </div>
+                <p class="donation-description">Variedad de frutas de temporada</p>
+                <div class="donation-meta">
+                    <span><i class="fas fa-clock"></i> Hace 5 horas</span>
+                    <span><i class="fas fa-map-marker-alt"></i> 3 km</span>
+                </div>
+            </div>
+
+            <div class="donation-item">
+                <div class="donation-header">
+                    <h3>Ensaladas listas</h3>
+                    <span class="status-badge in-process">En proceso</span>
+                </div>
+                <p class="donation-description">Ensaladas completas para servir</p>
+                <div class="donation-meta">
+                    <span><i class="fas fa-clock"></i> Ayer</span>
+                    <span><i class="fas fa-map-marker-alt"></i> 2 km</span>
+                </div>
+            </div>
+
+            <div class="donation-item">
+                <div class="donation-header">
+                    <h3>Sopas congeladas</h3>
+                    <span class="status-badge completed">Completada</span>
+                </div>
+                <p class="donation-description">Porciones individuales</p>
+                <div class="donation-meta">
+                    <span><i class="fas fa-clock"></i> 2 días</span>
+                    <span><i class="fas fa-map-marker-alt"></i> 7 km</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-section">
+        <button class="primary-button">
+            <i class="fas fa-plus"></i> Publicar nueva donación
+        </button>
+    </div>
+</div>
+{% endblock %}

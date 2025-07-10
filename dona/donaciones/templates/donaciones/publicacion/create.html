@@ -1,52 +1,137 @@
-{% comment %} {% extends 'base.html' %} {% endcomment %}
+{% extends 'base_home.html' %}
+{% load static %}
+
+{% block title %}Panel Restaurante{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Crear Nueva Publicación</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <div class="card mb-4">
-            <div class="card-header">Información Básica</div>
-            <div class="card-body">
-                {{ form.as_p }}
+<div class="dashboard-header">
+    <h1>Bienvenido, <span class="highlight">Restaurante Donador</span></h1>
+    <div class="user-info">
+        <img
+            src="https://via.placeholder.com/40"
+            alt="Usuario"
+            class="user-avatar"
+        />
+        <span class="user-name">Usuario Ejemplo</span>
+    </div>
+</div>
+
+<div class="dashboard-card">
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-icon-container">
+                <i class="fas fa-donate stat-icon"></i>
+            </div>
+            <div class="stat-text">
+                <h3>15</h3>
+                <p>Donaciones realizadas</p>
             </div>
         </div>
-        
-        <div class="card mb-4">
-            <div class="card-header">Comidas</div>
-            <div class="card-body">
-                {{ comida_formset.management_form }}
-                {% for form in comida_formset %}
-                <div class="form-row mb-3 comida-form">
-                    {{ form.id }}
-                    <div class="col-md-3">{{ form.nombre.label_tag }} {{ form.nombre }}</div>
-                    <div class="col-md-2">{{ form.cantidad.label_tag }} {{ form.cantidad }}</div>
-                    <div class="col-md-2">{{ form.categoria.label_tag }} {{ form.categoria }}</div>
-                    <div class="col-md-4">{{ form.ingredientes.label_tag }} {{ form.ingredientes }}</div>
-                    <div class="col-md-1">{{ form.DELETE.label_tag }} {{ form.DELETE }}</div>
+        <div class="stat-card">
+            <div class="stat-icon-container">
+                <i class="fas fa-check-circle stat-icon"></i>
+            </div>
+            <div class="stat-text">
+                <h3>12</h3>
+                <p>Donaciones completadas</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon-container">
+                <i class="fas fa-users stat-icon"></i>
+            </div>
+            <div class="stat-text">
+                <h3>8</h3>
+                <p>Beneficiarios ayudados</p>
+            </div>
+        </div>
+    </div>
+
+    <h2>Tus donaciones recientes</h2>
+
+    <div class="donations-grid">
+        <div class="donation-card">
+            <div
+                class="donation-image"
+                style="background-image: url('https://via.placeholder.com/300x150');"
+            >
+                <span class="donation-badge">Disponible</span>
+            </div>
+            <div class="donation-content">
+                <h4>Panadería surtida</h4>
+                <p class="donation-description">
+                    Variedad de panes y pasteles en buen estado
+                </p>
+                <div class="donation-meta">
+                    <span><i class="fas fa-clock"></i> Hace 2 horas</span>
+                    <span><i class="fas fa-map-marker-alt"></i> 5 km</span>
                 </div>
-                {% endfor %}
             </div>
         </div>
-        
-        <div class="card mb-4">
-            <div class="card-header">Archivos Adjuntos</div>
-            <div class="card-body">
-                {{ archivo_formset.management_form }}
-                {% for form in archivo_formset %}
-                <div class="form-row mb-3 archivo-form">
-                    {{ form.id }}
-                    <div class="col-md-6">{{ form.url.label_tag }} {{ form.url }}</div>
-                    <div class="col-md-5">{{ form.tipo.label_tag }} {{ form.tipo }}</div>
-                    <div class="col-md-1">{{ form.DELETE.label_tag }} {{ form.DELETE }}</div>
+
+        <div class="donation-card">
+            <div
+                class="donation-image"
+                style="background-image: url('https://via.placeholder.com/300x150');"
+            >
+                <span class="donation-badge">Disponible</span>
+            </div>
+            <div class="donation-content">
+                <h4>Frutas frescas</h4>
+                <p class="donation-description">
+                    Variedad de frutas de temporada
+                </p>
+                <div class="donation-meta">
+                    <span><i class="fas fa-clock"></i> Hace 5 horas</span>
+                    <span><i class="fas fa-map-marker-alt"></i> 3 km</span>
                 </div>
-                {% endfor %}
             </div>
         </div>
-        
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="{% url 'donaciones:publicacion_list' %}" class="btn btn-secondary">Cancelar</a>
-    </form>
+
+        <div class="donation-card">
+            <div
+                class="donation-image"
+                style="background-image: url('https://via.placeholder.com/300x150');"
+            >
+                <span class="donation-badge">En proceso</span>
+            </div>
+            <div class="donation-content">
+                <h4>Ensaladas listas</h4>
+                <p class="donation-description">
+                    Ensaladas completas para servir
+                </p>
+                <div class="donation-meta">
+                    <span><i class="fas fa-clock"></i> Ayer</span>
+                    <span><i class="fas fa-map-marker-alt"></i> 2 km</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="donation-card">
+            <div
+                class="donation-image"
+                style="background-image: url('https://via.placeholder.com/300x150');"
+            >
+                <span class="donation-badge">Completada</span>
+            </div>
+            <div class="donation-content">
+                <h4>Sopas congeladas</h4>
+                <p class="donation-description">Porciones individuales</p>
+                <div class="donation-meta">
+                    <span><i class="fas fa-clock"></i> 2 días</span>
+                    <span><i class="fas fa-map-marker-alt"></i> 7 km</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-wrapper">
+        <button
+            class="main-button"
+            onclick="window.location.href='PublicarDonacion.html'"
+        >
+            <i class="fas fa-plus"></i> Publicar nueva donación
+        </button>
+    </div>
 </div>
 {% endblock %}

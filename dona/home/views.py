@@ -5,8 +5,8 @@ def landing_page(request):
     return render(request, 'home/index2.html')
 
 # Vista para la página principal
-def landing_pageone(request):
-    return render(request, 'home/index.html')
+def home_view(request):
+    return render(request, 'home/home.html')
 
 # Vista para logout
 def logout_view(request):
