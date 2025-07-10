@@ -31,7 +31,7 @@ def login_view(request):
                 request.session['usuario_nombre'] = usuario.nombre
                 request.session['usuario_rol'] = usuario.rol.nombre
                 # Redirigir a landing después de login exitoso
-                return redirect('landing')
+                return redirect('home')
                 
                 # # Redirigir según el rol
                 # if usuario.rol.nombre == 'Donador':
