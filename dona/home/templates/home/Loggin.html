@@ -51,7 +51,7 @@
         .getElementById("loginForm")
         .addEventListener("submit", function (event) {
           event.preventDefault();
-          window.location.href = "../../Templates/Main/Index.html";
+          window.location.href = "{% url 'landing' %}";
         });
     </script>
   </body>

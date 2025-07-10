@@ -1,7 +1,11 @@
 from django.shortcuts import render
 
-# Vista para la página principal
+
 def landing_page(request):
+    return render(request, 'home/index2.html')
+
+# Vista para la página principal
+def landing_pageone(request):
     return render(request, 'home/index.html')
 
 # Vista para logout
@@ -37,8 +41,8 @@ def publicacdonacion_view(request):
     return render(request, 'home/PublicarDonacion.html')
 
 def contrasena_view(request):
-    return render(request, 'home/Contraseña.html')
+    return render(request, 'home/Contrasenas.html')
 
 # Nueva vista para página de "Nueva Contraseña"
 def nueva_contrasena_view(request):
-    return render(request, 'home/NuevaContraseña.html')
+    return render(request, 'home/NuevaContrasena.html')

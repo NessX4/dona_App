@@ -152,7 +152,7 @@
           <button type="submit">Registrarse</button>
 
           <div class="login-link">
-            ¿Ya tienes cuenta? <a href="../Login/Loggin.html">Inicia sesión</a>
+            ¿Ya tienes cuenta? <a href="{% url 'loggin' %}">Inicia sesión</a>
           </div>
         </form>
       </div>
@@ -177,7 +177,7 @@
           event.preventDefault();
           document.getElementById("successMessage").style.display = "flex";
           setTimeout(function () {
-            window.location.href = "../Login/Loggin.html";
+            window.location.href = "{% url 'loggin' %}";
           }, 3000);
         });
     </script>
