@@ -36,7 +36,7 @@
   <body>
         <div class="sidebar">
       <div class="logo">
-        <img src="../../Dona.jpg" alt="Logo DONA" />
+        <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA" />
         <span>DONA</span>
       </div>
       <ul class="menu">
@@ -50,7 +50,7 @@
             ><i class="fas fa-plus-circle"></i> Publicar Donación</a
           >
         </li>
-        <li class="active">
+        <li>
           <a href="{% url 'Donaciones' %}"
             ><i class="fas fa-donate"></i> Mis Donaciones</a
           >
@@ -58,7 +58,7 @@
         <li>
           <a href="{% url 'perfil' %}"><i class="fas fa-user"></i> Perfil</a>
         </li>
-        <li>
+        <li class="active">
           <a href="{% url 'notificaciones' %}"
             ><i class="fas fa-bell"></i> Notificaciones</a
           >
