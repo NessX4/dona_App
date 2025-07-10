@@ -9,8 +9,9 @@ body {
   color: #333;
   background-color: #fff5f5;
   line-height: 1.7;
+  overflow-x: hidden; /* Previene el desplazamiento horizontal */
+  width: 100%; /* Asegura que el body ocupe todo el ancho */
 }
-
 
 .topbar {
   background-color: #cc0000;
@@ -18,6 +19,7 @@ body {
   font-size: 14px;
   padding: 10px 0;
   text-align: center;
+  width: 100%;
 }
 
 header {
@@ -26,6 +28,7 @@ header {
   z-index: 999;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 header .container {
@@ -34,12 +37,14 @@ header .container {
   align-items: center;
   padding: 15px 0;
 }
+
 .container {
-  width: 90%;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px; /* 👈 añade espacio a los lados */
+  padding: 0 15px;
 }
+
 .logo {
   display: flex;
   align-items: center;
@@ -92,8 +97,10 @@ nav a:hover {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 15px 0; /* antes 120px */
+  padding: 15px 0;
   text-align: center;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
 }
 
 .hero-goza .overlay {
@@ -130,7 +137,8 @@ nav a:hover {
 
 .features {
   background: #fff;
-  padding: 60px 20px;
+  padding: 60px 0;
+  width: 100%;
 }
 
 .feature-grid {
@@ -158,8 +166,9 @@ nav a:hover {
 
 .how-it-works {
   background: #fff8f8;
-  padding: 80px 20px;
+  padding: 80px 0;
   text-align: center;
+  width: 100%;
 }
 
 .how-it-works h2 {
@@ -195,7 +204,8 @@ nav a:hover {
 
 .stats {
   background: #ffe6e6;
-  padding: 10px 20px;
+  padding: 10px 0;
+  width: 100%;
 }
 
 .stats-grid {
@@ -263,9 +273,10 @@ nav a:hover {
 }
 
 .about {
-  padding: 10px 20px;
+  padding: 10px 0;
   background: #fff;
   text-align: center;
+  width: 100%;
 }
 
 .about h2 {
@@ -331,8 +342,9 @@ nav a:hover {
 
 .security {
   background: #fff8f8;
-  padding: 50px 20px;
+  padding: 50px 0;
   text-align: center;
+  width: 100%;
 }
 
 .security h2 {
@@ -349,10 +361,11 @@ nav a:hover {
 }
 
 .donate {
-  padding: 60px 20px;
+  padding: 60px 0;
   background: #cc0000;
   text-align: center;
   color: white;
+  width: 100%;
 }
 
 .donate h2 {
@@ -378,6 +391,7 @@ footer {
   color: white;
   padding: 20px 0;
   text-align: center;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -394,6 +408,17 @@ footer {
   .hero-goza p {
     font-size: 16px;
   }
+  
+  .stats-content,
+  .stats-text {
+    flex-direction: column;
+  }
+  
+  .about-content,
+  .security-content {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 .about-grid {
@@ -401,7 +426,7 @@ footer {
   flex-wrap: wrap;
   align-items: center;
   gap: 40px;
-  padding: 80px 20px;
+  padding: 80px 0;
 }
 
 .about-text {

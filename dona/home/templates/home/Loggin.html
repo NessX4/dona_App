@@ -41,7 +41,9 @@
 
         <div class="register-link">
           ¿No tienes una cuenta?
-          <a href="{% url 'registro' %}">Regístrate aquí</a>
+          {% comment %} <a href="{% url 'registro' %}">Regístrate aquí</a> {% endcomment %}
+          <a href="{% url 'usuarios:registro_donador' %}">Regístrate aquí</a>
+
         </div>
       </div>
     </div>

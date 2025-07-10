@@ -46,7 +46,8 @@
       <div class="container">
         <h1>Conectamos solidaridad con necesidad</h1>
         <p>Cada comida que se dona a través de DONA representa esperanza para quienes más lo necesitan.</p>
-        <a href="{% url 'loggin' %}" class="cta dark">Comenzar Donación</a>
+        {% comment %} <img src="{% static 'img/landing.jpg' %}" alt="Fondo Landing" /> {% endcomment %}
+        <a href="{% static 'img/landing.jpg' %}" class="cta dark">Comenzar Donación</a>
       </div>
     </div>
   </section>

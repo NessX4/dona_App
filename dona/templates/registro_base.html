@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DONA{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'CSS/Registro.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <head>
+    <!-- ... otros meta tags ... -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- ... tus otros estilos ... -->
+</head>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="registro-container">
+        <div class="registro-box">
+            <!-- Añade estas pestañas de navegación -->
+            <div class="registro-tabs-container">
+                <div class="registro-tabs">
+                    <a href="{% url 'usuarios:registro_donador' %}" class="tab {% block tab_donador %}{% endblock %}">
+                        <i class="fas fa-utensils tab-icon"></i>
+                        <span>Donador</span>
+                    </a>
+                    <a href="{% url 'usuarios:registro_receptor' %}" class="tab {% block tab_receptor %}{% endblock %}">
+                        <i class="fas fa-hands-helping tab-icon"></i>
+                        <span>Receptor</span>
+                    </a>
+                    <a href="{% url 'usuarios:registro_voluntario' %}" class="tab {% block tab_voluntario %}{% endblock %}">
+                        <i class="fas fa-heart tab-icon"></i>
+                        <span>Voluntario</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="registro-header">
+                <div class="logo">
+                    <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA">
+                    <h1>DONA</h1>
+                </div>
+                <h2 class="registro-title">{% block form_title %}Registro{% endblock %}</h2>
+            </div>
+            
+            <div class="registro-form">
+                <form method="post" id="registroForm" novalidate>
+                    {% csrf_token %}
+                    {% block form_content %}{% endblock %}
+                    
+                    <div class="terms">
+                        <input type="checkbox" id="terminos" name="terminos" required>
+                        <label for="terminos">Acepto los <a href="#">términos y condiciones</a></label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Registrarse</button>
+                    </div>
+                    
+                    <div class="login-link">
+                        ¿Ya tienes cuenta? <a href="{% url 'loggin' %}">Inicia sesión</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
