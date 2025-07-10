@@ -47,3 +47,5 @@ pytest_cache/
 
 # Ignorar el settings.py principal (sensible)
 /dona/settings.py
+
+dona/dona/settings.py
