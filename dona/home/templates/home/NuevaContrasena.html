@@ -45,7 +45,7 @@
         </form>
 
         <div class="login-link">
-          <a href="../Login/Loggin.html">← Volver a Iniciar Sesión</a>
+          <a href="{% url 'loggin' %}">← Volver a Iniciar Sesión</a>
         </div>
       </div>
     </div>
@@ -67,7 +67,7 @@
 
           // Aquí iría la lógica para guardar la nueva contraseña
           alert("Contraseña actualizada correctamente");
-          window.location.href = "../Login/Loggin.html";
+          window.location.href = "{% url 'nueva_contrasena' %}";
         });
     </script>
   </body>
