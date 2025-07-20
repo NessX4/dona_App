@@ -23,10 +23,10 @@ urlpatterns = [
     path('api/usuarios/', include('usuarios.urls')),  # API de Usuarios
     path('api/zonas/', include('zonas.urls')),  # 
     path('api/donaciones/', include('donaciones.urls')),
+    path('api/solicitudes/', include('solicitudes.urls')), #solicitudes
 
     path('comentarios/', include('comentarios.urls')), #comentarios
     path('notificaciones/', include('notificaciones.urls')), #notis
-    path('solicitudes/', include('solicitudes.urls')), #solicitudes
 
 
 ]
