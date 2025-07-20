@@ -78,6 +78,28 @@ python manage.py runserver
    git push origin develop-owner
    ```
 
+
+## 📦 Configurar entorno frontend **
+```bash
+cd dona_front
+npm install
+```
+
+**🔑 Configurar archivo .env**
+   - Para configurar la conexión con el backend y otras variables, debes crear un archivo .env en la carpeta dona_front/.
+     
+``` bash
+VITE_API_URL=http://localhost:8000/api/
+VITE_PORT=5173
+VITE_DEBUG=true
+```
+
+**🚀 Ejecutar la aplicación en modo desarrollo**
+``` bash
+npm run dev
+```  
+
+
 ### Resumen:
 - El equipo sube cambios a `develop` mediante Pull Requests que owner aprueba.
 - Owner puede subir cambios directamente a `develop-owner` y luego decidir si fusionarlos en `develop` mediante Pull Requests o directamente.
