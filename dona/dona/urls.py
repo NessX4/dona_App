@@ -21,7 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),  # Landing page
     path('api/usuarios/', include('usuarios.urls')),  # API de Usuarios
-    path('zonas/', include('zonas.urls')),        # Zonas y Ubicaciones
+    path('api/zonas/', include('zonas.urls')),  # 
+
     path('donaciones/', include('donaciones.urls')),
     path('comentarios/', include('comentarios.urls')), #comentarios
     path('notificaciones/', include('notificaciones.urls')), #notis
