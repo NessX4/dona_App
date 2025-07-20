@@ -25,8 +25,7 @@ urlpatterns = [
     path('api/donaciones/', include('donaciones.urls')),
     path('api/solicitudes/', include('solicitudes.urls')), #solicitudes
     path('api/comentarios/', include('comentarios.urls')), #comentarios
-    
-    path('notificaciones/', include('notificaciones.urls')), #notis
+    path('api/notificaciones/', include('notificaciones.urls')), #notis
 
 
 ]
