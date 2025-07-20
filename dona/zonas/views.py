@@ -1,53 +1,11 @@
-# zonas/views.py
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from rest_framework import viewsets
 from .models import Zona, Ubicacion
-from .forms import ZonaForm, UbicacionForm
+from .serializers import ZonaSerializer, UbicacionSerializer
 
-# Vistas para Zonas
-class ZonaListView(ListView):
-    model = Zona
-    template_name = 'zonas/lista_zonas.html'
-    context_object_name = 'zonas'
-    paginate_by = 10
+class ZonaViewSet(viewsets.ModelViewSet):
+    queryset = Zona.objects.all()
+    serializer_class = ZonaSerializer
 
-class ZonaCreateView(CreateView):
-    model = Zona
-    form_class = ZonaForm
-    template_name = 'zonas/form_zona.html'
-    success_url = reverse_lazy('zonas:lista_zonas')
-
-class ZonaUpdateView(UpdateView):
-    model = Zona
-    form_class = ZonaForm
-    template_name = 'zonas/form_zona.html'
-    success_url = reverse_lazy('zonas:lista_zonas')
-
-class ZonaDeleteView(DeleteView):
-    model = Zona
-    template_name = 'zonas/confirmar_eliminar.html'
-    success_url = reverse_lazy('zonas:lista_zonas')
-
-# Vistas para Ubicaciones
-class UbicacionListView(ListView):
-    model = Ubicacion
-    template_name = 'zonas/lista_ubicaciones.html'
-    context_object_name = 'ubicaciones'
-    paginate_by = 10
-
-class UbicacionCreateView(CreateView):
-    model = Ubicacion
-    form_class = UbicacionForm
-    template_name = 'zonas/form_ubicacion.html'
-    success_url = reverse_lazy('zonas:lista_ubicaciones')
-
-class UbicacionUpdateView(UpdateView):
-    model = Ubicacion
-    form_class = UbicacionForm
-    template_name = 'zonas/form_ubicacion.html'
-    success_url = reverse_lazy('zonas:lista_ubicaciones')
-
-class UbicacionDeleteView(DeleteView):
-    model = Ubicacion
-    template_name = 'zonas/confirmar_eliminar.html'
-    success_url = reverse_lazy('zonas:lista_ubicaciones')
+class UbicacionViewSet(viewsets.ModelViewSet):
+    queryset = Ubicacion.objects.all()
+    serializer_class = UbicacionSerializer
