@@ -1,48 +1,62 @@
-<!-- usuarios/templates/usuarios/login.html -->
-{% extends 'usuarios/base.html' %}
 {% load static %}
-
-{% block title %}Iniciar Sesión - DONA{% endblock %}
-
-{% block content %}
-<div class="login-container">
-    <div class="login-box">
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión - DONA</title>
+    <link rel="stylesheet" href="{% static 'CSS/Loggin.css' %}" />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-box">
         <div class="logo">
-            <img src="{% static 'img/Dona.jpg' %}" alt="Logo DONA">
-            <h1>DONA</h1>
+          <h1>DONA</h1>
         </div>
         <h2>Iniciar Sesión</h2>
         
         {% if messages %}
         <div class="alert-message">
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
-            {% endfor %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+          {% endfor %}
         </div>
         {% endif %}
         
-        <form method="post">
-            {% csrf_token %}
-            
-            <label for="email">Correo electrónico</label>
-            <input type="email" name="email" id="email" required placeholder="ejemplo@correo.com">
-            
-            <label for="password">Contraseña</label>
-            <input type="password" name="password" id="password" required placeholder="Tu contraseña">
-            
-            {% comment %} <div class="forgot">
-                <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
-            </div> {% endcomment %}
-            
-            <button type="submit">Iniciar Sesión</button>
+        <form method="post" action="{% url 'usuarios:login' %}">
+          {% csrf_token %}
+          <label for="email">Correo electrónico</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="ejemplo@correo.com"
+            required
+          />
+
+          <label for="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Tu contraseña"
+            required
+          />
+
+          <div class="forgot">
+            <a href="{% url 'contrasena' %}">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <button type="submit">Iniciar Sesión</button>
         </form>
-        
+
         <div class="register-link">
-            ¿No tienes una cuenta?
-            <a href="{% url 'usuarios:registro_donador' %}">Regístrate aquí</a>
+          ¿No tienes una cuenta?
+          <a href="{% url 'usuarios:registro_donador' %}">Regístrate aquí</a>
         </div>
+      </div>
     </div>
-</div>
-{% endblock %}
+  </body>
+</html>
