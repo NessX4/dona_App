@@ -87,8 +87,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dona_app_django',  # Updated to match the new database name
-        "USER": "postgres",
-        "PASSWORD": "2305",
+        "USER": "luna",
+        "PASSWORD": "luna18",
         "HOST": "localhost",
         "PORT": "5432",
 
