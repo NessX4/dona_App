@@ -1,6 +1,9 @@
 // src/components/admin/UsersPanel.jsx
 import React, { useEffect, useState } from 'react';
 import '../../styles/admin.css';
+import { useNavigate } from 'react-router-dom';
+
+
 
 // Diccionario para traducir ID de rol a nombre legible
 const ROLES_MAP = {
@@ -12,6 +15,7 @@ const ROLES_MAP = {
 
 const UsersPanel = () => {
   const [usuarios, setUsuarios] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/usuarios/usuarios/')
@@ -24,9 +28,15 @@ const UsersPanel = () => {
     <div className="main-content">
       <h2>👥 Gestión de Usuarios</h2>
 
-      <div className="user-actions">
-        <button className="create-user-btn">➕ Crear Usuario</button>
-      </div>
+      <button
+  className="create-user-btn"
+  onClick={() => navigate('/usuarios/crear')}
+>
+  ➕ Crear Usuario
+</button>
+
+
+
 
       <table className="user-table">
         <thead>

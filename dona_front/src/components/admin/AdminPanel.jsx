@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import UsersPanel from './UsersPanel';
 import Dashboard from './Dashboard';
-
+import CreateUser from './createUser';
 
 const AdminPanel = () => {
   return (
@@ -18,6 +18,8 @@ const AdminPanel = () => {
           <Routes>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="usuarios" element={<UsersPanel />} />
+            <Route path="usuarios/crear" element={<CreateUser />} />
+            <Route path="*" element={<Dashboard />} /> {/* fallback para rutas desconocidas */}
           </Routes>
         </div>
       </div>
