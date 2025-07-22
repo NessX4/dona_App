@@ -1,31 +1,49 @@
 /* ===============================
-   Estilos Generales del Admin
+   Estilos Generales
    =============================== */
 body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #f9f1e7; /* color crema base */
+  background-color: #f9f1e7; /* crema suave */
 }
 
 /* ===============================
    Layout Principal
    =============================== */
-.admin-container {
+.admin-panel {
   display: flex;
   height: 100vh;
-  width: 100vw;
+  overflow: hidden;
 }
 
-.main-panel {
-  flex-grow: 1;
+.sidebar {
+  width: 220px;
+  background-color: #111; /* negro profundo */
+  color: white;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.main-section {
+  margin-left: 220px;
+  width: calc(100% - 220px);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f9f1e7;
 }
 
 .main-content {
-  padding: 60px;
-  margin-top: -35px;
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
 }
 
 /* ===============================
@@ -33,7 +51,7 @@ body {
    =============================== */
 .topbar {
   height: 85px;
-  background-color: #1e4720; /* rojo DONA */
+  background-color: #1e4720; /* verde DONA */
   color: white;
   display: flex;
   justify-content: space-between;
@@ -41,90 +59,75 @@ body {
   padding: 0 40px;
 }
 
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.config-btn,
 .logout-btn {
-  background-color: #f07d0b; /* naranja */
+  background-color: #f07d0b;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
-  margin-left: 0x;
-  font-size: 1rem;  
-    transition: background-color 0.3s ease;
-
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
+.config-btn:hover,
 .logout-btn:hover {
-  background-color: #d66f09; /* Un poco más claro al pasar el cursor */
+  background-color: #d66f09;
 }
 
-
-
-/* ===============================
-   Sidebar General
-   =============================== */
-.sidebar {
-  width: 250px;
-  background-color: #111; /* fondo oscuro */
-  color: white;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.welcome-msg {
+  font-weight: 500;
 }
 
 /* ===============================
-   Logo (Caja Naranja)
+   Logo en Sidebar
    =============================== */
-.logo-container,
-.sidebar-header {
+.logo-container {
   background-color: #f7931e;
-  
+  width: 260px; /* igual al sidebar */
+  height: auto;
   margin-bottom: 20px;
   margin-top: -20px;
   display: flex;
-  flex-direction: row; /* horizontal */
   align-items: center;
   justify-content: center;
-  text-decoration: none;
-  width: 290px;
-  height: 85px;
-  box-sizing: border-box;
 }
 
-.sidebar-logo,
 .logo-img {
   width: 65px;
   height: auto;
   margin-right: 30px;
 }
 
-.logo-text,
-.sidebar-title {
+.logo-text {
   color: white;
   font-size: 2.1rem;
   font-weight: bold;
   margin: 0;
 }
 
-
 /* ===============================
-   Menú Lateral
+   Menú lateral
    =============================== */
 .sidebar-menu, .nav-links {
   list-style: none;
   padding: 0;
   width: 100%;
   margin: 0;
-
-  font-size: 1.3rem;   
-  
+  font-size: 1.3rem;
 }
 
 .sidebar-menu li, .nav-links li {
   display: flex;
   align-items: center;
-  padding: 25px 20px;
+  padding: 20px;
   font-size: 1.3rem;
   cursor: pointer;
   transition: background 0.3s ease;
@@ -137,64 +140,108 @@ body {
 }
 
 .sidebar-menu i, .nav-links i {
-  font-size: 1.5rem; /* Aumenta el tamaño aquí */
-  margin-right: 12px; /* También puedes dar más espacio si hace falta */
+  font-size: 1.5rem;
+  margin-right: 12px;
   color: white;
-  display: inline-block;
   vertical-align: middle;
 }
 
 
 
 
-
-
-.topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+/* ===============================
+   Tabla de usuarios
+   =============================== */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  margin-top: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-.config-btn {
-  background: transparent;
-  border: none;
+.user-table th,
+.user-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.user-table th {
+  background-color: #fca311;
   color: white;
-  font-size: 1.4rem;
+}
+
+.edit-btn, .delete-btn {
+  margin-right: 8px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: none;
   cursor: pointer;
 }
 
+.edit-btn {
+  background-color: #fcbf49;
+}
+
+.delete-btn {
+  background-color: #e63946;
+  color: white;
+}
+
+
+.sidebar-link {
+  text-decoration: none;
+  color: white;
+  display: block;
+}
+
+.sidebar-link:visited,
+.sidebar-link:focus,
+.sidebar-link:active {
+  color: white;
+  background-color: transparent;
+  outline: none;
+}
+
+.sidebar-link:hover {
+  color: #ffa726;
+}
+
+
+
+
+
+html {
+  font-size: 14px; /* antes era 16px por defecto */
+}
+
+.sidebar-menu li,
+.nav-links li {
+  font-size: 1.1rem;
+  padding: 18px 15px;
+}
+
+.logo-text {
+  font-size: 1.6rem;
+}
+
+.topbar {
+  height: 70px;
+  padding: 0 25px;
+}
+
+.logout-btn {
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  margin-left: 20px;
+}
 
 .config-btn {
-  background-color: #f07d0b;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 15px;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.config-btn:hover {
-  background-color: #d66f09;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  margin-left: 18px;
 }
 
 
-.welcome-msg {
-  margin-right: -20px;
-  font-weight: 500;
-}
-
-
-.topbar-buttons {
-  display: flex;
-  align-items: center;
-  gap: 20px; /* 👈 Aumenta o disminuye el valor según lo necesites */
-}

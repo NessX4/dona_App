@@ -1,21 +1,25 @@
+// src/components/admin/AdminPanel.jsx
 import React from 'react';
-import Sidebar from './Sidebar';
-import Topbar from './Topbar'; // ✅ ahora sí lo usamos
 import '../../styles/admin.css';
+import { Routes, Route } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import Topbar from './Topbar';
+import UsersPanel from './UsersPanel';
 
-function AdminPanel() {
-return (
-        <div className="admin-container">
-            <Sidebar />
-            <div className="main-panel">
-                <Topbar /> {/* ✅ ahora sí renderiza el archivo correcto */}
-                <div className="main-content">
-                    <h1>Se vienen cositas ...</h1>
-                    <p>Aquí iran vainas :v</p>
-                </div>
-            </div>
+const AdminPanel = () => {
+  return (
+    <div className="admin-panel">
+      <Sidebar />
+      <div className="main-section">
+        <Topbar />
+        <div className="main-content">
+          <Routes>
+            <Route path="usuarios" element={<UsersPanel />} />
+          </Routes>
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
 
 export default AdminPanel;

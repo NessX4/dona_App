@@ -2,6 +2,9 @@
 import React from 'react';
 import donaLogo from '/src/assets/Donalogo.png'; // Asegúrate que esta ruta es correcta
 
+import { NavLink } from 'react-router-dom';
+
+
 const Sidebar = () => {
   return (
     <div className="sidebar">
@@ -14,7 +17,18 @@ const Sidebar = () => {
       {/* Menú de navegación con íconos Bootstrap */}
       <ul className="sidebar-menu">
         <li><i className="bi bi-bar-chart-fill"></i> Dashboard</li>
-        <li><i className="bi bi-people-fill"></i> Usuarios</li>
+
+
+
+        <NavLink to="/admin/usuarios" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+          <li>
+            <i className="fa fa-users"></i> Usuarios
+          </li>
+        </NavLink>
+
+
+
+
         <li><i className="bi bi-file-earmark-post-fill"></i> Publicaciones</li>
         <li><i className="bi bi-geo-alt-fill"></i> Zonas</li>
         <li><i className="bi bi-inbox-fill"></i> Solicitudes</li>
