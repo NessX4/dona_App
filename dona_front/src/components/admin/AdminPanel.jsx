@@ -1,33 +1,14 @@
-// src/components/admin/AdminPanel.jsx
 import React from 'react';
-import Sidebar from './Sidebar'; // 👈 Asegúrate de importar el componente
+import Sidebar from './Sidebar';
+import Topbar from './Topbar'; // ✅ ahora sí lo usamos
 import '../../styles/admin.css';
 
 function AdminPanel() {
-    return (
+return (
         <div className="admin-container">
-            <Sidebar /> {/* 👈 Usa tu componente reutilizable */}
-
+            <Sidebar />
             <div className="main-panel">
-
-
-
-                <div className="topbar">
-                    <span className="topbar-title"></span>
-
-                    <div className="topbar-right">
-                        <span className="welcome-msg">👋 Bienvenid@ Administrador: ___________        </span>
-                       <button className="logout-btn">
-  <i className="bi bi-box-arrow-right" style={{ marginRight: '12px' }}></i>
-  Cerrar sesión
-</button>
-
-
-
-                    </div>
-                </div>
-
-
+                <Topbar /> {/* ✅ ahora sí renderiza el archivo correcto */}
                 <div className="main-content">
                     <h1>Se vienen cositas ...</h1>
                     <p>Aquí iran vainas :v</p>

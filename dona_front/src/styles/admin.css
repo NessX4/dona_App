@@ -48,7 +48,7 @@ body {
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
-  margin-left: 35px;
+  margin-left: 0x;
   font-size: 1rem;  
     transition: background-color 0.3s ease;
 
@@ -94,7 +94,7 @@ body {
 
 .sidebar-logo,
 .logo-img {
-  width: 70px;
+  width: 65px;
   height: auto;
   margin-right: 30px;
 }
@@ -102,7 +102,7 @@ body {
 .logo-text,
 .sidebar-title {
   color: white;
-  font-size: 1.8rem;
+  font-size: 2.1rem;
   font-weight: bold;
   margin: 0;
 }
@@ -137,8 +137,8 @@ body {
 }
 
 .sidebar-menu i, .nav-links i {
-  font-size: 1.4rem;
-  margin-right: 10px;
+  font-size: 1.5rem; /* Aumenta el tamaño aquí */
+  margin-right: 12px; /* También puedes dar más espacio si hace falta */
   color: white;
   display: inline-block;
   vertical-align: middle;
@@ -146,3 +146,55 @@ body {
 
 
 
+
+
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.config-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+
+.config-btn {
+  background-color: #f07d0b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 15px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.config-btn:hover {
+  background-color: #d66f09;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.welcome-msg {
+  margin-right: -20px;
+  font-weight: 500;
+}
+
+
+.topbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 👈 Aumenta o disminuye el valor según lo necesites */
+}
