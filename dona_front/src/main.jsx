@@ -5,4 +5,8 @@ import App from "./App.jsx";
 import "./icons"; // <── Esto es importante
 import "./index.css";
 
+
+
+
+
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
