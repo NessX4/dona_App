@@ -247,4 +247,27 @@ html {
   margin-left: 18px;
 }
 
+.user-actions {
+  display: flex;
+  justify-content: flex-start; /* ahora se alinea a la izquierda */
+  margin-bottom: 14px;
+}
+.create-user-btn {
+  background-color: #054d11; /* verde oscuro */
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.create-user-btn:hover {
+  background-color: #0f3304; /* tono más claro de verde o tu naranja si prefieres */
+  
+}
+
 
