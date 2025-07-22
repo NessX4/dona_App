@@ -1,16 +1,11 @@
-from django.urls import path
-from .views import (
-    SolicitudListView,
-    SolicitudCreateView,
-    SolicitudUpdateView,
-    SolicitudDeleteView,
-)
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import SolicitudViewSet, HistorialDonacionViewSet
 
-app_name = 'solicitudes'
+router = DefaultRouter()
+router.register(r'solicitudes', SolicitudViewSet)
+router.register(r'historiales', HistorialDonacionViewSet)
 
 urlpatterns = [
-    path('', SolicitudListView.as_view(), name='lista_solicitudes'),
-    path('crear/', SolicitudCreateView.as_view(), name='crear_solicitud'),
-    path('editar/<int:pk>/', SolicitudUpdateView.as_view(), name='editar_solicitud'),
-    path('eliminar/<int:pk>/', SolicitudDeleteView.as_view(), name='eliminar_solicitud'),
+    path('', include(router.urls)),
 ]

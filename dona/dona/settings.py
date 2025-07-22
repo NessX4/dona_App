@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'solicitudes',
     'usuarios',
     'zonas',
+    
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
