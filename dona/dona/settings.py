@@ -48,17 +48,24 @@ INSTALLED_APPS = [
     'zonas',
     
     'rest_framework',
+    'corsheaders',
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Aquí va la URL de tu frontend
+    "http://127.0.0.1:3000",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # ¡Aquí!
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'dona.urls'
 
@@ -87,8 +94,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dona_app_django',  # Updated to match the new database name
-        "USER": "postgres",
-        "PASSWORD": "2305",
+        "USER": "luna",
+        "PASSWORD": "luna18",
         "HOST": "localhost",
         "PORT": "5432",
 
