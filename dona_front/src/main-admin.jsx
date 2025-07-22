@@ -2,8 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import AdminPanel from './components/admin/AdminPanel';
-
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -11,10 +10,10 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/admin/*" element={<AdminPanel />} />
+    <HashRouter>
+      <Routes><Route path="/*" element={<AdminPanel />} />
+
       </Routes>
-    </BrowserRouter>
+   </HashRouter>
   </React.StrictMode>
 );

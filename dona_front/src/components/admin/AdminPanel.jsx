@@ -5,6 +5,8 @@ import { Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import UsersPanel from './UsersPanel';
+import Dashboard from './Dashboard';
+
 
 const AdminPanel = () => {
   return (
@@ -14,6 +16,7 @@ const AdminPanel = () => {
         <Topbar />
         <div className="main-content">
           <Routes>
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="usuarios" element={<UsersPanel />} />
           </Routes>
         </div>

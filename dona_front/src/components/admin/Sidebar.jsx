@@ -9,18 +9,22 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       {/* Cuadro naranja con logo clickeable */}
-      <a href="/admin.html" className="logo-container" style={{ textDecoration: 'none' }}>
-        <img src={donaLogo} alt="Logo DonaApp" className="logo-img" />
-        <span className="logo-text">DonaApp</span>
-      </a>
+     <NavLink to="/dashboard" className="logo-container" style={{ textDecoration: 'none' }}>
+  <img src={donaLogo} alt="Logo DonaApp" className="logo-img" />
+  <span className="logo-text">DonaApp</span>
+</NavLink>
 
       {/* Menú de navegación con íconos Bootstrap */}
       <ul className="sidebar-menu">
-        <li><i className="bi bi-bar-chart-fill"></i> Dashboard</li>
+        
+        <NavLink to="/dashboard" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+  <li>
+    <i className="bi bi-bar-chart-fill"></i> Dashboard
+  </li>
+</NavLink>
 
 
-
-        <NavLink to="/admin/usuarios" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+        <NavLink to="/usuarios" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
           <li>
             <i className="fa fa-users"></i> Usuarios
           </li>

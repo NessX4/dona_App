@@ -161,6 +161,7 @@ body {
   margin-top: 1rem;
   border-radius: 8px;
   overflow: hidden;
+  
 }
 
 .user-table th,
@@ -222,7 +223,7 @@ html {
 .sidebar-menu li,
 .nav-links li {
   font-size: 1.1rem;
-  padding: 18px 15px;
+  padding: 18px 18px;
 }
 
 .logo-text {
