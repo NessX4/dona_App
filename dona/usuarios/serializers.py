@@ -30,3 +30,5 @@ class AdministradorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administrador
         fields = '__all__'
+    
+    usuario = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
