@@ -271,3 +271,36 @@ html {
 }
 
 
+
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  gap: 0.8rem;
+}
+
+.user-form label {
+  font-weight: bold;
+}
+
+.user-form input,
+.user-form select {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.submit-btn {
+  padding: 0.6rem;
+  background-color: #ff8c00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+
+
