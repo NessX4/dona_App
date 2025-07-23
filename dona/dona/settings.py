@@ -50,7 +50,13 @@ INSTALLED_APPS = [
     'zonas',
     
     'rest_framework',
+    'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Aquí va la URL de tu frontend
+    "http://127.0.0.1:3000",
 ]
 
 MIDDLEWARE = [
