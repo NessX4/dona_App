@@ -13,6 +13,11 @@ const ROLES_MAP = {
   4: 'Administrador'
 };
 
+
+
+
+
+
 const UsersPanel = () => {
   const [usuarios, setUsuarios] = useState([]);
   const navigate = useNavigate();
@@ -44,22 +49,48 @@ const UsersPanel = () => {
             <th>Nombre</th>
             <th>Email</th>
             <th>Tipo</th>
+            <th>Estado</th>
+
+
             <th>Acciones</th>
+
           </tr>
         </thead>
+
+
+
         <tbody>
-          {usuarios.map(user => (
-            <tr key={user.id}>
-              <td>{user.nombre}</td>
-              <td>{user.correo}</td>
-              <td>{ROLES_MAP[user.rol] || 'Desconocido'}</td>
-              <td>
-                <button className="edit-btn">✏️ Editar</button>
-                <button className="delete-btn">🗑️ Eliminar</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+    {usuarios.map(user => (
+      <tr key={user.id}>
+        <td>{user.nombre}</td>
+        <td>{user.correo}</td>
+        <td>{ROLES_MAP[user.rol] || 'Desconocido'}</td>
+      <td>
+  <button
+    className={user.activo ? 'estado-btn activo' : 'estado-btn inactivo'}
+    onClick={() => toggleActivo(user.id, user.activo)}
+  >
+    {user.activo ? '✅ Activo' : '⛔ Inactivo'}
+  </button>
+</td>
+
+        <td>
+          <button
+  className="edit-btn"
+  onClick={() => navigate(`/usuarios/editar/${user.id}`)}
+>
+  ✏️ Editar
+</button>
+
+
+
+          <button className="delete-btn">🗑️ Eliminar</button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+
+
       </table>
     </div>
   );

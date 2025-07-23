@@ -302,5 +302,22 @@ html {
 }
 
 
+.estado-btn {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.estado-btn.activo {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.estado-btn.inactivo {
+  background-color: #f8d7da;
+  color: #721c24;
+}
 
 

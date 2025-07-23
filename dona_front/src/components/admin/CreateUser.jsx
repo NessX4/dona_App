@@ -104,6 +104,7 @@ if (formData.rol === '4') {
 
 
     alert('✅ Administrador creado exitosamente');
+    window.location.href = '/admin/#/usuarios';
     return;
 
   } catch (err) {
@@ -205,6 +206,7 @@ if (formData.rol === '4') {
       }
 
       alert('✅ Usuario creado correctamente');
+      window.location.href = '/admin/#/usuarios';
     } catch (err) {
       console.error('Error inesperado:', err);
       alert('Error inesperado');
