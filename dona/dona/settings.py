@@ -51,15 +51,12 @@ INSTALLED_APPS = [
     
     'rest_framework',
     'corsheaders',
-<<<<<<< HEAD
-=======
     'rest_framework_simplejwt.token_blacklist',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Aquí va la URL de tu frontend
     "http://127.0.0.1:3000",
->>>>>>> main
 ]
 
 MIDDLEWARE = [
@@ -105,11 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dona_app_django',  # Updated to match the new database name
         "USER": "postgres",
-<<<<<<< HEAD
         "PASSWORD": "1234",
-=======
-        "PASSWORD": "2305",
->>>>>>> main
         "HOST": "localhost",
         "PORT": "5432",
 
