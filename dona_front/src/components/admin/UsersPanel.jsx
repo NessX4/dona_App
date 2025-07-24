@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/admin.css';
 import { useNavigate } from 'react-router-dom';
 
+
 // Diccionario para traducir ID de rol a nombre legible
 const ROLES_MAP = {
   1: 'Donador',
@@ -160,7 +161,15 @@ const UsersPanel = () => {
                 >
                   ✏️ Editar
                 </button>
-                <button className="delete-btn">🗑️ Eliminar</button>
+
+                
+                <button
+                      className="delete-btn"
+                      onClick={() => navigate(`/usuarios/eliminar/${user.id}`)}
+                    >
+                      🗑️ Eliminar
+                    </button>
+
               </td>
             </tr>
           ))}

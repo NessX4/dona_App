@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../styles/admin.css';
+import fondoDecorativo from '../../assets/donalogohd.png';
 
 const ROLES_MAP = {
   1: 'Donador',
@@ -22,9 +23,19 @@ const EditUser = () => {
   const { id } = useParams();
   const [usuario, setUsuario] = useState(null);
   const [datosRol, setDatosRol] = useState(null);
-  const [zona, setZona] = useState(null);
+  const [zonas, setZonas] = useState([]);
 
   useEffect(() => {
+    const fetchZonas = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/zonas/zonas/');
+        const data = await res.json();
+        setZonas(data);
+      } catch (err) {
+        console.error('Error al cargar zonas:', err);
+      }
+    };
+
     const fetchUsuario = async () => {
       try {
         const res = await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${id}/`);
@@ -44,40 +55,29 @@ const EditUser = () => {
         const dataRol = await resRol.json();
 
         if (Array.isArray(dataRol) && dataRol.length > 0) {
-          const detalles = dataRol[0];
-          setDatosRol(detalles);
-
-          // SOLO si es voluntario, buscar zona y dirección
-          if (data.rol === 3 && detalles.zona) {
-            const zonaId = detalles.zona;
-            try {
-              const zonaRes = await fetch(`http://127.0.0.1:8000/api/zonas/zonas/${zonaId}/`);
-              const zonaData = await zonaRes.json();
-
-              const ubiRes = await fetch(`http://127.0.0.1:8000/api/zonas/ubicaciones/?zona=${zonaId}`);
-              const ubiData = await ubiRes.json();
-
-              const direccionZona = Array.isArray(ubiData) && ubiData.length > 0
-                ? `${ubiData[0].direccion}, ${zonaData.ciudad}, ${zonaData.estado}, CP ${zonaData.codigo_postal}`
-                : 'Dirección no disponible';
-
-              setZona({
-                nombre: zonaData.nombre || 'Sin nombre',
-                direccion: direccionZona,
-              });
-            } catch (zonaErr) {
-              console.warn('❌ Error al obtener zona:', zonaErr);
-              setZona({ nombre: 'Zona no encontrada', direccion: 'Sin dirección' });
-            }
-          }
+          setDatosRol(dataRol[0]);
         }
       } catch (error) {
         console.error('❌ Error al obtener datos del usuario:', error);
       }
     };
 
+    fetchZonas();
     fetchUsuario();
   }, [id]);
+
+  const handleChange = (e, tipo = 'usuario') => {
+    const { name, value } = e.target;
+    if (tipo === 'usuario') {
+      setUsuario(prev => ({ ...prev, [name]: value }));
+    } else {
+      setDatosRol(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleCancel = () => {
+    window.location.href = '/admin/#/usuarios';
+  };
 
   if (!usuario || !datosRol) {
     return <div className="main-content">⏳ Cargando datos del usuario...</div>;
@@ -85,85 +85,89 @@ const EditUser = () => {
 
   return (
     <div className="main-content">
+      <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
       <h2>✏️ Editar Usuario</h2>
-      <form className="user-form">
-        <label>Nombre:</label>
-        <input type="text" value={usuario.nombre} readOnly />
 
-        <label>Correo:</label>
-        <input type="email" value={usuario.correo} readOnly />
+      <div className="edit-card">
+        <form className="user-form">
+          <div className="info-box">
+            <div><span className="info-label">📌 Rol:</span> {ROLES_MAP[usuario.rol]}</div>
+            <div><span className="info-label">✅ Estado:</span> {usuario.activo ? 'Activo' : 'Inactivo'}</div>
+            <div><span className="info-label">🗓️ Fecha de registro:</span> {formatFecha(usuario.fecha_registro)}</div>
+          </div>
 
-        <p><strong>Rol:</strong> {ROLES_MAP[usuario.rol]}</p>
-        <p><strong>Estado:</strong> {usuario.activo ? '✅ Activo' : '⛔ Inactivo'}</p>
-        <p><strong>Fecha de registro:</strong> {formatFecha(usuario.fecha_registro)}</p>
+          <div className="form-group">
+            <label>Nombre:</label>
+            <input type="text" name="nombre" value={usuario.nombre} onChange={handleChange} />
+          </div>
 
-        {/* Donador */}
-        {usuario.rol === 1 && (
-          <>
-            <label>Nombre del lugar:</label>
-            <input value={datosRol.nombre_lugar || ''} readOnly />
-            <label>Representante:</label>
-            <input value={datosRol.representante || ''} readOnly />
-            <label>Teléfono:</label>
-            <input value={datosRol.telefono || ''} readOnly />
-            <label>Descripción:</label>
-            <input value={datosRol.descripcion || ''} readOnly />
-            <label>Horario de apertura:</label>
-            <input value={datosRol.horario_apertura || ''} readOnly />
-            <label>Horario de cierre:</label>
-            <input value={datosRol.horario_cierre || ''} readOnly />
-          </>
-        )}
-
-        {/* Receptor */}
-        {usuario.rol === 2 && (
-          <>
-            <label>Encargado:</label>
-            <input value={datosRol.encargado || ''} readOnly />
-            <label>Dirección:</label>
-            <input value={datosRol.direccion || ''} readOnly />
-            <label>Teléfono:</label>
-            <input value={datosRol.telefono || ''} readOnly />
-            <label>Capacidad:</label>
-            <input value={datosRol.capacidad || ''} readOnly />
-            <label>Horario de apertura:</label>
-            <input value={datosRol.horario_apertura || ''} readOnly />
-            <label>Horario de cierre:</label>
-            <input value={datosRol.horario_cierre || ''} readOnly />
-          </>
-        )}
-
-        {/* Voluntario */}
-        {usuario.rol === 3 && (
-          <>
-            <label>Teléfono:</label>
-            <input value={datosRol.telefono || ''} readOnly />
-            <label>Zona asignada:</label>
-            <input value={zona?.nombre || 'Zona no encontrada'} readOnly />
-            <label>Dirección de zona:</label>
-            <input value={zona?.direccion || 'Sin dirección'} readOnly />
-          </>
-        )}
-
-        {/* Administrador */}
-        {usuario.rol === 4 && (
-          <>
-            <label>Nombre del Administrador:</label>
-            <input value={datosRol.nombre || ''} readOnly />
+          <div className="form-group">
             <label>Correo:</label>
-            <input value={datosRol.correo || ''} readOnly />
-          </>
-        )}
+            <input type="email" name="correo" value={usuario.correo} onChange={handleChange} />
+          </div>
 
+          {/* Donador */}
+          {usuario.rol === 1 && (
+            <>
+              <div className="form-group"><label>Nombre del lugar:</label><input name="nombre_lugar" value={datosRol.nombre_lugar || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Representante:</label><input name="representante" value={datosRol.representante || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Teléfono:</label><input name="telefono" value={datosRol.telefono || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Descripción:</label><input name="descripcion" value={datosRol.descripcion || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Horario de apertura:</label>
+                <input type="time" name="horario_apertura" value={datosRol.horario_apertura?.slice(0, 5) || ''} onChange={(e) => handleChange(e, 'rol')} />
+              </div>
+              <div className="form-group"><label>Horario de cierre:</label>
+                <input type="time" name="horario_cierre" value={datosRol.horario_cierre?.slice(0, 5) || ''} onChange={(e) => handleChange(e, 'rol')} />
+              </div>
+            </>
+          )}
 
-        
+          {/* Receptor */}
+          {usuario.rol === 2 && (
+            <>
+              <div className="form-group"><label>Encargado:</label><input name="encargado" value={datosRol.encargado || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Dirección:</label><input name="direccion" value={datosRol.direccion || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Teléfono:</label><input name="telefono" value={datosRol.telefono || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Capacidad:</label><input name="capacidad" type="number" value={datosRol.capacidad || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Horario de apertura:</label>
+                <input type="time" name="horario_apertura" value={datosRol.horario_apertura?.slice(0, 5) || ''} onChange={(e) => handleChange(e, 'rol')} />
+              </div>
+              <div className="form-group"><label>Horario de cierre:</label>
+                <input type="time" name="horario_cierre" value={datosRol.horario_cierre?.slice(0, 5) || ''} onChange={(e) => handleChange(e, 'rol')} />
+              </div>
+            </>
+          )}
+
+          {/* Voluntario */}
+          {usuario.rol === 3 && (
+            <>
+              <div className="form-group"><label>Teléfono:</label><input name="telefono" value={datosRol.telefono || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group">
+                <label>Zona asignada:</label>
+                <select name="zona" value={datosRol.zona || ''} onChange={(e) => handleChange(e, 'rol')}>
+                  <option value="">Selecciona una zona</option>
+                  {zonas.map((z) => (
+                    <option key={z.id} value={z.id}>{z.nombre} ({z.codigo_postal})</option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
+
+          <div className="form-buttons">
 <button type="button" className="guardar-btn">
-  💾 Guardar cambios
+  <i className="fas fa-save" style={{ marginRight: '12px' }}></i>
+  Guardar cambios
 </button>
 
 
 
-      </form>
+  <button type="button" className="cancelar-btn" onClick={handleCancel}>
+    <i className="fas fa-times-circle"style={{ marginRight: '4px' }}></i> Cancelar
+  </button>
+</div>
+</form>
+      </div>
     </div>
   );
 };
