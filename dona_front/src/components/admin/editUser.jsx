@@ -154,6 +154,15 @@ const EditUser = () => {
             <input value={datosRol.correo || ''} readOnly />
           </>
         )}
+
+
+        
+<button type="button" className="guardar-btn">
+  💾 Guardar cambios
+</button>
+
+
+
       </form>
     </div>
   );
