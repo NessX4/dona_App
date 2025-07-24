@@ -13,4 +13,4 @@ def crear_administrador_si_superusuario(sender, instance, created, **kwargs):
                 contraseña='importado',
                 activo=True
             )
-            print(f"...........................................")
+            print(f"----------------------------------------------------------------")
