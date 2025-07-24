@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import fondoDecorativo from '../../assets/DonalogoHD.png';
 
 const ROLES_MAP = {
@@ -11,10 +11,10 @@ const ROLES_MAP = {
 
 const DeleteUser = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
   const [datosRol, setDatosRol] = useState(null);
   const [zona, setZona] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const formatHoraAMPM = (hora) => {
     if (!hora) return '';
@@ -53,6 +53,8 @@ const DeleteUser = () => {
         }
       } catch (err) {
         console.error("❌ Error al obtener datos del usuario:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -92,16 +94,39 @@ const DeleteUser = () => {
         body: JSON.stringify({ activo: false }),
       });
 
-      alert("✅ Usuario desactivado correctamente.");
-      navigate('/admin/#/usuarios');
+      alert("✅ Usuario eliminado del panel administrativo.");
+      window.location.hash = '#/usuarios';
     } catch (err) {
-      alert("❌ Error al desactivar el usuario.");
+      alert("❌ Error, no se pudo eliminar del panel administrativo.");
       console.error(err);
     }
   };
 
-  if (!usuario || !datosRol) {
+  // --- Render condicionales con protección ---
+  if (loading) {
     return <div className="main-content">⏳ Cargando usuario...</div>;
+  }
+
+  if (usuario && !datosRol) {
+    return (
+      <div className="main-content">
+        <h2>🔍 Usuario fuera de operación</h2>
+        <p><strong>Nombre:</strong> {usuario.nombre}</p>
+        <p><strong>Correo:</strong> {usuario.correo}</p>
+        <p style={{ marginTop: '1rem', color: '#d35400', fontWeight: 'bold' }}>
+          ⚠️ Este usuario ya no tiene entidad activa en el sistema.<br />
+          Revisa directamente en la base de datos para más información.
+        </p>
+        <button
+          className="cancel-delete-btn"
+          onClick={() => {
+            window.location.hash = '#/usuarios';
+          }}
+        >
+          <i className="fas fa-arrow-left"></i> Volver
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -154,7 +179,9 @@ const DeleteUser = () => {
         <button className="delete-confirm-btn" onClick={handleDelete}>
           <i className="fas fa-trash-alt"></i> Eliminar
         </button>
-        <button className="cancel-delete-btn" onClick={() => navigate('/usuarios', { replace: true })}>
+        <button className="cancel-delete-btn" onClick={() => {
+          window.location.hash = '#/usuarios';
+        }}>
           <i className="fas fa-times-circle"></i> Cancelar
         </button>
       </div>
