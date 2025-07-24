@@ -55,8 +55,10 @@ const EditUser = () => {
         const dataRol = await resRol.json();
 
         if (Array.isArray(dataRol) && dataRol.length > 0) {
-          setDatosRol(dataRol[0]);
-        }
+  const entidadCorrecta = dataRol.find(item => item.usuario?.id === parseInt(id));
+  setDatosRol(entidadCorrecta);
+}
+
       } catch (error) {
         console.error('❌ Error al obtener datos del usuario:', error);
       }
