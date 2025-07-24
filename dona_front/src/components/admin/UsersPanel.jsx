@@ -7,8 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const ROLES_MAP = {
   1: 'Donador',
   2: 'Receptor',
-  3: 'Voluntario',
-  4: 'Administrador'
+  3: 'Voluntario'
 };
 
 const UsersPanel = () => {
@@ -18,18 +17,37 @@ const UsersPanel = () => {
   const [nombreFiltro, setNombreFiltro] = useState('');
   const [rolFiltro, setRolFiltro] = useState('');
   const [activosPrimero, setActivosPrimero] = useState(false);
+  const [ordenNombre, setOrdenNombre] = useState('az'); // A → Z por defecto
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/api/usuarios/usuarios/')
+
+
+
       .then(response => response.json())
+
+
+
       .then(data => {
-        setUsuarios(data);
-        setUsuariosFiltrados(data);
-      })
+  const sinAdmins = data
+    .filter(user => user.rol !== 4)
+    .sort((a, b) => a.nombre.localeCompare(b.nombre)); // orden inicial A-Z
+
+  setUsuarios(sinAdmins);
+  setUsuariosFiltrados(sinAdmins);
+})
+
+
+
+
       .catch(error => console.error('Error al obtener usuarios:', error));
   }, []);
+
+
+
+
 
   useEffect(() => {
     let filtrados = [...usuarios];
@@ -46,20 +64,27 @@ const UsersPanel = () => {
       filtrados = filtrados.filter(user => user.rol === parseInt(rolFiltro));
     }
 
-    // Ordenar activos primero
+    // Ordenamiento combinado: activos primero + orden alfabético según selección
     if (activosPrimero) {
       filtrados.sort((a, b) => {
-        if (a.activo === b.activo) return 0;
-        return a.activo ? -1 : 1;
+        if (a.activo !== b.activo) return a.activo ? -1 : 1;
+        return ordenNombre === 'az'
+          ? a.nombre.localeCompare(b.nombre)
+          : b.nombre.localeCompare(a.nombre);
       });
+    } else {
+      filtrados.sort((a, b) =>
+        ordenNombre === 'az'
+          ? a.nombre.localeCompare(b.nombre)
+          : b.nombre.localeCompare(a.nombre)
+      );
     }
 
     setUsuariosFiltrados(filtrados);
-  }, [nombreFiltro, rolFiltro, activosPrimero, usuarios]);
+  }, [nombreFiltro, rolFiltro, activosPrimero, ordenNombre, usuarios]);
 
   const toggleActivo = (id, estadoActual) => {
     console.log(`Aquí iría lógica para cambiar estado de ${id} a ${!estadoActual}`);
-    // Puedes implementar aquí un PATCH más adelante
   };
 
   return (
@@ -87,7 +112,6 @@ const UsersPanel = () => {
           <option value="1">Donador</option>
           <option value="2">Receptor</option>
           <option value="3">Voluntario</option>
-          <option value="4">Administrador</option>
         </select>
 
         <label className="checkbox-label">
@@ -98,6 +122,11 @@ const UsersPanel = () => {
           />
           Activos primero
         </label>
+
+        <select value={ordenNombre} onChange={(e) => setOrdenNombre(e.target.value)}>
+          <option value="az">A → Z</option>
+          <option value="za">Z → A</option>
+        </select>
       </div>
 
       <table className="user-table">

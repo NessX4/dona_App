@@ -166,7 +166,7 @@ const CreateUser = () => {
         return;
       }
 
-      alert(`✅ ${endpoint.charAt(0).toUpperCase() + endpoint.slice(1)} creado correctamente`);
+      alert(`¡Registro creado con éxito!`);
       window.location.href = '/admin/#/usuarios';
     } catch (err) {
       alert('❌ Error inesperado: ' + err.message);
