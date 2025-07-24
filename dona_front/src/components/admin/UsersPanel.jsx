@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/admin.css';
 import { useNavigate } from 'react-router-dom';
 
-
 // Diccionario para traducir ID de rol a nombre legible
 const ROLES_MAP = {
   1: 'Donador',
@@ -14,7 +13,6 @@ const ROLES_MAP = {
 const UsersPanel = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
-
   const [nombreFiltro, setNombreFiltro] = useState('');
   const [rolFiltro, setRolFiltro] = useState('');
   const [activosPrimero, setActivosPrimero] = useState(false);
@@ -23,49 +21,57 @@ const UsersPanel = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/usuarios/usuarios/')
+    const fetchUsuarios = async () => {
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/usuarios/usuarios/');
+        const data = await res.json();
+        const usuariosSinAdmins = data.filter(user => user.rol !== 4);
 
+        // Obtener todas las entidades hijas
+        const [donadores, receptores, voluntarios] = await Promise.all([
+          fetch('http://127.0.0.1:8000/api/usuarios/donadores/').then(res => res.json()),
+          fetch('http://127.0.0.1:8000/api/usuarios/receptores/').then(res => res.json()),
+          fetch('http://127.0.0.1:8000/api/usuarios/voluntarios/').then(res => res.json())
+        ]);
 
+        const donadoresSet = new Set(donadores.map(d => d.usuario?.id));
+        const receptoresSet = new Set(receptores.map(r => r.usuario?.id));
+        const voluntariosSet = new Set(voluntarios.map(v => v.usuario?.id));
 
-      .then(response => response.json())
+        // Filtrar usuarios que están activos o tienen su entidad hija todavía
+        const filtrados = usuariosSinAdmins.filter(u => {
+          if (u.activo) return true;
+          if (u.rol === 1 && donadoresSet.has(u.id)) return true;
+          if (u.rol === 2 && receptoresSet.has(u.id)) return true;
+          if (u.rol === 3 && voluntariosSet.has(u.id)) return true;
+          return false;
+        });
 
+        filtrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
+        setUsuarios(filtrados);
+        setUsuariosFiltrados(filtrados);
+      } catch (error) {
+        console.error('❌ Error al obtener usuarios y entidades:', error);
+      }
+    };
 
-      .then(data => {
-  const sinAdmins = data
-    .filter(user => user.rol !== 4)
-    .sort((a, b) => a.nombre.localeCompare(b.nombre)); // orden inicial A-Z
-
-  setUsuarios(sinAdmins);
-  setUsuariosFiltrados(sinAdmins);
-})
-
-
-
-
-      .catch(error => console.error('Error al obtener usuarios:', error));
+    fetchUsuarios();
   }, []);
-
-
-
-
 
   useEffect(() => {
     let filtrados = [...usuarios];
 
-    // Filtro por nombre
     if (nombreFiltro.trim() !== '') {
       filtrados = filtrados.filter(user =>
         user.nombre.toLowerCase().includes(nombreFiltro.toLowerCase())
       );
     }
 
-    // Filtro por rol
     if (rolFiltro) {
       filtrados = filtrados.filter(user => user.rol === parseInt(rolFiltro));
     }
 
-    // Ordenamiento combinado: activos primero + orden alfabético según selección
     if (activosPrimero) {
       filtrados.sort((a, b) => {
         if (a.activo !== b.activo) return a.activo ? -1 : 1;
@@ -84,10 +90,6 @@ const UsersPanel = () => {
     setUsuariosFiltrados(filtrados);
   }, [nombreFiltro, rolFiltro, activosPrimero, ordenNombre, usuarios]);
 
-  const toggleActivo = (id, estadoActual) => {
-    console.log(`Aquí iría lógica para cambiar estado de ${id} a ${!estadoActual}`);
-  };
-
   return (
     <div className="main-content">
       <h2>👥 Gestión de Usuarios</h2>
@@ -99,7 +101,6 @@ const UsersPanel = () => {
         ➕ Crear Usuario
       </button>
 
-      {/* Barra de filtros */}
       <div className="filtro-barra">
         <input
           type="text"
@@ -149,7 +150,6 @@ const UsersPanel = () => {
               <td>
                 <button
                   className={user.activo ? 'estado-btn activo' : 'estado-btn inactivo'}
-                  onClick={() => toggleActivo(user.id, user.activo)}
                 >
                   {user.activo ? '✅ Activo' : '⛔ Inactivo'}
                 </button>
@@ -161,15 +161,12 @@ const UsersPanel = () => {
                 >
                   ✏️ Editar
                 </button>
-
-                
                 <button
-                      className="delete-btn"
-                      onClick={() => navigate(`/usuarios/eliminar/${user.id}`)}
-                    >
-                      🗑️ Eliminar
-                    </button>
-
+                  className="delete-btn"
+                  onClick={() => navigate(`/usuarios/eliminar/${user.id}`)}
+                >
+                  🗑️ Eliminar
+                </button>
               </td>
             </tr>
           ))}

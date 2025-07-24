@@ -26,41 +26,38 @@ const DeleteUser = () => {
   };
 
   useEffect(() => {
-  const fetchUsuario = async () => {
-    try {
-      const res = await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${id}/`);
-      const data = await res.json();
-      setUsuario(data);
+    const fetchUsuario = async () => {
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${id}/`);
+        const data = await res.json();
+        setUsuario(data);
 
-      const endpointMap = {
-        1: 'donadores',
-        2: 'receptores',
-        3: 'voluntarios',
-        4: 'administradores'
-      };
+        const endpointMap = {
+          1: 'donadores',
+          2: 'receptores',
+          3: 'voluntarios',
+          4: 'administradores'
+        };
 
-      const endpoint = endpointMap[data.rol];
-      const resRol = await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/?usuario=${id}`);
-      const dataRol = await resRol.json();
+        const endpoint = endpointMap[data.rol];
+        const resRol = await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/?usuario=${id}`);
+        const dataRol = await resRol.json();
 
-      // 💥 Arreglo para evitar datos incorrectos (solo tomamos el que coincida con el ID)
-      const entidadCorrecta = dataRol.find(item => item.usuario?.id === parseInt(id));
-      setDatosRol(entidadCorrecta);
+        const entidadCorrecta = dataRol.find(item => item.usuario?.id === parseInt(id));
+        setDatosRol(entidadCorrecta);
 
-      // Zona (solo si es voluntario)
-      if (data.rol === 3 && entidadCorrecta?.zona) {
-        const zonaRes = await fetch(`http://127.0.0.1:8000/api/zonas/zonas/${entidadCorrecta.zona}/`);
-        const zonaData = await zonaRes.json();
-        setZona(zonaData);
+        if (data.rol === 3 && entidadCorrecta?.zona) {
+          const zonaRes = await fetch(`http://127.0.0.1:8000/api/zonas/zonas/${entidadCorrecta.zona}/`);
+          const zonaData = await zonaRes.json();
+          setZona(zonaData);
+        }
+      } catch (err) {
+        console.error("❌ Error al obtener datos del usuario:", err);
       }
+    };
 
-    } catch (err) {
-      console.error("❌ Error al obtener datos del usuario:", err);
-    }
-  };
-
-  fetchUsuario();
-}, [id]);
+    fetchUsuario();
+  }, [id]);
 
   const handleDelete = async () => {
     const rolMap = {
@@ -73,19 +70,20 @@ const DeleteUser = () => {
     try {
       const endpoint = rolMap[usuario.rol];
 
-      // Obtener ID del modelo relacionado (donador/receptor/voluntario/admin)
+      // Buscar entidad exacta por ID de usuario
       const resRelacion = await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/?usuario=${id}`);
       const dataRelacion = await resRelacion.json();
-      const hijoId = dataRelacion[0]?.id;
+      const entidadCorrecta = dataRelacion.find(item => item.usuario?.id === parseInt(id));
+      const hijoId = entidadCorrecta?.id;
 
-      // Eliminar la entidad específica
+      // Eliminar la entidad específica si existe
       if (hijoId) {
         await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/${hijoId}/`, {
           method: 'DELETE',
         });
       }
 
-      // PATCH al usuario principal para desactivarlo
+      // PATCH al usuario principal para dejarlo inactivo
       await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${id}/`, {
         method: 'PATCH',
         headers: {
