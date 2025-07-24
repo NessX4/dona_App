@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/admin.css';
+import fondoDecorativo from '../../assets/DonalogoHD.png';
 
 const CreateUser = () => {
   const [zonas, setZonas] = useState([]);
@@ -10,7 +11,6 @@ const CreateUser = () => {
     password: '',
     confirmPassword: '',
 
-    // Donador / Receptor
     nombre_lugar: '',
     representante: '',
     telefono: '',
@@ -18,12 +18,10 @@ const CreateUser = () => {
     horario_apertura: '',
     horario_cierre: '',
 
-    // Receptor específico
     encargado: '',
     direccion: '',
     capacidad: '',
 
-    // Voluntario
     zona_id: ''
   });
 
@@ -66,52 +64,6 @@ const CreateUser = () => {
       rol: parseInt(formData.rol)
     };
 
-    // ✅ Administrador
-    if (formData.rol === '4') {
-      try {
-        const resUsuario = await fetch('http://127.0.0.1:8000/api/usuarios/usuarios/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(usuarioBase)
-        });
-
-        const dataUsuario = await resUsuario.json();
-
-        if (!resUsuario.ok) {
-          alert(`❌ Error al crear usuario base:\n${JSON.stringify(dataUsuario, null, 2)}`);
-          return;
-        }
-
-        const adminPayload = {
-          usuario: dataUsuario.id,
-          nombre: formData.nombre,
-          correo: formData.correo,
-          contraseña: formData.password
-        };
-
-        const resAdmin = await fetch('http://127.0.0.1:8000/api/usuarios/administradores/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(adminPayload)
-        });
-
-        const dataAdmin = await resAdmin.json();
-
-        if (!resAdmin.ok) {
-          alert(`❌ Error al crear administrador:\n${JSON.stringify(dataAdmin, null, 2)}`);
-          return;
-        }
-
-        alert('✅ Administrador creado correctamente');
-        window.location.href = '/admin/#/usuarios';
-        return;
-      } catch (err) {
-        alert('❌ Error inesperado: ' + err.message);
-        return;
-      }
-    }
-
-    // ✅ Donador o Receptor o Voluntario (con usuario anidado)
     const endpointMap = {
       '1': 'donadores',
       '2': 'receptores',
@@ -174,7 +126,14 @@ const CreateUser = () => {
   };
 
   return (
-    <div className="main-content">
+    <div className="main-content" style={{ position: 'relative' }}>
+      {/* Imagen decorativa de fondo */}
+      <img
+        src={fondoDecorativo}
+        alt="Decoración DonaApp"
+        className="decorative-image"
+      />
+
       <h2>➕ Crear nuevo usuario</h2>
       <form onSubmit={handleSubmit} className="user-form">
         <label>Rol:</label>
@@ -183,7 +142,6 @@ const CreateUser = () => {
           <option value="1">Donador</option>
           <option value="2">Receptor</option>
           <option value="3">Voluntario</option>
-          <option value="4">Administrador</option>
         </select>
 
         <label>Nombre:</label>

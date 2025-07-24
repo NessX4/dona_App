@@ -344,3 +344,20 @@ html {
   gap: 0.5rem;
   font-size: 0.95rem;
 }
+
+.main-content {
+  position: relative;
+  overflow-x: hidden; /* Quita barra horizontal */
+  z-index: 1;
+}
+
+.decorative-image {
+  position: fixed;               /* 🔒 Fija en pantalla */
+  top:120px;                     /* Pegada al fondo */
+  right: 25px;                 /* Bien a la derecha */
+  width: 540px;                  /* Más grande aún */
+  transform: rotate(-8deg);    /* Giro suave */
+  opacity: 0.30;
+  pointer-events: none;
+  z-index: 0;
+}
