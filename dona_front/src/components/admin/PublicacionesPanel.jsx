@@ -19,6 +19,8 @@ const PublicacionesPanel = () => {
 
   const [modalAbierto, setModalAbierto] = useState(false);
   const [publicacionSeleccionada, setPublicacionSeleccionada] = useState(null);
+  
+  
 
   const navigate = useNavigate();
 

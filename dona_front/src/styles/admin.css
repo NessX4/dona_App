@@ -943,3 +943,32 @@ table {
   color: #000;
 }
 
+
+.estado-destacado {
+  display: inline-block;
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: white;
+  text-transform: capitalize;
+}
+
+.estado-destacado.disponible {
+  background-color: #43a047;
+}
+
+.estado-destacado.cancelado {
+  background-color: #e53935;
+}
+
+.estado-destacado.entregado {
+  background-color: #1e88e5;
+}
+
+.estado-destacado.en-camino {
+  background-color: #fbc02d;
+  color: black;
+}
+

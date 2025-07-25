@@ -43,7 +43,12 @@ const DeletePublicacion = () => {
         setEstadoNombre(estado?.nombre || '—');
         setSucursal(sucursalObj);
 
-        const tieneRelacion = solicitudesData.some(s => s.publicacion_id === parseInt(id));
+        // ✅ Verificación corregida de relación
+        const tieneRelacion = solicitudesData.some(s => {
+          const relacion = s.publicacion || s.publicacion_id;
+          return (relacion === parseInt(id)) || (relacion?.id === parseInt(id));
+        });
+
         setRelacionada(tieneRelacion);
       } catch (error) {
         console.error('❌ Error al cargar datos:', error);
@@ -57,25 +62,18 @@ const DeletePublicacion = () => {
 
   const handleDelete = async () => {
     try {
-      const confirmar = window.confirm('⚠️ Esta acción cancelará la publicación. ¿Deseas continuar?');
-      if (!confirmar) return;
-
       const res = await fetch(`http://localhost:8000/api/donaciones/publicaciones/${id}/`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ estado: 4 }), // 4 = Cancelado
+        method: 'DELETE'
       });
 
       if (res.ok) {
-        alert('✅ Publicación cancelada y oculta del panel.');
+        alert('✅ Publicación eliminada con éxito');
         window.location.hash = '#/publicaciones';
       } else {
-        alert('❌ No se pudo cancelar la publicación.');
+        alert('❌ No se pudo eliminar la publicación');
       }
     } catch (error) {
-      console.error('❌ Error al cancelar:', error);
+      console.error('❌ Error al eliminar:', error);
     }
   };
 
@@ -84,7 +82,7 @@ const DeletePublicacion = () => {
   }
 
   if (!publicacion) {
-    return null;
+    return null; // Redirige ya hecho
   }
 
   return (
@@ -116,18 +114,26 @@ const DeletePublicacion = () => {
 
       {relacionada ? (
         <p style={{ marginTop: '1.2rem', color: '#c62828', fontWeight: 'bold' }}>
-          ⚠️ Esta publicación está relacionada con al menos una solicitud y no puede ser cancelada.
+          ⚠️ Esta publicación está relacionada con una solicitud en proceso y no puede ser eliminada.
         </p>
       ) : (
         <p style={{ marginTop: '1.2rem', color: '#b00020', fontWeight: 'bold' }}>
-          ⚠️ Esta acción no se puede deshacer. ¿Estás segur@ que deseas cancelar esta publicación?
+          ⚠️ Esta acción no se puede deshacer. ¿Estás segur@ que deseas eliminar esta publicación?
         </p>
       )}
 
       <div className="delete-buttons">
         {!relacionada && (
-          <button className="delete-confirm-btn" onClick={handleDelete}>
-            <i className="fas fa-ban"></i> Cancelar publicación
+          <button
+            className="delete-confirm-btn"
+            onClick={() => {
+              const confirmar = window.confirm('⚠️ Esta acción eliminará permanentemente la publicación.\n¿Estás segur@ que deseas continuar?');
+              if (confirmar) {
+                handleDelete();
+              }
+            }}
+          >
+            <i className="fas fa-trash-alt"></i> Eliminar
           </button>
         )}
         <button
@@ -136,7 +142,7 @@ const DeletePublicacion = () => {
             window.location.hash = '#/publicaciones';
           }}
         >
-          <i className="fas fa-times-circle"></i> Volver
+          <i className="fas fa-times-circle"></i> Cancelar
         </button>
       </div>
     </div>
