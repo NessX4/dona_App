@@ -2,89 +2,131 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import fondoDecorativo from '../../assets/DonalogoHD.png';
 
-const DeletePublicacion = () => {
+const ROLES_MAP = {
+  1: 'Donador',
+  2: 'Receptor',
+  3: 'Voluntario',
+  4: 'Administrador'
+};
+
+const DeleteUser = () => {
   const { id } = useParams();
-  const [publicacion, setPublicacion] = useState(null);
-  const [zonaNombre, setZonaNombre] = useState('');
-  const [estadoNombre, setEstadoNombre] = useState('');
-  const [sucursal, setSucursal] = useState(null);
-  const [relacionada, setRelacionada] = useState(false);
+  const [usuario, setUsuario] = useState(null);
+  const [datosRol, setDatosRol] = useState(null);
+  const [zona, setZona] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const formatHoraAMPM = (hora) => {
+    if (!hora) return '';
+    const [hh, mm] = hora.split(':');
+    let h = parseInt(hh, 10);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return `${h}:${mm} ${ampm}`;
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUsuario = async () => {
       try {
-        const [publiRes, solicitudesRes, zonasRes, estadosRes, sucursalesRes] = await Promise.all([
-          fetch(`http://localhost:8000/api/donaciones/publicaciones/${id}/`),
-          fetch('http://localhost:8000/api/solicitudes/solicitudes/'),
-          fetch('http://localhost:8000/api/zonas/zonas/'),
-          fetch('http://localhost:8000/api/donaciones/estados/'),
-          fetch('http://localhost:8000/api/donaciones/sucursales/')
-        ]);
+        const res = await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${id}/`);
+        const data = await res.json();
+        setUsuario(data);
 
-        if (!publiRes.ok) {
-          window.location.hash = '#/publicaciones';
-          return;
+        const endpointMap = {
+          1: 'donadores',
+          2: 'receptores',
+          3: 'voluntarios',
+          4: 'administradores'
+        };
+
+        const endpoint = endpointMap[data.rol];
+        const resRol = await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/?usuario=${id}`);
+        const dataRol = await resRol.json();
+
+        const entidadCorrecta = dataRol.find(item => item.usuario?.id === parseInt(id));
+        setDatosRol(entidadCorrecta);
+
+        if (data.rol === 3 && entidadCorrecta?.zona) {
+          const zonaRes = await fetch(`http://127.0.0.1:8000/api/zonas/zonas/${entidadCorrecta.zona}/`);
+          const zonaData = await zonaRes.json();
+          setZona(zonaData);
         }
-
-        const publi = await publiRes.json();
-        const solicitudesData = await solicitudesRes.json();
-        const zonas = await zonasRes.json();
-        const estados = await estadosRes.json();
-        const sucursales = await sucursalesRes.json();
-
-        setPublicacion(publi);
-
-        const zona = zonas.find(z => z.id === publi.zona);
-        const estado = estados.find(e => e.id === publi.estado);
-        const sucursalObj = sucursales.find(s => s.id === publi.sucursal);
-
-        setZonaNombre(zona?.nombre || '—');
-        setEstadoNombre(estado?.nombre || '—');
-        setSucursal(sucursalObj);
-
-        const tieneRelacion = solicitudesData.some(s => s.publicacion_id === parseInt(id));
-        setRelacionada(tieneRelacion);
-      } catch (error) {
-        console.error('❌ Error al cargar datos:', error);
+      } catch (err) {
+        console.error("❌ Error al obtener datos del usuario:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    fetchUsuario();
   }, [id]);
 
   const handleDelete = async () => {
-    try {
-      const confirmar = window.confirm('⚠️ Esta acción cancelará la publicación. ¿Deseas continuar?');
-      if (!confirmar) return;
+    const rolMap = {
+      1: "donadores",
+      2: "receptores",
+      3: "voluntarios",
+      4: "administradores"
+    };
 
-      const res = await fetch(`http://localhost:8000/api/donaciones/publicaciones/${id}/`, {
+    try {
+      const endpoint = rolMap[usuario.rol];
+
+      // Buscar entidad exacta por ID de usuario
+      const resRelacion = await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/?usuario=${id}`);
+      const dataRelacion = await resRelacion.json();
+      const entidadCorrecta = dataRelacion.find(item => item.usuario?.id === parseInt(id));
+      const hijoId = entidadCorrecta?.id;
+
+      // Eliminar la entidad específica si existe
+      if (hijoId) {
+        await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/${hijoId}/`, {
+          method: 'DELETE',
+        });
+      }
+
+      // PATCH al usuario principal para dejarlo inactivo
+      await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ estado: 4 }), // 4 = Cancelado
+        body: JSON.stringify({ activo: false }),
       });
 
-      if (res.ok) {
-        alert('✅ Publicación cancelada y oculta del panel.');
-        window.location.hash = '#/publicaciones';
-      } else {
-        alert('❌ No se pudo cancelar la publicación.');
-      }
-    } catch (error) {
-      console.error('❌ Error al cancelar:', error);
+      alert("✅ Usuario eliminado del panel administrativo.");
+      window.location.hash = '#/usuarios';
+    } catch (err) {
+      alert("❌ Error, no se pudo eliminar del panel administrativo.");
+      console.error(err);
     }
   };
 
+  // --- Render condicionales con protección ---
   if (loading) {
-    return <div className="main-content">⏳ Cargando publicación...</div>;
+    return <div className="main-content">⏳ Cargando usuario...</div>;
   }
 
-  if (!publicacion) {
-    return null;
+  if (usuario && !datosRol) {
+    return (
+      <div className="main-content">
+        <h2>🔍 Usuario fuera de operación</h2>
+        <p><strong>Nombre:</strong> {usuario.nombre}</p>
+        <p><strong>Correo:</strong> {usuario.correo}</p>
+        <p style={{ marginTop: '1rem', color: '#d35400', fontWeight: 'bold' }}>
+          ⚠️ Este usuario ya no tiene entidad activa en el sistema.<br />
+          Revisa directamente en la base de datos para más información.
+        </p>
+        <button
+          className="cancel-delete-btn"
+          onClick={() => {
+            window.location.hash = '#/usuarios';
+          }}
+        >
+          <i className="fas fa-arrow-left"></i> Volver
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -94,53 +136,57 @@ const DeletePublicacion = () => {
         alt="Decoración DonaApp"
         className="decorative-image"
       />
-
-      <h2>🗑️ Eliminar Publicación</h2>
-
-      <div className={`estado-destacado ${estadoNombre.toLowerCase().replace(/\s/g, '-')}`}>
-        {estadoNombre}
-      </div>
-
+      <h2>🗑️ Eliminar Usuario</h2>
+      <div className="rol-destacado">{ROLES_MAP[usuario.rol]}</div>
       <table className="user-summary-table">
         <tbody>
-          <tr><th>Título</th><td>{publicacion.titulo}</td></tr>
-          <tr><th>Descripción</th><td>{publicacion.descripcion || '—'}</td></tr>
-          <tr><th>Cantidad</th><td>{publicacion.cantidad}</td></tr>
-          <tr><th>Zona</th><td>{zonaNombre}</td></tr>
-          <tr><th>Sucursal</th><td>{sucursal?.nombre || '—'}</td></tr>
-          <tr><th>Representante</th><td>{sucursal?.representante || '—'}</td></tr>
-          <tr><th>Fecha de publicación</th><td>{publicacion.fecha_publicacion?.split('T')[0]}</td></tr>
-          <tr><th>Fecha de caducidad</th><td>{publicacion.fecha_caducidad || '—'}</td></tr>
+          <tr><th>Nombre</th><td>{usuario.nombre}</td></tr>
+          <tr><th>Correo</th><td>{usuario.correo}</td></tr>
+
+          {usuario.rol === 1 && (
+            <>
+              <tr><th>Nombre del lugar</th><td>{datosRol.nombre_lugar}</td></tr>
+              <tr><th>Representante</th><td>{datosRol.representante}</td></tr>
+              <tr><th>Teléfono</th><td>{datosRol.telefono}</td></tr>
+              <tr><th>Horario</th><td>{formatHoraAMPM(datosRol.horario_apertura)} - {formatHoraAMPM(datosRol.horario_cierre)}</td></tr>
+            </>
+          )}
+
+          {usuario.rol === 2 && (
+            <>
+              <tr><th>Encargado</th><td>{datosRol.encargado}</td></tr>
+              <tr><th>Teléfono</th><td>{datosRol.telefono}</td></tr>
+              <tr><th>Dirección</th><td>{datosRol.direccion}</td></tr>
+              <tr><th>Capacidad</th><td>{datosRol.capacidad}</td></tr>
+              <tr><th>Horario</th><td>{formatHoraAMPM(datosRol.horario_apertura)} - {formatHoraAMPM(datosRol.horario_cierre)}</td></tr>
+            </>
+          )}
+
+          {usuario.rol === 3 && (
+            <>
+              <tr><th>Teléfono</th><td>{datosRol.telefono}</td></tr>
+              <tr><th>Zona</th><td>{zona ? `${zona.nombre} (${zona.codigo_postal})` : 'Cargando zona...'}</td></tr>
+            </>
+          )}
         </tbody>
       </table>
 
-      {relacionada ? (
-        <p style={{ marginTop: '1.2rem', color: '#c62828', fontWeight: 'bold' }}>
-          ⚠️ Esta publicación está relacionada con al menos una solicitud y no puede ser cancelada.
-        </p>
-      ) : (
-        <p style={{ marginTop: '1.2rem', color: '#b00020', fontWeight: 'bold' }}>
-          ⚠️ Esta acción no se puede deshacer. ¿Estás segur@ que deseas cancelar esta publicación?
-        </p>
-      )}
+      <p style={{ marginTop: '1.2rem', color: '#b00020', fontWeight: 'bold' }}>
+        ⚠️ Esta acción no se puede deshacer. ¿Estás segur@ que deseas eliminar este usuario?
+      </p>
 
       <div className="delete-buttons">
-        {!relacionada && (
-          <button className="delete-confirm-btn" onClick={handleDelete}>
-            <i className="fas fa-ban"></i> Cancelar publicación
-          </button>
-        )}
-        <button
-          className="cancel-delete-btn"
-          onClick={() => {
-            window.location.hash = '#/publicaciones';
-          }}
-        >
-          <i className="fas fa-times-circle"></i> Volver
+        <button className="delete-confirm-btn" onClick={handleDelete}>
+          <i className="fas fa-trash-alt"></i> Eliminar
+        </button>
+        <button className="cancel-delete-btn" onClick={() => {
+          window.location.hash = '#/usuarios';
+        }}>
+          <i className="fas fa-times-circle"></i> Cancelar
         </button>
       </div>
     </div>
   );
 };
 
-export default DeletePublicacion;
+export default DeleteUser;

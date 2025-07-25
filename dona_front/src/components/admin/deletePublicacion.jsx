@@ -23,7 +23,8 @@ const DeletePublicacion = () => {
         ]);
 
         if (!publiRes.ok) {
-          window.location.hash = '#/publicaciones';
+          setPublicacion(null); // <- ya no redirecciona automáticamente
+          setLoading(false);
           return;
         }
 
@@ -43,7 +44,6 @@ const DeletePublicacion = () => {
         setEstadoNombre(estado?.nombre || '—');
         setSucursal(sucursalObj);
 
-        // ✅ Verificación corregida de relación
         const tieneRelacion = solicitudesData.some(s => {
           const relacion = s.publicacion || s.publicacion_id;
           return (relacion === parseInt(id)) || (relacion?.id === parseInt(id));
@@ -82,7 +82,20 @@ const DeletePublicacion = () => {
   }
 
   if (!publicacion) {
-    return null; // Redirige ya hecho
+    return (
+      <div className="main-content">
+        <h2>❌ Publicación no encontrada</h2>
+        <p>La publicación con ID <strong>{id}</strong> no existe o fue eliminada.</p>
+        <button
+          className="cancel-delete-btn"
+          onClick={() => {
+            window.location.hash = '#/publicaciones';
+          }}
+        >
+          <i className="fas fa-arrow-left"></i> Volver
+        </button>
+      </div>
+    );
   }
 
   return (
