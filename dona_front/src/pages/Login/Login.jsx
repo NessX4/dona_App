@@ -274,7 +274,11 @@ export default function Login() {
           </div>
 
           <h2>Iniciar Sesión</h2>
-          <form onSubmit={(e) => { e.preventDefault(); window.location.href = "/landing"; }}>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              // Aquí puedes validar el rol del usuario si ya tienes autenticación real
+              window.location.href = "/voluntario";
+            }}>
             <label htmlFor="email">Correo electrónico</label>
             <input
               type="email"
