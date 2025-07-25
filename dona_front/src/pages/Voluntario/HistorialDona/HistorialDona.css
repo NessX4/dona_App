@@ -1,0 +1,35 @@
+.container.historial-donaciones {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.tabla-donaciones {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tabla-donaciones th,
+.tabla-donaciones td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.tabla-donaciones th {
+  background-color: #f2f2f2;
+  font-weight: 600;
+}
+
+.tabla-donaciones tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.tabla-donaciones tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}

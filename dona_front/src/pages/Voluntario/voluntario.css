@@ -1,0 +1,568 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilos generales de body */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  background-color: #fff5f5;
+  line-height: 1.7;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Barra superior */
+.topbar {
+  background-color: #cc0000;
+  color: white;
+  font-size: 14px;
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+}
+
+/* Estilos del header principal */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+/* Contenedor del header */
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+/* Contenedor general con ancho máximo */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Logo con imagen + texto */
+.logo {
+  display: flex;
+  align-items: center; /* centra verticalmente imagen y texto */
+  gap: 12px;
+  height: 55px; /* altura para alinear con navegación */
+}
+
+/* Imagen del logo */
+.logo img {
+  height: 100%; /* que tome toda la altura del contenedor .logo */
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  object-fit: contain; /* sin distorsión */
+  margin-top: 20px;
+}
+
+/* Efecto hover para la imagen del logo */
+.logo:hover img {
+  transform: rotate(5deg);
+}
+
+/* Texto "DonaApp" */
+.dona-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #cc0000;
+  letter-spacing: 1px;
+  margin-top: 20px;
+  display: inline-block;
+  text-decoration: none; /* quita subrayado */
+}
+
+/* Hover en texto DonaApp */
+.dona-text:hover {
+  color: #990000;
+}
+
+/* Navegación principal */
+nav {
+  display: flex;
+  align-items: center; /* alinea verticalmente */
+  gap: 15px;
+  white-space: nowrap;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+
+/* Enlaces de navegación */
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #ff0e0e;
+  font-weight: 500;
+  font-size: 14px;
+
+  display: flex;          /* alinea texto verticalmente */
+  align-items: center;
+  height: 40px;           /* altura fija para todos */
+  line-height: 40px;      /* centrado vertical */
+  padding: 0 10px;
+}
+
+/* Hover en enlaces */
+nav a:hover {
+  color: #cc0000;
+}
+
+/* Enlace activo */
+nav a.active-link {
+  color: #990000;
+  font-weight: bold;
+  border-bottom: 2px solid #990000;
+}
+
+/* Botón salir */
+nav .donar-btn {
+  margin-left: auto;      /* empuja el botón a la derecha */
+  font-size: 14px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: -2px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 16px;
+  line-height: 40px;      /* centrado vertical */
+  box-sizing: border-box;
+
+  transition: background 0.3s;
+}
+
+/* Hover botón salir */
+nav .donar-btn:hover {
+  background-color: #c0392b;
+}
+
+/* ---------- Estilos adicionales que tenías ---------- */
+
+/* Hero section */
+.hero-goza {
+  position: relative;
+  background-image: url("../../Dona.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 15px 0;
+  text-align: center;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+.hero-goza .overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 40px 20px;
+}
+
+.hero-goza h1 {
+  color: white;
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.hero-goza p {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+/* Botón CTA oscuro */
+.cta.dark {
+  background: #ffffff;
+  color: #cc0000;
+  padding: 12px 30px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.cta.dark:hover {
+  background: #000000;
+}
+
+/* Features section */
+.features {
+  background: #fff;
+  padding: 60px 0;
+  width: 100%;
+}
+
+.feature-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  text-align: center;
+}
+
+.feature-box {
+  flex: 1 1 200px;
+  max-width: 200px;
+}
+
+.feature-box img {
+  width: 64px;
+  margin-bottom: 20px;
+}
+
+.feature-box h3 {
+  font-size: 16px;
+  color: #cc0000;
+}
+
+/* How it works */
+.how-it-works {
+  background: #fff8f8;
+  padding: 80px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.how-it-works h2 {
+  color: #cc0000;
+  margin-bottom: 40px;
+  font-size: 28px;
+}
+
+.steps-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+.step-box {
+  max-width: 250px;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.step-box h3 {
+  color: #cc0000;
+  margin-bottom: 10px;
+}
+
+.step-box p {
+  font-size: 16px;
+  color: #444;
+}
+
+/* Stats */
+.stats {
+  background: #ffe6e6;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  text-align: center;
+}
+
+.stats-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: nowrap;
+  padding: 40px 0;
+  text-align: left;
+}
+
+.stats-text {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.stats-icon {
+  flex: 0 0 200px;
+  text-align: center;
+  font-size: 150px;
+  color: #cc0000;
+}
+
+.circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: white;
+  border: 5px solid #cc0000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.circle .percent {
+  font-size: 28px;
+  color: #cc0000;
+  font-weight: bold;
+}
+
+.stat-block h3 {
+  font-size: 24px;
+  color: #cc0000;
+  margin-bottom: 10px;
+}
+
+.stat-block p {
+  color: #555;
+}
+
+/* About & Security sections */
+.about, 
+.security {
+  padding: 50px 20px;
+  max-width: 900px;
+  margin: 0 auto 60px auto;
+  background: #fff;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(204, 0, 0, 0.1);
+}
+
+.about h2, 
+.security h2 {
+  color: #cc0000;
+  font-size: 28px;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.about-icon, 
+.security-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  color: #cc0000;
+}
+
+.about-text p, 
+.security-text p {
+  font-size: 17px;
+  color: #444;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Media queries para responsive */
+@media (max-width: 768px) {
+  .stats-grid,
+  .feature-grid,
+  .steps-grid {
+    flex-direction: column;
+  }
+
+  .hero-goza h1 {
+    font-size: 28px;
+  }
+
+  .hero-goza p {
+    font-size: 16px;
+  }
+  
+  .stats-content,
+  .stats-text {
+    flex-direction: column;
+  }
+  
+  .about-content,
+  .security-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about-grid {
+    flex-direction: column;
+  }
+
+  .about-icons {
+    justify-content: center;
+  }
+
+  .about-quote {
+    text-align: center;
+  }
+}
+
+/* Más estilos para about grid y textos */
+.about-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 40px;
+  padding: 80px 0;
+}
+
+.about-text {
+  flex: 1 1 500px;
+}
+
+.about-text h2 {
+  color: #cc0000;
+  margin-bottom: 25px;
+  font-size: 28px;
+}
+
+.about-text p {
+  margin-bottom: 18px;
+  color: #444;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.about-icons {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.about-icons div {
+  flex: 1;
+  max-width: 120px;
+}
+
+.about-icons img {
+  width: 48px;
+  margin-bottom: 10px;
+}
+
+.about-icons p {
+  font-size: 14px;
+  color: #555;
+}
+
+.about-quote {
+  margin-top: 40px;
+  font-style: italic;
+  color: #555;
+  text-align: left;
+}
+
+.about-quote span {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #cc0000;
+}
+
+.about-image {
+  flex: 1 1 400px;
+  text-align: center;
+}
+
+.about-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Sección bienvenida voluntario */
+.bienvenida-voluntario .hero {
+  background: #fef6f2;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.bienvenida-voluntario .hero-left {
+  flex: 1 1 500px;
+}
+
+.bienvenida-voluntario .hero-left h1 {
+  font-size: 42px;
+  color: #222;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.bienvenida-voluntario .hero-left p {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.bienvenida-voluntario .course-info {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.bienvenida-voluntario .course-info div {
+  background-color: #fff;
+  border: 2px solid #ffa500;
+  padding: 15px 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 90px;
+}
+
+.bienvenida-voluntario .course-info strong {
+  font-size: 22px;
+  color: #ffa500;
+  display: block;
+  font-weight: 700;
+}
+
+.bienvenida-voluntario .course-info span {
+  font-size: 14px;
+  color: #333;
+}
+
+.bienvenida-voluntario .hero-right {
+  flex: 1 1 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bienvenida-voluntario .hero-right img {
+  width: 100%;
+  max-width: 300px;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Puedes agregar más estilos según necesites */
