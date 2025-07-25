@@ -102,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dona_app_django',  # Updated to match the new database name
         "USER": "postgres",
-        "PASSWORD": "2305",
+        "PASSWORD": "1234",
         "HOST": "localhost",
         "PORT": "5432",
 
@@ -160,6 +160,9 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'usuarios:login'
 
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # <-- tu frontend de Vite
+]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',

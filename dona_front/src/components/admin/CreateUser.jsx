@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/admin.css';
+import fondoDecorativo from '../../assets/DonalogoHD.png';
 
 const CreateUser = () => {
   const [zonas, setZonas] = useState([]);
@@ -10,7 +11,6 @@ const CreateUser = () => {
     password: '',
     confirmPassword: '',
 
-    // Donador / Receptor
     nombre_lugar: '',
     representante: '',
     telefono: '',
@@ -18,12 +18,10 @@ const CreateUser = () => {
     horario_apertura: '',
     horario_cierre: '',
 
-    // Receptor específico
     encargado: '',
     direccion: '',
     capacidad: '',
 
-    // Voluntario
     zona_id: ''
   });
 
@@ -50,169 +48,92 @@ const CreateUser = () => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+      alert('❌ Las contraseñas no coinciden');
       return;
     }
 
-    // ✅ CASO ESPECIAL: ADMINISTRADOR
-if (formData.rol === '4') {
-  try {
-    // Paso 1: Crear en usuarios
-    const usuarioPayload = {
-      nombre: formData.nombre,
-      correo: formData.correo,
-      contraseña: formData.password,
-      rol: formData.rol
-    };
-
-    const resUsuario = await fetch('http://127.0.0.1:8000/api/usuarios/usuarios/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(usuarioPayload)
-    });
-
-    const dataUsuario = await resUsuario.json();
-
-    if (!resUsuario.ok) {
-      console.error('Error creando usuario base:', dataUsuario);
-      alert('Error al crear el usuario');
+    if (formData.telefono.length > 20) {
+      alert('❌ El teléfono no puede tener más de 20 caracteres');
       return;
     }
 
-    // Paso 2: Crear en administradores con el ID del usuario creado
-  const adminPayload = {
-  usuario: dataUsuario.id,
-  nombre: formData.nombre,
-  correo: formData.correo,
-  contraseña: formData.password
-};
-
-  
-    const resAdmin = await fetch('http://127.0.0.1:8000/api/usuarios/administradores/', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(adminPayload)
-});
-    const dataAdmin = await resAdmin.json();
-
-   if (!resAdmin.ok) {
-  const errorText = await resAdmin.text();  // lee como texto plano
-  console.error('Error creando administrador:', errorText);
-  alert('Error al crear administrador');
-  return;
-}
-
-
-    alert('✅ Administrador creado exitosamente');
-    return;
-
-  } catch (err) {
-  console.error('Error inesperado al crear administrador:', err);
-  alert('Error inesperado: ' + err.message);
-}
-
-}
-
-
-
-
-
-
-
-
-
-    // 🟢 Para los demás roles
-    const usuarioPayload = {
+    const usuarioBase = {
       nombre: formData.nombre,
       correo: formData.correo,
       contraseña: formData.password,
-      rol: formData.rol
+      rol: parseInt(formData.rol)
     };
+
+    const endpointMap = {
+      '1': 'donadores',
+      '2': 'receptores',
+      '3': 'voluntarios'
+    };
+
+    const endpoint = endpointMap[formData.rol];
+
+    const basePayload = {
+      usuario: usuarioBase,
+      telefono: formData.telefono,
+    };
+
+    if (formData.rol === '1') {
+      Object.assign(basePayload, {
+        nombre_lugar: formData.nombre_lugar,
+        representante: formData.representante,
+        descripcion: formData.descripcion,
+        horario_apertura: formData.horario_apertura,
+        horario_cierre: formData.horario_cierre
+      });
+    }
+
+    if (formData.rol === '2') {
+      Object.assign(basePayload, {
+        nombre_lugar: formData.nombre_lugar,
+        encargado: formData.encargado,
+        direccion: formData.direccion,
+        capacidad: parseInt(formData.capacidad),
+        horario_apertura: formData.horario_apertura,
+        horario_cierre: formData.horario_cierre
+      });
+    }
+
+    if (formData.rol === '3') {
+      Object.assign(basePayload, {
+        zona: parseInt(formData.zona_id)
+      });
+    }
 
     try {
-      const resUsuario = await fetch('http://127.0.0.1:8000/api/usuarios/usuarios/', {
+      const res = await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(usuarioPayload)
+        body: JSON.stringify(basePayload)
       });
 
-      const dataUsuario = await resUsuario.json();
+      const data = await res.json();
 
-      if (!resUsuario.ok) {
-        console.error('Error creando usuario base:', dataUsuario);
-        alert('Error al crear el usuario base');
+      if (!res.ok) {
+        alert(`❌ Error al crear ${endpoint}:\n${JSON.stringify(data, null, 2)}`);
         return;
       }
 
-      const usuario_id = dataUsuario.id;
-      let endpoint = '';
-      let payload = { usuario: usuario_id };
-
-      switch (formData.rol) {
-        case '1': // Donador
-          endpoint = 'donadores';
-          payload = {
-            usuario: usuario_id,
-            nombre_lugar: formData.nombre_lugar,
-            representante: formData.representante,
-            telefono: formData.telefono,
-            descripcion: formData.descripcion,
-            horario_apertura: formData.horario_apertura,
-            horario_cierre: formData.horario_cierre
-          };
-          break;
-
-        case '2': // Receptor
-          endpoint = 'receptores';
-          payload = {
-            usuario: usuario_id,
-            nombre_lugar: formData.nombre_lugar,
-            encargado: formData.encargado,
-            telefono: formData.telefono,
-            direccion: formData.direccion,
-            capacidad: parseInt(formData.capacidad),
-            horario_apertura: formData.horario_apertura,
-            horario_cierre: formData.horario_cierre
-          };
-          break;
-
-        case '3': // Voluntario
-          endpoint = 'voluntarios';
-          payload = {
-            usuario: usuario_id,
-            telefono: formData.telefono,
-            zona: parseInt(formData.zona_id)
-          };
-          break;
-
-        default:
-          alert('Rol inválido');
-          return;
-      }
-
-      const resRol = await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      const dataRol = await resRol.json();
-
-      if (!resRol.ok) {
-        console.error('Error en tabla hija:', dataRol);
-        alert('Error al crear información específica del rol.');
-        return;
-      }
-
-      alert('✅ Usuario creado correctamente');
+      alert(`¡Registro creado con éxito!`);
+      window.location.href = '/admin/#/usuarios';
     } catch (err) {
-      console.error('Error inesperado:', err);
-      alert('Error inesperado');
+      alert('❌ Error inesperado: ' + err.message);
     }
   };
 
   return (
-    <div className="main-content">
+    <div className="main-content" style={{ position: 'relative' }}>
+      {/* Imagen decorativa de fondo */}
+      <img
+        src={fondoDecorativo}
+        alt="Decoración DonaApp"
+        className="decorative-image"
+      />
+
       <h2>➕ Crear nuevo usuario</h2>
       <form onSubmit={handleSubmit} className="user-form">
         <label>Rol:</label>
@@ -221,7 +142,6 @@ if (formData.rol === '4') {
           <option value="1">Donador</option>
           <option value="2">Receptor</option>
           <option value="3">Voluntario</option>
-          <option value="4">Administrador</option>
         </select>
 
         <label>Nombre:</label>
@@ -236,7 +156,6 @@ if (formData.rol === '4') {
         <label>Confirmar Contraseña:</label>
         <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
 
-        {/* Campos dinámicos por rol */}
         {formData.rol === '1' && (
           <>
             <label>Nombre del lugar:</label>
@@ -244,7 +163,7 @@ if (formData.rol === '4') {
             <label>Representante:</label>
             <input name="representante" value={formData.representante} onChange={handleChange} />
             <label>Teléfono:</label>
-            <input name="telefono" value={formData.telefono} onChange={handleChange} />
+            <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
             <label>Descripción:</label>
             <input name="descripcion" value={formData.descripcion} onChange={handleChange} />
             <label>Horario de apertura:</label>
@@ -261,7 +180,7 @@ if (formData.rol === '4') {
             <label>Encargado:</label>
             <input name="encargado" value={formData.encargado} onChange={handleChange} />
             <label>Teléfono:</label>
-            <input name="telefono" value={formData.telefono} onChange={handleChange} />
+            <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
             <label>Dirección:</label>
             <input name="direccion" value={formData.direccion} onChange={handleChange} />
             <label>Capacidad:</label>
@@ -276,23 +195,10 @@ if (formData.rol === '4') {
         {formData.rol === '3' && (
           <>
             <label>Teléfono:</label>
-            <input name="telefono" value={formData.telefono} onChange={handleChange} />
+            <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
             <label>Zona:</label>
             <select name="zona_id" value={formData.zona_id} onChange={handleChange} required>
               <option value="">Selecciona una zona</option>
-
-
-
-              {Array.isArray(zonas) && zonas.length > 0 && zonas.map(zona => (
-  <option key={zona.id} value={zona.id}>
-    {zona.nombre} ({zona.codigo_postal})
-  </option>
-))}
-console.log('ZONAS EN RENDER:', zonas);
-
-
-
-
               {zonas.map(zona => (
                 <option key={zona.id} value={zona.id}>
                   {zona.nombre} ({zona.codigo_postal})

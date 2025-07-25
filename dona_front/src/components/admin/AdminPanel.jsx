@@ -7,6 +7,9 @@ import Topbar from './Topbar';
 import UsersPanel from './UsersPanel';
 import Dashboard from './Dashboard';
 import CreateUser from './createUser';
+import EditUser from './editUser';
+import DeleteUser from './deleteUser';
+
 
 const AdminPanel = () => {
   return (
@@ -19,6 +22,13 @@ const AdminPanel = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="usuarios" element={<UsersPanel />} />
             <Route path="usuarios/crear" element={<CreateUser />} />
+
+            <Route path="usuarios/editar/:id" element={<EditUser />} />
+            <Route path="usuarios/eliminar/:id" element={<DeleteUser />} />
+
+
+
+
             <Route path="*" element={<Dashboard />} /> {/* fallback para rutas desconocidas */}
           </Routes>
         </div>
