@@ -6,11 +6,19 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = '__all__'
         extra_kwargs = {
+<<<<<<< HEAD
             'contraseña': {'write_only': True}
         }
 
     def create(self, validated_data):
         raw_password = validated_data.pop('contraseña')
+=======
+            'password': {'write_only': True}
+        }
+
+    def create(self, validated_data):
+        raw_password = validated_data.pop('password')
+>>>>>>> bfc3d5eeb3177f4ddcd548caf2e2c26c19bf6f30
         usuario = Usuario(**validated_data)
         usuario.set_password(raw_password)
         usuario.save()
