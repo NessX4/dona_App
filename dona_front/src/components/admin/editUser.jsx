@@ -1,3 +1,4 @@
+// EditUser.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../styles/admin.css';
@@ -81,7 +82,7 @@ const EditUser = () => {
     };
 
     try {
-      // PATCH a la entidad (donador, receptor, voluntario, etc)
+      // PATCH entidad específica
       if (datosRol?.id) {
         const entidadPayload = { ...datosRol };
         delete entidadPayload.usuario;
@@ -92,7 +93,7 @@ const EditUser = () => {
         });
       }
 
-      // PATCH solo al estado (activo/inactivo)
+      // PATCH estado activo/inactivo del usuario
       await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${usuario.id}/`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -119,41 +120,59 @@ const EditUser = () => {
     <div className="main-content">
       <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
       <h2>✏️ Editar Usuario</h2>
-<div className="rol-destacado">{ROLES_MAP[usuario.rol]}</div>
+      <div className="rol-destacado">{ROLES_MAP[usuario.rol]}</div>
 
       <div className="edit-card">
         <form className="user-form">
           <div className="info-box">
-
-
             <div><span className="info-label"><i className="fas fa-envelope info-icon"></i> Correo:</span> {usuario.correo}</div>
-<div><span className="info-label"><i className="fas fa-user info-icon"></i> Nombre:</span> {usuario.nombre}</div>
-<div><span className="info-label"><i className="fas fa-calendar-alt info-icon"></i> Fecha de registro:</span> {formatFecha(usuario.fecha_registro)}</div>
-
-          
-          
+            <div><span className="info-label"><i className="fas fa-user info-icon"></i> Nombre:</span> {usuario.nombre}</div>
+            <div><span className="info-label"><i className="fas fa-calendar-alt info-icon"></i> Fecha de registro:</span> {formatFecha(usuario.fecha_registro)}</div>
           </div>
 
           <div className="form-group">
             <label>Estado:</label>
-            <select name="activo" value={usuario.activo ? 'true' : 'false'} onChange={(e) => handleChange({ target: { name: 'activo', value: e.target.value === 'true' } })}>
+            <select
+              name="activo"
+              value={usuario.activo ? 'true' : 'false'}
+              onChange={(e) =>
+                handleChange({
+                  target: { name: 'activo', value: e.target.value === 'true' },
+                })
+              }
+            >
               <option value="true">Activo</option>
               <option value="false">Inactivo</option>
             </select>
           </div>
 
-          {usuario.rol === 1 && (
+          {usuario.rol === 3 && (
             <>
-              <div className="form-group"><label>Nombre del lugar:</label><input name="nombre_lugar" value={datosRol.nombre_lugar || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
-              <div className="form-group"><label>Representante:</label><input name="representante" value={datosRol.representante || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
-              <div className="form-group"><label>Teléfono:</label><input name="telefono" value={datosRol.telefono || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
-              <div className="form-group"><label>Descripción:</label><input name="descripcion" value={datosRol.descripcion || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
-              <div className="form-group"><label>Horario de apertura:</label><input type="time" name="horario_apertura" value={datosRol.horario_apertura?.slice(0,5) || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
-              <div className="form-group"><label>Horario de cierre:</label><input type="time" name="horario_cierre" value={datosRol.horario_cierre?.slice(0,5) || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group">
+                <label>Teléfono:</label>
+                <input
+                  name="telefono"
+                  value={datosRol.telefono || ''}
+                  onChange={(e) => handleChange(e, 'rol')}
+                />
+              </div>
+              <div className="form-group">
+                <label>Zona asignada:</label>
+                <select
+                  name="zona"
+                  value={datosRol.zona || ''}
+                  onChange={(e) => handleChange(e, 'rol')}
+                >
+                  <option value="">Seleccione una zona</option>
+                  {zonas.map((z) => (
+                    <option key={z.id} value={z.id}>
+                      {z.nombre} ({z.codigo_postal})
+                    </option>
+                  ))}
+                </select>
+              </div>
             </>
           )}
-
-          {/* Aquí seguirías con receptores o voluntarios si los vas a editar también */}
 
           <div className="form-buttons">
             <button type="button" className="guardar-btn" onClick={handleSave}>
