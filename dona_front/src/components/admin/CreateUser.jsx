@@ -248,7 +248,15 @@ ${JSON.stringify(data, null, 2)}`);
             </>
           )}
 
-          <button type="submit" className="guardar-btn">💾 Crear Usuario</button>
+
+
+          <button type="submit" className="guardar-btn">
+  <i className="fas fa-save" style={{ color: 'white', marginRight: '13px' }}></i>
+  Crear Usuario
+</button>
+
+
+
         </form>
       </div>
     </div>

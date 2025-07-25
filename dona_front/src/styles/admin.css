@@ -873,3 +873,15 @@ table {
 }
 
 
+.view-btn {
+  margin-right: 6px;
+}
+
+.edit-btn {
+  margin-right: 6px;
+}
+
+/* No le pongas margen al último para que no se pase */
+.delete-btn {
+  margin-right: 0;
+}

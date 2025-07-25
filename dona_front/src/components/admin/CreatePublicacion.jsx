@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import fondoDecorativo from '../../assets/DonalogoHD.png';
+import '../../styles/admin.css';
+
 const CreatePublicacion = () => {
   const navigate = useNavigate();
   const [sucursales, setSucursales] = useState([]);
@@ -13,7 +16,8 @@ const CreatePublicacion = () => {
     fecha_caducidad: '',
     sucursal: '',
     zona: '',
-    estado: 1 // activa por defecto
+    ubicacion: '',
+    estado: 1  // ← valor por defecto, no editable desde el form
   });
 
   useEffect(() => {
@@ -35,11 +39,32 @@ const CreatePublicacion = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+
+    if (name === 'sucursal') {
+      const sucursalSeleccionada = sucursales.find(s => s.id === parseInt(value));
+      const ubicacionId = sucursalSeleccionada?.ubicacion || null;
+
+      setFormData(prev => ({
+        ...prev,
+        sucursal: parseInt(value),
+        ubicacion: ubicacionId
+      }));
+    } else if (name === 'zona' || name === 'cantidad') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: parseInt(value)
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const res = await fetch('http://localhost:8000/api/donaciones/publicaciones/', {
         method: 'POST',
@@ -48,11 +73,12 @@ const CreatePublicacion = () => {
       });
 
       if (res.ok) {
-        alert('✅ Publicación creada con éxito');
-        navigate('/publicaciones');
+      alert(`¡Publicación creada con éxito!`);
+        window.location.href = '/admin/#/publicaciones';
+
       } else {
         const errorData = await res.json();
-        console.error('Error:', errorData);
+        console.error('❌ Error en POST:', errorData);
         alert('❌ Error al crear la publicación');
       }
     } catch (err) {
@@ -63,7 +89,8 @@ const CreatePublicacion = () => {
 
   return (
     <div className="main-content">
-      <h2 className="titulo-principal">📝 Crear Nueva Publicación</h2>
+      <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
+      <h2 className="titulo-principal">📝 Crear nueva publicación</h2>
       <div className="edit-card compacta">
         <form className="user-form" onSubmit={handleSubmit}>
           <div className="form-group">
@@ -73,7 +100,7 @@ const CreatePublicacion = () => {
 
           <div className="form-group">
             <label>Descripción:</label>
-            <textarea name="descripcion" value={formData.descripcion} onChange={handleChange} rows="3" required />
+            <input type="text" name="descripcion" value={formData.descripcion} onChange={handleChange} required />
           </div>
 
           <div className="form-group">
@@ -106,15 +133,10 @@ const CreatePublicacion = () => {
             </select>
           </div>
 
-          <div className="form-group">
-            <label>Estado:</label>
-            <select name="estado" value={formData.estado} onChange={handleChange}>
-              <option value={1}>Activa</option>
-              <option value={0}>Inactiva</option>
-            </select>
-          </div>
-
-          <button type="submit" className="guardar-btn">💾 Guardar Publicación</button>
+          <button type="submit" className="guardar-btn">
+            <i className="fas fa-save" style={{ color: 'white', marginRight: '14px' }}></i>
+            Crear publicación
+          </button>
         </form>
       </div>
     </div>
