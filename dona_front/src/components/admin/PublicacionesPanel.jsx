@@ -10,7 +10,13 @@ const PublicacionesPanel = () => {
   const [receptores, setReceptores] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [donadores, setDonadores] = useState([]);
+  const [estadosDonacion, setEstadosDonacion] = useState([]);
+
   const [filtroTitulo, setFiltroTitulo] = useState('');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
+  const [activosPrimero, setActivosPrimero] = useState(false);
+  const [ordenTitulo, setOrdenTitulo] = useState('az');
+
   const [modalAbierto, setModalAbierto] = useState(false);
   const [publicacionSeleccionada, setPublicacionSeleccionada] = useState(null);
 
@@ -26,7 +32,8 @@ const PublicacionesPanel = () => {
           solicitudesRes,
           receptoresRes,
           usuariosRes,
-          donadoresRes
+          donadoresRes,
+          estadosRes
         ] = await Promise.all([
           fetch('http://localhost:8000/api/donaciones/publicaciones/'),
           fetch('http://localhost:8000/api/donaciones/sucursales/'),
@@ -34,7 +41,8 @@ const PublicacionesPanel = () => {
           fetch('http://localhost:8000/api/solicitudes/solicitudes/'),
           fetch('http://localhost:8000/api/usuarios/receptores/'),
           fetch('http://localhost:8000/api/usuarios/usuarios/'),
-          fetch('http://localhost:8000/api/usuarios/donadores/')
+          fetch('http://localhost:8000/api/usuarios/donadores/'),
+          fetch('http://localhost:8000/api/donaciones/estados/')
         ]);
 
         setPublicaciones(await publiRes.json());
@@ -44,6 +52,7 @@ const PublicacionesPanel = () => {
         setReceptores(await receptoresRes.json());
         setUsuarios(await usuariosRes.json());
         setDonadores(await donadoresRes.json());
+        setEstadosDonacion(await estadosRes.json());
       } catch (error) {
         console.error('❌ Error al cargar datos:', error);
       }
@@ -58,10 +67,42 @@ const PublicacionesPanel = () => {
   const obtenerReceptor = (receptorId) => receptores.find(r => r.id === receptorId);
   const obtenerUsuario = (usuarioId) => usuarios.find(u => u.id === usuarioId);
   const obtenerDonador = (donadorId) => donadores.find(d => d.id === donadorId);
+  const obtenerNombreEstado = (estadoId) => estadosDonacion.find(e => e.id === estadoId)?.nombre || '—';
 
-  const publicacionesFiltradas = publicaciones.filter(publi =>
-    publi.titulo.toLowerCase().includes(filtroTitulo.toLowerCase())
-  );
+  const obtenerClaseEstado = (estadoNombre) => {
+    switch (estadoNombre?.toLowerCase()) {
+      case 'disponible': return 'estado-btn activo';
+      case 'cancelado': return 'estado-btn inactivo';
+      case 'en camino': return 'estado-btn amarillo';
+      case 'entregado': return 'estado-btn azul';
+      default: return 'estado-btn';
+    }
+  };
+
+  const publicacionesFiltradas = publicaciones
+    .filter(publi =>
+      publi.titulo.toLowerCase().includes(filtroTitulo.toLowerCase())
+    )
+    .filter(publi => {
+      const estadoNombre = obtenerNombreEstado(publi.estado)?.toLowerCase();
+      return !estadoFiltro || estadoNombre === estadoFiltro.toLowerCase();
+    })
+    .sort((a, b) => {
+      const estadoA = obtenerNombreEstado(a.estado)?.toLowerCase();
+      const estadoB = obtenerNombreEstado(b.estado)?.toLowerCase();
+
+      if (activosPrimero) {
+        if (estadoA === 'disponible' && estadoB !== 'disponible') return -1;
+        if (estadoA !== 'disponible' && estadoB === 'disponible') return 1;
+      }
+
+      const tituloA = a.titulo.toLowerCase();
+      const tituloB = b.titulo.toLowerCase();
+
+      return ordenTitulo === 'az'
+        ? tituloA.localeCompare(tituloB)
+        : tituloB.localeCompare(tituloA);
+    });
 
   const abrirModal = (publicacion) => {
     setPublicacionSeleccionada(publicacion);
@@ -78,8 +119,8 @@ const PublicacionesPanel = () => {
       <h2>📦 Gestión de Publicaciones</h2>
 
       <button className="create-user-btn" onClick={() => navigate('/publicaciones/crear')}>
-  ➕ Crear Publicación
-</button>
+        ➕ Crear Publicación
+      </button>
 
       <div className="filtro-barra">
         <input
@@ -88,6 +129,19 @@ const PublicacionesPanel = () => {
           value={filtroTitulo}
           onChange={(e) => setFiltroTitulo(e.target.value)}
         />
+
+        <select value={estadoFiltro} onChange={(e) => setEstadoFiltro(e.target.value)}>
+          <option value="">Todos los estados</option>
+          {estadosDonacion.map(estado => (
+            <option key={estado.id} value={estado.nombre}>{estado.nombre}</option>
+          ))}
+        </select>
+
+        Ordenar por: 
+        <select value={ordenTitulo} onChange={(e) => setOrdenTitulo(e.target.value)}>
+          <option value="az">A → Z</option>
+          <option value="za">Z → A</option>
+        </select>
       </div>
 
       <table className="user-table">
@@ -103,21 +157,22 @@ const PublicacionesPanel = () => {
         <tbody>
           {publicacionesFiltradas.map(publi => {
             const sucursal = obtenerSucursal(publi.sucursal);
+            const estadoNombre = obtenerNombreEstado(publi.estado);
+            const claseEstado = obtenerClaseEstado(estadoNombre);
+
             return (
               <tr key={publi.id}>
                 <td>{publi.titulo}</td>
                 <td>{sucursal?.nombre || 'Sucursal desconocida'}</td>
                 <td>{publi.zona ? obtenerZona(publi.zona) : '—'}</td>
                 <td>
-                  <button className={publi.estado === 1 ? 'estado-btn activo' : 'estado-btn inactivo'}>
-                    {publi.estado === 1 ? '✅ Activa' : '⛔ Inactiva'}
+                  <button className={claseEstado}>
+                    {estadoNombre}
                   </button>
                 </td>
                 <td>
                   <button className="view-btn" onClick={() => abrirModal(publi)}>🔍 Ver más</button>
-                  
                   <button className="edit-btn" onClick={() => navigate(`/publicaciones/editar/${publi.id}`)}>✏️ Editar</button>
-                  
                   <button className="delete-btn" onClick={() => navigate(`/publicaciones/eliminar/${publi.id}`)}>🗑️ Eliminar</button>
                 </td>
               </tr>
@@ -133,6 +188,7 @@ const PublicacionesPanel = () => {
         const receptor = solicitud ? obtenerReceptor(solicitud.receptor_id) : null;
         const usuarioReceptor = receptor ? obtenerUsuario(receptor.usuario) : null;
         const donador = sucursal ? obtenerDonador(sucursal.donador) : null;
+        const estadoNombre = obtenerNombreEstado(publicacionSeleccionada.estado);
 
         return (
           <div className="modal-overlay">
@@ -161,7 +217,7 @@ const PublicacionesPanel = () => {
                 <h4><i className="fas fa-calendar-day"></i> Fechas y Estado</h4>
                 <div className="campo"><span>Fecha de publicación:</span> {publicacionSeleccionada.fecha_publicacion?.split('T')[0]}</div>
                 <div className="campo"><span>Fecha de caducidad:</span> {publicacionSeleccionada.fecha_caducidad || '—'}</div>
-                <div className="campo"><span>Estado:</span> <span className="estado-activo">{publicacionSeleccionada.estado === 1 ? 'Activa' : 'Inactiva'}</span></div>
+                <div className="campo"><span>Estado:</span> {estadoNombre}</div>
               </div>
 
               {solicitud && receptor && (

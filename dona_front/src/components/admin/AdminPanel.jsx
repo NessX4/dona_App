@@ -12,6 +12,7 @@ import DeleteUser from './deleteUser';
 
 import PublicacionesPanel from './PublicacionesPanel';
 import CreatePublicacion from './CreatePublicacion'; // ajusta el path si está en otra carpeta
+import EditPublicacion from './editPublicacion';
 
 
 
@@ -33,6 +34,8 @@ const AdminPanel = () => {
 
             <Route path="publicaciones" element={<PublicacionesPanel />} />
             <Route path="publicaciones/crear" element={<CreatePublicacion />} />
+            <Route path="publicaciones/editar/:id" element={<EditPublicacion />} />
+
 
 
 

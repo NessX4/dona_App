@@ -885,3 +885,61 @@ table {
 .delete-btn {
   margin-right: 0;
 }
+
+
+
+
+
+
+
+
+.estado-disponible {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-cancelado {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-camino {
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-entregado {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-desconocido {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-btn.amarillo {
+  background-color: #f7c948;
+  color: #000;
+}
+
+.estado-btn.azul {
+  background-color: #8ecae6;
+  color: #000;
+}
+
