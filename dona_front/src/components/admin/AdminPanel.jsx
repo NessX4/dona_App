@@ -16,6 +16,10 @@ import EditPublicacion from './editPublicacion';
 import DeletePublicacion from './deletePublicacion';
 
 import ZonasPanel from './zonasPanel';
+import CreateZona from './createZona';
+import EditZona from './editZona';
+import DeleteZona from './deleteZona';
+
 
 
 
@@ -42,6 +46,11 @@ const AdminPanel = () => {
 
                   
             <Route path="zonas" element={<ZonasPanel />} />
+            <Route path="zonas/crear" element={<CreateZona />} />
+            <Route path="zonas/editar/:id" element={<EditZona />} />
+            <Route path="zonas/eliminar/:id" element={<DeleteZona />} />
+
+
 
 
 
