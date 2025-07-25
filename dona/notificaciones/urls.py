@@ -1,16 +1,10 @@
-from django.urls import path
-from .views import (
-    NotificacionListView,
-    NotificacionCreateView,
-    NotificacionUpdateView,
-    NotificacionDeleteView
-)
+from rest_framework.routers import DefaultRouter
+from django.urls import path, include
+from .views import NotificacionViewSet
 
-app_name = 'notificaciones'
+router = DefaultRouter()
+router.register(r'notifiaciones', NotificacionViewSet)
 
 urlpatterns = [
-    path('', NotificacionListView.as_view(), name='lista_notificaciones'),
-    path('crear/', NotificacionCreateView.as_view(), name='crear_notificacion'),
-    path('editar/<int:pk>/', NotificacionUpdateView.as_view(), name='editar_notificacion'),
-    path('eliminar/<int:pk>/', NotificacionDeleteView.as_view(), name='eliminar_notificacion'),
+    path('', include(router.urls)),
 ]

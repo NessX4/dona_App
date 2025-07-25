@@ -1,25 +1,11 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from .models import Solicitud
+from rest_framework import viewsets
+from .models import Solicitud, HistorialDonacion
+from .serializers import SolicitudSerializer, HistorialDonacionSerializer
 
-class SolicitudListView(ListView):
-    model = Solicitud
-    template_name = 'solicitudes/lista_solicitudes.html'
-    context_object_name = 'solicitudes'
+class SolicitudViewSet(viewsets.ModelViewSet):
+    queryset = Solicitud.objects.all()
+    serializer_class = SolicitudSerializer
 
-class SolicitudCreateView(CreateView):
-    model = Solicitud
-    fields = ['publicacion', 'receptor', 'estado', 'comentarios']
-    template_name = 'solicitudes/form_solicitud.html'  # Aquí el nombre que tienes
-    success_url = reverse_lazy('solicitudes:lista_solicitudes')
-
-class SolicitudUpdateView(UpdateView):
-    model = Solicitud
-    fields = ['publicacion', 'receptor', 'estado', 'comentarios']
-    template_name = 'solicitudes/form_solicitud.html'  # Igual que crear
-    success_url = reverse_lazy('solicitudes:lista_solicitudes')
-
-class SolicitudDeleteView(DeleteView):
-    model = Solicitud
-    template_name = 'solicitudes/eliminar_solicitud.html'  # Tu nombre para eliminar
-    success_url = reverse_lazy('solicitudes:lista_solicitudes')
+class HistorialDonacionViewSet(viewsets.ModelViewSet):
+    queryset = HistorialDonacion.objects.all()
+    serializer_class = HistorialDonacionSerializer

@@ -1,264 +1,54 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, UpdateView, DeleteView, CreateView
-from django.urls import reverse_lazy
-from .models import Donador, Usuario, Rol, Receptor, Voluntario, Administrador
-from .forms import UsuarioDonadorForm, DonadorForm, UsuarioReceptorForm, ReceptorForm, UsuarioVoluntarioForm, VoluntarioForm, UsuarioGenForm
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
-from .forms import AdministradorForm
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .models import Usuario, Rol, Donador, Receptor, Voluntario, Administrador
+from .serializers import (
+    UsuarioSerializer, RolSerializer,
+    DonadorSerializer, ReceptorSerializer,
+    VoluntarioSerializer, AdministradorSerializer
+)
 
+# CRUD General
+class UsuarioViewSet(viewsets.ModelViewSet):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
 
-class RolListView(ListView):
-    model = Rol
-    template_name = 'usuarios/lista_roles.html'
-    context_object_name = 'roles'  # Nombre del objeto en el template
-    
-# Create (Registro)
-def registro_donador(request):
-    if request.method == 'POST':
-        user_form = UsuarioDonadorForm(request.POST)
-        donador_form = DonadorForm(request.POST)
-        
-        if user_form.is_valid() and donador_form.is_valid():
-            # Crear usuario
-            usuario = user_form.save(commit=False)
-            usuario.rol = Rol.objects.get(nombre='Donador')  # Asegúrate que exista este rol
-            usuario.save()
-            
-            # Crear donador
-            donador = donador_form.save(commit=False)
-            donador.usuario = usuario
-            donador.save()
-            
-            return redirect('usuarios:lista_donadores')
-    else:
-        user_form = UsuarioDonadorForm()
-        donador_form = DonadorForm()
+class RolViewSet(viewsets.ModelViewSet):
+    queryset = Rol.objects.all()
+    serializer_class = RolSerializer
 
-    return render(request, 'usuarios/registro_donador.html', {
-        'user_form': user_form,
-        'donador_form': donador_form
-    })
+# Registro por rol
+class DonadorViewSet(viewsets.ModelViewSet):
+    queryset = Donador.objects.all()
+    serializer_class = DonadorSerializer
 
-# Read (Lista)
-class DonadorListView(ListView):
-    model = Donador
-    template_name = 'usuarios/lista_donadores.html'
-    context_object_name = 'donadores'
-    paginate_by = 10
+class ReceptorViewSet(viewsets.ModelViewSet):
+    queryset = Receptor.objects.all()
+    serializer_class = ReceptorSerializer
 
-# Update
-class DonadorUpdateView(UpdateView):
-    model = Donador
-    form_class = DonadorForm
-    template_name = 'usuarios/editar_donador.html'
-    success_url = reverse_lazy('usuarios:lista_donadores')
+class VoluntarioViewSet(viewsets.ModelViewSet):
+    queryset = Voluntario.objects.all()
+    serializer_class = VoluntarioSerializer
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['usuario'] = self.object.usuario
-        return context
+class AdministradorViewSet(viewsets.ModelViewSet):
+    queryset = Administrador.objects.all()
+    serializer_class = AdministradorSerializer
 
-# Delete
-class DonadorDeleteView(DeleteView):
-    model = Donador
-    template_name = 'usuarios/eliminar_donador.html'
-    success_url = reverse_lazy('usuarios:lista_donadores')
-  
-# Login View  
+# Login API
+@api_view(['POST'])
 def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('email')  # Usamos email como username
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # Cambia 'home' por tu URL de inicio
+    correo = request.data.get('correo')
+    contraseña = request.data.get('contraseña')
+
+    try:
+        usuario = Usuario.objects.get(correo=correo)
+        if usuario.check_password(contraseña):
+            return Response({
+                "message": "Login exitoso",
+                "usuario_id": usuario.id,
+                "rol": usuario.rol.nombre
+            }, status=status.HTTP_200_OK)
         else:
-            messages.error(request, 'Correo o contraseña incorrectos')
-    
-    return render(request, 'usuarios/login.html')
-
-# Registro
-def registro_receptor(request):
-    if request.method == 'POST':
-        user_form = UsuarioReceptorForm(request.POST)
-        receptor_form = ReceptorForm(request.POST)
-        
-        if user_form.is_valid() and receptor_form.is_valid():
-            # Crear usuario
-            usuario = user_form.save(commit=False)
-            usuario.rol = Rol.objects.get(nombre='Receptor')  # Asegúrate que exista
-            usuario.save()
-            
-            # Crear receptor
-            receptor = receptor_form.save(commit=False)
-            receptor.usuario = usuario
-            receptor.save()
-            
-            return redirect('usuarios:lista_receptores')
-    else:
-        user_form = UsuarioReceptorForm()
-        receptor_form = ReceptorForm()
-
-    return render(request, 'usuarios/registro_receptor.html', {
-        'user_form': user_form,
-        'receptor_form': receptor_form
-    })
-
-# Lista
-class ReceptorListView(ListView):
-    model = Receptor
-    template_name = 'usuarios/lista_receptores.html'
-    context_object_name = 'receptores'
-    paginate_by = 10
-
-# Edición
-class ReceptorUpdateView(UpdateView):
-    model = Receptor
-    form_class = ReceptorForm
-    template_name = 'usuarios/editar_receptor.html'
-    success_url = reverse_lazy('usuarios:lista_receptores')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['usuario'] = self.object.usuario
-        return context
-
-# Eliminación
-class ReceptorDeleteView(DeleteView):
-    model = Receptor
-    template_name = 'usuarios/eliminar_receptor.html'
-    success_url = reverse_lazy('usuarios:lista_receptores')
-    
-
-# Registro
-def registro_voluntario(request):
-    if request.method == 'POST':
-        user_form = UsuarioVoluntarioForm(request.POST)
-        voluntario_form = VoluntarioForm(request.POST)
-        
-        if user_form.is_valid() and voluntario_form.is_valid():
-            # Crear usuario
-            usuario = user_form.save(commit=False)
-            usuario.rol = Rol.objects.get(nombre='Voluntario')  # Asegúrate que exista
-            usuario.save()
-            
-            # Crear voluntario
-            voluntario = voluntario_form.save(commit=False)
-            voluntario.usuario = usuario
-            voluntario.save()
-            
-            return redirect('usuarios:lista_voluntarios')
-    else:
-        user_form = UsuarioVoluntarioForm()
-        voluntario_form = VoluntarioForm()
-
-    return render(request, 'usuarios/registro_voluntario.html', {
-        'user_form': user_form,
-        'voluntario_form': voluntario_form
-    })
-
-# Lista
-class VoluntarioListView(ListView):
-    model = Voluntario
-    template_name = 'usuarios/lista_voluntarios.html'
-    context_object_name = 'voluntarios'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return Voluntario.objects.select_related('usuario', 'zona').all()
-
-# Edición
-class VoluntarioUpdateView(UpdateView):
-    model = Voluntario
-    form_class = VoluntarioForm
-    template_name = 'usuarios/editar_voluntario.html'
-    success_url = reverse_lazy('usuarios:lista_voluntarios')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['usuario'] = self.object.usuario
-        return context
-
-# Eliminación
-class VoluntarioDeleteView(DeleteView):
-    model = Voluntario
-    template_name = 'usuarios/eliminar_voluntario.html'
-    success_url = reverse_lazy('usuarios:lista_voluntarios')
-    
-
-class UsuarioListView(ListView):
-    model = Usuario
-    template_name = 'usuarios/lista_usuarios.html'
-    context_object_name = 'usuarios'
-    paginate_by = 20
-    
-    def get_queryset(self):
-        return Usuario.objects.select_related('rol').all()
-
-class UsuarioCreateView(CreateView):
-    model = Usuario
-    form_class = UsuarioGenForm
-    template_name = 'usuarios/form_usuario.html'
-    success_url = reverse_lazy('usuarios:lista_usuarios')
-    
-    def form_valid(self, form):
-        # Asignar contraseña por defecto (deberías implementar algo más seguro)
-        usuario = form.save(commit=False)
-        usuario.contraseña = "passwordtemporal"  # El usuario deberá cambiar esto
-        usuario.save()
-        return super().form_valid(form)
-
-class UsuarioUpdateView(UpdateView):
-    model = Usuario
-    form_class = UsuarioGenForm
-    template_name = 'usuarios/form_usuario.html'
-    success_url = reverse_lazy('usuarios:lista_usuarios')
-
-class UsuarioDeleteView(DeleteView):
-    model = Usuario
-    template_name = 'usuarios/eliminar_usuario.html'
-    success_url = reverse_lazy('usuarios:lista_usuarios')
-    
-    def post(self, request, *args, **kwargs):
-        # Desactivar en lugar de borrar
-        usuario = self.get_object()
-        usuario.activo = False
-        usuario.save()
-        return redirect(self.success_url)
-    
-
-# Lista de administradores
-class AdministradorListView(ListView):
-    model = Administrador
-    template_name = 'usuarios/lista_administradores.html'
-    context_object_name = 'administradores'
-    paginate_by = 10
-
-# Crear administrador
-class AdministradorCreateView(CreateView):
-    model = Administrador
-    form_class = AdministradorForm
-    template_name = 'usuarios/registro_administrador.html'
-    success_url = reverse_lazy('usuarios:lista_administradores')
-
-# Editar administrador
-class AdministradorUpdateView(UpdateView):
-    model = Administrador
-    form_class = AdministradorForm
-    template_name = 'usuarios/editar_administrador.html'
-    success_url = reverse_lazy('usuarios:lista_administradores')
-
-# "Eliminar" administrador - desactivar
-class AdministradorDeleteView(DeleteView):
-    model = Administrador
-    template_name = 'usuarios/eliminar_administrador.html'
-    success_url = reverse_lazy('usuarios:lista_administradores')
-
-    def post(self, request, *args, **kwargs):
-        administrador = self.get_object()
-        administrador.activo = False
-        administrador.save()
-        return redirect(self.success_url)
+            return Response({"error": "Contraseña incorrecta"}, status=status.HTTP_401_UNAUTHORIZED)
+    except Usuario.DoesNotExist:
+        return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
