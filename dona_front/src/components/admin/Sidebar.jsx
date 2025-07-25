@@ -32,8 +32,16 @@ const Sidebar = () => {
 
 
 
+<NavLink to="/publicaciones" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+  <li>
+    <i className="bi bi-file-earmark-post-fill"></i> Publicaciones
+  </li>
+</NavLink>
 
-        <li><i className="bi bi-file-earmark-post-fill"></i> Publicaciones</li>
+
+
+
+
         <li><i className="bi bi-geo-alt-fill"></i> Zonas</li>
         <li><i className="bi bi-inbox-fill"></i> Solicitudes</li>
         <li><i className="bi bi-bell-fill"></i> Notificaciones</li>
