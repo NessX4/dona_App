@@ -15,6 +15,9 @@ import CreatePublicacion from './CreatePublicacion'; // ajusta el path si está 
 import EditPublicacion from './editPublicacion';
 import DeletePublicacion from './deletePublicacion';
 
+import ZonasPanel from './zonasPanel';
+
+
 
 const AdminPanel = () => {
   return (
@@ -37,6 +40,8 @@ const AdminPanel = () => {
             <Route path="publicaciones/editar/:id" element={<EditPublicacion />} />
             <Route path="publicaciones/eliminar/:id" element={<DeletePublicacion />} />
 
+                  
+            <Route path="zonas" element={<ZonasPanel />} />
 
 
 
