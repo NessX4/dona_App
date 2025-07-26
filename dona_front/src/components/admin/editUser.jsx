@@ -95,7 +95,7 @@ const EditUser = () => {
       await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${usuario.id}/`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({  activo: usuario.activo }),
+        body: JSON.stringify({ activo: usuario.activo }),
       });
 
       alert('✅ Cambios guardados correctamente.');
@@ -117,11 +117,13 @@ const EditUser = () => {
   return (
     <div className="main-content">
       <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
-      <h2>✏️ Editar Usuario</h2>
+      <h2 className="titulo-principal">✏️ Editar Usuario</h2>
+
       <div className="rol-destacado">{ROLES_MAP[usuario.rol]}</div>
 
-      <div className="edit-card">
+      <div className="edit-card compacta">
         <form className="user-form">
+
           <div className="info-box">
             <div><span className="info-label"><i className="fas fa-envelope info-icon"></i> Correo:</span> {usuario.correo}</div>
             <div><span className="info-label"><i className="fas fa-user info-icon"></i> Nombre:</span> {usuario.nombre}</div>
@@ -137,13 +139,12 @@ const EditUser = () => {
                 handleChange({ target: { name: 'activo', value: e.target.value === 'true' } })
               }
             >
-              <option value="true">Activo</option>
-              <option value="false">Inactivo</option>
+              <option value="true">✅ Activo</option>
+              <option value="false">⛔ Inactivo</option>
             </select>
           </div>
 
           {/* === CAMPOS SEGÚN ROL === */}
-
           {usuario.rol === 1 && (
             <>
               <div className="form-group"><label>Teléfono:</label><input name="telefono" value={datosRol.telefono || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
@@ -170,7 +171,8 @@ const EditUser = () => {
           {usuario.rol === 3 && (
             <>
               <div className="form-group"><label>Teléfono:</label><input name="telefono" value={datosRol.telefono || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
-              <div className="form-group"><label>Zona asignada:</label>
+              <div className="form-group">
+                <label>Zona asignada:</label>
                 <select name="zona" value={datosRol.zona || ''} onChange={(e) => handleChange(e, 'rol')}>
                   <option value="">Seleccione una zona</option>
                   {zonas.map(z => (
@@ -188,7 +190,7 @@ const EditUser = () => {
               <i className="fas fa-save" style={{ marginRight: '12px' }}></i>Guardar cambios
             </button>
             <button type="button" className="cancelar-btn" onClick={handleCancel}>
-              <i className="fas fa-times-circle" style={{ marginRight: '4px' }}></i>Cancelar
+              <i className="fas fa-times-circle" style={{ marginRight: '6px' }}></i>Cancelar
             </button>
           </div>
         </form>

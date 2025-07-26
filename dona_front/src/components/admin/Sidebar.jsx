@@ -51,6 +51,19 @@ const Sidebar = () => {
 </NavLink>
 
 
+
+
+ <NavLink to="/sucursales" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+          <li>
+            <i className="bi bi-shop"></i> Sucursales
+          </li>
+        </NavLink>
+
+
+
+
+
+        
         <li><i className="bi bi-inbox-fill"></i> Solicitudes</li>
         <li><i className="bi bi-bell-fill"></i> Notificaciones</li>
         <li><i className="bi bi-clock-history"></i> Logs</li>

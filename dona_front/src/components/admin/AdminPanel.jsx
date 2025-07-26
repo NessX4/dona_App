@@ -21,6 +21,14 @@ import EditZona from './editZona';
 import DeleteZona from './deleteZona';
 
 
+import SucursalesPanel from './sucursalesPanel';
+import CreateSucursal from './CreateSucursal';
+import EditSucursal from './EditSucursal';
+import DeleteSucursal from './deleteSucursal';
+
+
+
+
 
 
 const AdminPanel = () => {
@@ -51,6 +59,11 @@ const AdminPanel = () => {
             <Route path="zonas/eliminar/:id" element={<DeleteZona />} />
 
 
+            <Route path="sucursales" element={<SucursalesPanel />} />
+            <Route path="sucursales/crear" element={<CreateSucursal />} />
+            <Route path="sucursales/editar/:id" element={<EditSucursal />} />
+            
+            <Route path="sucursales/eliminar/:id" element={<DeleteSucursal />} />
 
 
 
