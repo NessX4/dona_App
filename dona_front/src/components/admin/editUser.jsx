@@ -1,4 +1,3 @@
-// EditUser.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../styles/admin.css';
@@ -82,10 +81,10 @@ const EditUser = () => {
     };
 
     try {
-      // PATCH entidad específica
       if (datosRol?.id) {
         const entidadPayload = { ...datosRol };
         delete entidadPayload.usuario;
+
         await fetch(`http://127.0.0.1:8000/api/usuarios/${rolMap[usuario.rol]}/${datosRol.id}/`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
@@ -93,7 +92,6 @@ const EditUser = () => {
         });
       }
 
-      // PATCH estado activo/inactivo del usuario
       await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${usuario.id}/`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -136,9 +134,7 @@ const EditUser = () => {
               name="activo"
               value={usuario.activo ? 'true' : 'false'}
               onChange={(e) =>
-                handleChange({
-                  target: { name: 'activo', value: e.target.value === 'true' },
-                })
+                handleChange({ target: { name: 'activo', value: e.target.value === 'true' } })
               }
             >
               <option value="true">Activo</option>
@@ -146,25 +142,38 @@ const EditUser = () => {
             </select>
           </div>
 
+          {/* === CAMPOS SEGÚN ROL === */}
+
+          {usuario.rol === 1 && (
+            <>
+              <div className="form-group"><label>Teléfono:</label><input name="telefono" value={datosRol.telefono || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Nombre del lugar:</label><input name="nombre_lugar" value={datosRol.nombre_lugar || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Representante:</label><input name="representante" value={datosRol.representante || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Descripción:</label><input name="descripcion" value={datosRol.descripcion || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Horario de apertura:</label><input type="time" name="horario_apertura" value={datosRol.horario_apertura || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Horario de cierre:</label><input type="time" name="horario_cierre" value={datosRol.horario_cierre || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+            </>
+          )}
+
+          {usuario.rol === 2 && (
+            <>
+              <div className="form-group"><label>Teléfono:</label><input name="telefono" value={datosRol.telefono || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Nombre del lugar:</label><input name="nombre_lugar" value={datosRol.nombre_lugar || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Encargado:</label><input name="encargado" value={datosRol.encargado || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Dirección:</label><input name="direccion" value={datosRol.direccion || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Capacidad:</label><input type="number" name="capacidad" value={datosRol.capacidad || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Horario de apertura:</label><input type="time" name="horario_apertura" value={datosRol.horario_apertura || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Horario de cierre:</label><input type="time" name="horario_cierre" value={datosRol.horario_cierre || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+            </>
+          )}
+
           {usuario.rol === 3 && (
             <>
-              <div className="form-group">
-                <label>Teléfono:</label>
-                <input
-                  name="telefono"
-                  value={datosRol.telefono || ''}
-                  onChange={(e) => handleChange(e, 'rol')}
-                />
-              </div>
-              <div className="form-group">
-                <label>Zona asignada:</label>
-                <select
-                  name="zona"
-                  value={datosRol.zona || ''}
-                  onChange={(e) => handleChange(e, 'rol')}
-                >
+              <div className="form-group"><label>Teléfono:</label><input name="telefono" value={datosRol.telefono || ''} onChange={(e) => handleChange(e, 'rol')} /></div>
+              <div className="form-group"><label>Zona asignada:</label>
+                <select name="zona" value={datosRol.zona || ''} onChange={(e) => handleChange(e, 'rol')}>
                   <option value="">Seleccione una zona</option>
-                  {zonas.map((z) => (
+                  {zonas.map(z => (
                     <option key={z.id} value={z.id}>
                       {z.nombre} ({z.codigo_postal})
                     </option>

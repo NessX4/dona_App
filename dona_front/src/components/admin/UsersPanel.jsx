@@ -109,22 +109,26 @@ const UsersPanel = () => {
           onChange={(e) => setNombreFiltro(e.target.value)}
         />
 
+
+        <label className="checkbox-label">
+Activos primero
+  <input
+            type="checkbox"
+            checked={activosPrimero}
+            onChange={(e) => setActivosPrimero(e.target.checked)}
+          />
+         
+
         <select value={rolFiltro} onChange={(e) => setRolFiltro(e.target.value)}>
           <option value="">Todos los tipos</option>
           <option value="1">Donador</option>
           <option value="2">Receptor</option>
           <option value="3">Voluntario</option>
         </select>
-
-        <label className="checkbox-label">
-          <input
-            type="checkbox"
-            checked={activosPrimero}
-            onChange={(e) => setActivosPrimero(e.target.checked)}
-          />
-          Activos primero
+ 
+        
         </label>
-
+    Ordenar por:
         <select value={ordenNombre} onChange={(e) => setOrdenNombre(e.target.value)}>
           <option value="az">A → Z</option>
           <option value="za">Z → A</option>

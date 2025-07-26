@@ -730,3 +730,245 @@ table {
   margin-right: 6px;
   color: #000; /* Negro */
 }
+
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-contenido {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  color: #333;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  animation: aparecer 0.3s ease-out;
+}
+
+@keyframes aparecer {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.cerrar-modal-btn {
+  background: #d63031;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.view-btn {
+  background-color: #0984e3;
+  color: white;
+  padding: 4px 10px;
+  margin: 0 2px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
+/* ===============================
+   Modal Detallado de Publicaciones
+   =============================== */
+.modal-detalles {
+  background-color: #ffffff;
+  border-radius: 1.2rem;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  max-width: 700px;
+  width: 90%;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  animation: aparecer 0.25s ease-out;
+  margin: auto;
+}
+
+.modal-detalles h3 {
+  font-size: 1.5rem;
+  color: #1e4720;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.modal-detalles h3 i {
+  color: #444 ;
+  font-size: 1.3rem;
+}
+
+.modal-seccion {
+  margin-bottom: 1.8rem;
+}
+
+.modal-seccion h4 {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.modal-detalles .campo {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.modal-detalles .campo span {
+  font-weight: bold;
+  color: #2e7d32;
+  margin-right: 6px;
+}
+
+.estado-activo {
+  display: inline-block;
+  padding: 4px 12px;
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-top: 0.6rem;
+}
+
+.cerrar-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: normal;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: 2rem auto 0 auto;
+}
+
+.cerrar-btn:hover {
+  background-color: #c0392b;
+}
+
+
+.view-btn {
+  margin-right: 6px;
+}
+
+.edit-btn {
+  margin-right: 6px;
+}
+
+/* No le pongas margen al último para que no se pase */
+.delete-btn {
+  margin-right: 0;
+}
+
+
+
+
+
+
+
+
+.estado-disponible {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-cancelado {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-camino {
+  background-color: #ffc107;
+  color: black;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-entregado {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-desconocido {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.estado-btn.amarillo {
+  background-color: #f7c948;
+  color: #000;
+}
+
+.estado-btn.azul {
+  background-color: #8ecae6;
+  color: #000;
+}
+
+
+.estado-destacado {
+  display: inline-block;
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: white;
+  text-transform: capitalize;
+}
+
+.estado-destacado.disponible {
+  background-color: #43a047;
+}
+
+.estado-destacado.cancelado {
+  background-color: #e53935;
+}
+
+.estado-destacado.entregado {
+  background-color: #1e88e5;
+}
+
+.estado-destacado.en-camino {
+  background-color: #fbc02d;
+  color: black;
+}
+

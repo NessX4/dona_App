@@ -10,6 +10,11 @@ import CreateUser from './createUser';
 import EditUser from './editUser';
 import DeleteUser from './deleteUser';
 
+import PublicacionesPanel from './PublicacionesPanel';
+import CreatePublicacion from './CreatePublicacion'; // ajusta el path si está en otra carpeta
+import EditPublicacion from './editPublicacion';
+import DeletePublicacion from './deletePublicacion';
+
 
 const AdminPanel = () => {
   return (
@@ -20,11 +25,18 @@ const AdminPanel = () => {
         <div className="main-content">
           <Routes>
             <Route path="dashboard" element={<Dashboard />} />
+            
             <Route path="usuarios" element={<UsersPanel />} />
             <Route path="usuarios/crear" element={<CreateUser />} />
-
             <Route path="usuarios/editar/:id" element={<EditUser />} />
             <Route path="usuarios/eliminar/:id" element={<DeleteUser />} />
+
+
+            <Route path="publicaciones" element={<PublicacionesPanel />} />
+            <Route path="publicaciones/crear" element={<CreatePublicacion />} />
+            <Route path="publicaciones/editar/:id" element={<EditPublicacion />} />
+            <Route path="publicaciones/eliminar/:id" element={<DeletePublicacion />} />
+
 
 
 

@@ -35,7 +35,6 @@ const CreateUser = () => {
         console.error('Error al cargar zonas:', err);
       }
     };
-
     fetchZonas();
   }, []);
 
@@ -114,7 +113,8 @@ const CreateUser = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(`❌ Error al crear ${endpoint}:\n${JSON.stringify(data, null, 2)}`);
+        alert(`❌ Error al crear ${endpoint}:
+${JSON.stringify(data, null, 2)}`);
         return;
       }
 
@@ -127,89 +127,138 @@ const CreateUser = () => {
 
   return (
     <div className="main-content" style={{ position: 'relative' }}>
-      {/* Imagen decorativa de fondo */}
       <img
         src={fondoDecorativo}
         alt="Decoración DonaApp"
         className="decorative-image"
       />
+      <h2 className="titulo-principal">➕ Crear nuevo usuario</h2>
+      <div className="edit-card compacta">
+        <form onSubmit={handleSubmit} className="user-form">
 
-      <h2>➕ Crear nuevo usuario</h2>
-      <form onSubmit={handleSubmit} className="user-form">
-        <label>Rol:</label>
-        <select name="rol" value={formData.rol} onChange={handleChange} required>
-          <option value="">Selecciona un rol</option>
-          <option value="1">Donador</option>
-          <option value="2">Receptor</option>
-          <option value="3">Voluntario</option>
-        </select>
-
-        <label>Nombre:</label>
-        <input name="nombre" value={formData.nombre} onChange={handleChange} required />
-
-        <label>Correo:</label>
-        <input type="email" name="correo" value={formData.correo} onChange={handleChange} required />
-
-        <label>Contraseña:</label>
-        <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-
-        <label>Confirmar Contraseña:</label>
-        <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
-
-        {formData.rol === '1' && (
-          <>
-            <label>Nombre del lugar:</label>
-            <input name="nombre_lugar" value={formData.nombre_lugar} onChange={handleChange} />
-            <label>Representante:</label>
-            <input name="representante" value={formData.representante} onChange={handleChange} />
-            <label>Teléfono:</label>
-            <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
-            <label>Descripción:</label>
-            <input name="descripcion" value={formData.descripcion} onChange={handleChange} />
-            <label>Horario de apertura:</label>
-            <input type="time" name="horario_apertura" value={formData.horario_apertura} onChange={handleChange} />
-            <label>Horario de cierre:</label>
-            <input type="time" name="horario_cierre" value={formData.horario_cierre} onChange={handleChange} />
-          </>
-        )}
-
-        {formData.rol === '2' && (
-          <>
-            <label>Nombre del lugar:</label>
-            <input name="nombre_lugar" value={formData.nombre_lugar} onChange={handleChange} />
-            <label>Encargado:</label>
-            <input name="encargado" value={formData.encargado} onChange={handleChange} />
-            <label>Teléfono:</label>
-            <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
-            <label>Dirección:</label>
-            <input name="direccion" value={formData.direccion} onChange={handleChange} />
-            <label>Capacidad:</label>
-            <input type="number" name="capacidad" value={formData.capacidad} onChange={handleChange} />
-            <label>Horario de apertura:</label>
-            <input type="time" name="horario_apertura" value={formData.horario_apertura} onChange={handleChange} />
-            <label>Horario de cierre:</label>
-            <input type="time" name="horario_cierre" value={formData.horario_cierre} onChange={handleChange} />
-          </>
-        )}
-
-        {formData.rol === '3' && (
-          <>
-            <label>Teléfono:</label>
-            <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
-            <label>Zona:</label>
-            <select name="zona_id" value={formData.zona_id} onChange={handleChange} required>
-              <option value="">Selecciona una zona</option>
-              {zonas.map(zona => (
-                <option key={zona.id} value={zona.id}>
-                  {zona.nombre} ({zona.codigo_postal})
-                </option>
-              ))}
+          <div className="form-group">
+            <label>Rol:</label>
+            <select name="rol" value={formData.rol} onChange={handleChange} required>
+              <option value="">Selecciona un rol</option>
+              <option value="1">Donador</option>
+              <option value="2">Receptor</option>
+              <option value="3">Voluntario</option>
             </select>
-          </>
-        )}
+          </div>
 
-        <button type="submit" className="submit-btn">Crear Usuario</button>
-      </form>
+          <div className="form-group">
+            <label>Nombre:</label>
+            <input name="nombre" value={formData.nombre} onChange={handleChange} required />
+          </div>
+
+          <div className="form-group">
+            <label>Correo:</label>
+            <input type="email" name="correo" value={formData.correo} onChange={handleChange} required />
+          </div>
+
+          <div className="form-group">
+            <label>Contraseña:</label>
+            <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+          </div>
+
+          <div className="form-group">
+            <label>Confirmar Contraseña:</label>
+            <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+          </div>
+
+          {formData.rol === '1' && (
+            <>
+              <div className="form-group">
+                <label>Nombre del lugar:</label>
+                <input name="nombre_lugar" value={formData.nombre_lugar} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Representante:</label>
+                <input name="representante" value={formData.representante} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Teléfono:</label>
+                <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Descripción:</label>
+                <input name="descripcion" value={formData.descripcion} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Horario de apertura:</label>
+                <input type="time" name="horario_apertura" value={formData.horario_apertura} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Horario de cierre:</label>
+                <input type="time" name="horario_cierre" value={formData.horario_cierre} onChange={handleChange} />
+              </div>
+            </>
+          )}
+
+          {formData.rol === '2' && (
+            <>
+              <div className="form-group">
+                <label>Nombre del lugar:</label>
+                <input name="nombre_lugar" value={formData.nombre_lugar} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Encargado:</label>
+                <input name="encargado" value={formData.encargado} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Teléfono:</label>
+                <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Dirección:</label>
+                <input name="direccion" value={formData.direccion} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Capacidad:</label>
+                <input type="number" name="capacidad" value={formData.capacidad} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Horario de apertura:</label>
+                <input type="time" name="horario_apertura" value={formData.horario_apertura} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Horario de cierre:</label>
+                <input type="time" name="horario_cierre" value={formData.horario_cierre} onChange={handleChange} />
+              </div>
+            </>
+          )}
+
+          {formData.rol === '3' && (
+            <>
+              <div className="form-group">
+                <label>Teléfono:</label>
+                <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
+              </div>
+              <div className="form-group">
+                <label>Zona:</label>
+                <select name="zona_id" value={formData.zona_id} onChange={handleChange} required>
+                  <option value="">Selecciona una zona</option>
+                  {zonas.map(zona => (
+                    <option key={zona.id} value={zona.id}>
+                      {zona.nombre} ({zona.codigo_postal})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
+
+
+
+          <button type="submit" className="guardar-btn">
+  <i className="fas fa-save" style={{ color: 'white', marginRight: '13px' }}></i>
+  Crear Usuario
+</button>
+
+
+
+        </form>
+      </div>
     </div>
   );
 };
