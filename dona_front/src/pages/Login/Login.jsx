@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
-import logoDona from "../../assets/Dona.jpg";
+import logoDona from "../../assets/Logotipo.png";
 
 export default function Login() {
   // Estados del modal y formularios
@@ -270,7 +270,7 @@ export default function Login() {
         <div className="login-box">
           <div className="logo">
             <img src={logoDona} alt="Logo DONA" />
-            <h1>DONA</h1>
+            <h1 className="titulo-dona">DONA</h1>
           </div>
 
           <h2>Iniciar Sesión</h2>
