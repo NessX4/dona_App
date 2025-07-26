@@ -170,18 +170,27 @@ const UsersPanel = () => {
                   </button>
                 </td>
                 <td>
+
+
+
                   <button
                     className="edit-btn"
                     onClick={() => navigate(`/usuarios/editar/${user.id}`)}
                   >
                     ✏️ Editar
                   </button>
+
+
+
                   <button
                     className="delete-btn"
                     onClick={() => navigate(`/usuarios/eliminar/${user.id}`)}
                   >
                     🗑️ Eliminar
                   </button>
+
+
+                  
                 </td>
               </tr>
             ))
