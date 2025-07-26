@@ -1,3 +1,4 @@
+// src/components/admin/EditPublicacion.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import fondoDecorativo from '../../assets/DonalogoHD.png';
@@ -8,7 +9,7 @@ const EditPublicacion = () => {
   const [publicacion, setPublicacion] = useState(null);
   const [sucursales, setSucursales] = useState([]);
   const [zonas, setZonas] = useState([]);
-  const [estadosDonacion, setEstadosDonacion] = useState([]); // Nombre corregido
+  const [estadosDonacion, setEstadosDonacion] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,9 +25,6 @@ const EditPublicacion = () => {
         const sucursalData = await sucursalesRes.json();
         const zonasData = await zonasRes.json();
         const estadosData = await estadosRes.json();
-
-        console.log('✅ Estados cargados:', estadosData); // debug
-        console.log('📦 Publicación:', publiData);
 
         setPublicacion({
           ...publiData,
@@ -54,15 +52,10 @@ const EditPublicacion = () => {
         sucursal: parseInt(value),
         ubicacion: ubicacionId
       }));
-    } else if (name === 'zona' || name === 'cantidad') {
+    } else if (['zona', 'cantidad', 'estado'].includes(name)) {
       setPublicacion(prev => ({
         ...prev,
         [name]: parseInt(value)
-      }));
-    } else if (name === 'estado') {
-      setPublicacion(prev => ({
-        ...prev,
-        estado: parseInt(value)
       }));
     } else {
       setPublicacion(prev => ({
@@ -103,9 +96,9 @@ const EditPublicacion = () => {
   return (
     <div className="main-content">
       <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
-      <h2>✏️ Editar Publicación</h2>
+      <h2 className="titulo-principal">✏️ Editar Publicación</h2>
 
-      <div className="edit-card">
+      <div className="edit-card compacta">
         <form className="user-form">
           <div className="form-group">
             <label>Título:</label>
