@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
 import './Home.css';
 import { Link } from "react-router-dom";
-
-// Importa AOS (animación)
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-// Importa FontAwesomeIcon para mostrar íconos
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartLine } from "@fortawesome/free-solid-svg-icons";
 
-import logoDona from "../assets/Dona.jpg";
+import logoDona from "../assets/Logotipo.png";
 import landingImage from "../assets/landing.jpg";
-
 
 function App() {
   useEffect(() => {
@@ -22,73 +19,88 @@ function App() {
     <>
       {/* Topbar */}
       <div className="topbar" data-aos="fade-down">
-        <div className="container">
-          <span>Contáctanos: +52 664 123 4567 | contacto@dona.org</span>
-        </div>
+        <span>Contáctanos: +52 664 123 4567 | contacto@dona.org</span>
       </div>
 
       {/* Header */}
-      <header data-aos="fade-down" data-aos-delay="100">
+      <header data-aos="fade-down" data-aos-delay="100" className="header-static">
         <div className="container header-left">
           <div className="logo">
             <img src={logoDona} alt="Logo DONA" />
-            <span>DONA</span>
+            <span className="dona-text">DONA</span>
           </div>
           <nav>
             <a href="#inicio">Inicio</a>
             <a href="#campanas">Campañas</a>
             <a href="#funciona">Cómo Funciona</a>
-            {/* <a href="#estadisticas">Regístrate como Refugio</a>
-            <a href="#acerca">Regístrate como voluntario</a> */}
             <Link to="/login" className="donar-btn">DONA!</Link>
           </nav>
         </div>
       </header>
 
-       <section
-      className="hero hero-goza"
-      id="inicio"
-      data-aos="fade-up"
-      style={{
-        backgroundImage: `url(${landingImage})`,
-      }}
+      {/* Hero */}
+      <section
+        className="hero hero-goza"
+        id="inicio"
+        data-aos="fade-up"
+        style={{
+          backgroundImage: `url(${landingImage})`,
+        }}
       >
-        <div className="overlay">
-          <div className="container">
-            <h1>Conectamos solidaridad con necesidad</h1>
-            <p>Cada comida que se dona a través de DONA representa esperanza para quienes más lo necesitan.</p>
-            <a href="/login" className="cta dark">Comenzar Donación</a>
-          </div>
+        <div className="overlay"> 
+          <h1 className="hero-title">Conectamos solidaridad con necesidad</h1>
+          <p>Cada comida que se dona a través de DONA representa esperanza para quienes más lo necesitan.</p>
+          <a href="/login" className="cta dark">Comenzar Donación</a>
         </div>
       </section>
-    );
 
 
       {/* Features */}
       <section className="features" id="campanas" data-aos="fade-up">
-        <div className="container">
-          <h2 style={{textAlign: 'center', marginBottom: 40, color: '#cc0000'}}>Nuestro impacto social</h2>
-          <div className="feature-grid">
-            <div className="feature-box" data-aos="zoom-in">
-              <img src="/icons/no-waste.png" alt="Sin desperdicio" />
-              <h3>Reducción del desperdicio</h3>
-              <p>Aprovechamos excedentes de alimentos en buen estado que antes se desechaban.</p>
-            </div>
-            <div className="feature-box" data-aos="zoom-in" data-aos-delay="100">
-              <img src="/icons/plate.png" alt="Alimentos" />
-              <h3>Comidas para quienes lo necesitan</h3>
-              <p>Entregamos alimentos directamente a organizaciones sociales y refugios.</p>
-            </div>
-            <div className="feature-box" data-aos="zoom-in" data-aos-delay="200">
-              <img src="/icons/heart-hands.png" alt="Solidaridad" />
-              <h3>Solidaridad en acción</h3>
-              <p>Creamos una red de ayuda entre negocios locales y comunidades vulnerables.</p>
-            </div>
-            <div className="feature-box" data-aos="zoom-in" data-aos-delay="300">
-              <img src="/icons/goal2.png" alt="ODS 2" />
-              <h3>Hambre Cero (ODS 2)</h3>
-              <p>Apoyamos el Objetivo de Desarrollo Sostenible #2 de las Naciones Unidas.</p>
-            </div>
+        <div className="container" />
+        <h2 style={{ textAlign: 'center', marginBottom: 40, color: '#cc0000' }}>
+          Nuestro impacto social
+        </h2>
+        <div className="feature-grid">
+          <div className="feature-box" data-aos="zoom-in">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/427/427735.png"
+              alt="Reducción del desperdicio"
+              style={{ width: "64px", marginBottom: "20px" }}
+            />
+            <h3>Reducción del desperdicio</h3>
+            <p>Aprovechamos excedentes de alimentos en buen estado que antes se desechaban.</p>
+          </div>
+
+          <div className="feature-box" data-aos="zoom-in" data-aos-delay="100">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png"
+              alt="Comidas para quienes lo necesitan"
+              style={{ width: "64px", marginBottom: "20px" }}
+            />
+            <h3>Comidas para quienes lo necesitan</h3>
+            <p>Entregamos alimentos directamente a organizaciones sociales y refugios.</p>
+          </div>
+
+          <div className="feature-box" data-aos="zoom-in" data-aos-delay="200">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/565/565547.png"
+              alt="Solidaridad en acción"
+              style={{ width: "64px", marginBottom: "20px" }}
+            />
+            <h3>Solidaridad en acción</h3>
+            <p>Creamos una red de ayuda entre negocios locales y comunidades vulnerables.</p>
+          </div>
+
+          <div className="feature-box" data-aos="zoom-in" data-aos-delay="200" style={{ textAlign: "center" }}>
+            <FontAwesomeIcon
+              icon={faChartLine}
+              size="3x"
+              color="#0984e3"
+              style={{ marginBottom: "20px", width: "64px", height: "64px" }}
+            />
+            <h3>Hambre Cero (ODS 2)</h3>
+            <p>Apoyamos el Objetivo de Desarrollo Sostenible #2 de las Naciones Unidas.</p>
           </div>
         </div>
       </section>
@@ -99,18 +111,42 @@ function App() {
           <h2>¿Cómo funciona DONA?</h2>
           <div className="steps-grid">
             <div className="step-box" data-aos="fade-up" data-aos-delay="100">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/747/747376.png"
+                alt="Registro"
+                style={{ width: "48px", marginBottom: "15px" }}
+              />
               <h3>1. Registro</h3>
               <p>Restaurantes, refugios y voluntarios crean una cuenta para comenzar a usar la plataforma.</p>
             </div>
+
             <div className="step-box" data-aos="fade-up" data-aos-delay="200">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png"
+                alt="Publicación"
+                style={{ width: "48px", marginBottom: "15px" }}
+              />
               <h3>2. Publicación</h3>
               <p>Los restaurantes publican alimentos disponibles especificando cantidad, tipo y fecha límite.</p>
             </div>
+
             <div className="step-box" data-aos="fade-up" data-aos-delay="300">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" // hoja con lápiz
+                alt="Solicitud"
+                style={{ width: "48px", marginBottom: "15px" }}
+              />
               <h3>3. Solicitud</h3>
               <p>Refugios buscan donaciones según ubicación y necesidades, y hacen sus solicitudes.</p>
             </div>
+
+
             <div className="step-box" data-aos="fade-up" data-aos-delay="400">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/2920/2920213.png"
+                alt="Entrega"
+                style={{ width: "48px", marginBottom: "15px" }}
+              />
               <h3>4. Entrega</h3>
               <p>Se genera un reporte de entrega que garantiza transparencia y seguimiento.</p>
             </div>
@@ -135,9 +171,6 @@ function App() {
               <p>Donadores felices</p>
             </div>
           </div>
-          <div className="stats-icon" data-aos="zoom-in" data-aos-delay="200">
-            <FontAwesomeIcon icon="chart-line" />
-          </div>
         </div>
       </section>
 
@@ -145,7 +178,11 @@ function App() {
       <section className="about" id="acerca" data-aos="fade-up">
         <div className="container about-content">
           <div className="about-icon" data-aos="zoom-in">
-            <FontAwesomeIcon icon="people-roof" />
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/219/219983.png"
+              alt="Acerca de"
+              style={{ width: "80px" }}
+            />
           </div>
           <div className="about-text">
             <h2>¿Qué es DONA?</h2>
@@ -169,24 +206,31 @@ function App() {
             </p>
           </div>
           <div className="security-icon" data-aos="zoom-in" data-aos-delay="200">
-            <FontAwesomeIcon icon="shield-halved" />
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/565/565547.png"
+              alt="Seguridad"
+              style={{ width: "80px" }}
+            />
           </div>
         </div>
       </section>
 
       {/* Donar */}
       <section className="donate" id="donar" data-aos="fade-up">
-        <div className="container">
-          <h2>¿Listo para ayudar?</h2>
-          <a href="/login" className="donar-btn">Haz tu donación</a>
-        </div>
+        <h2>¿Listo para ayudar?</h2>
+        <a href="/login" className="donar-btn">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/2920/2920213.png"
+            alt="Mano sosteniendo corazón"
+            style={{ width: "24px", marginRight: "8px" }}
+          />
+          Haz tu donación
+        </a>
       </section>
 
       {/* Footer */}
       <footer>
-        <div className="container">
           <p>© 2025 DONA. Todos los derechos reservados.</p>
-        </div>
       </footer>
     </>
   );

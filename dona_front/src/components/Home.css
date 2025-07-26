@@ -97,27 +97,29 @@ nav a:hover {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 15px 0;
+  height: 400px; /* o la altura que desees */
   text-align: center;
   width: 100vw;
   margin-left: calc(-50vw + 50%);
 }
-
 .hero-goza .overlay {
-  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4); /* si quieres efecto visual, o pon transparent */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 40px 20px;
 }
 
-.hero-goza h1 {
-  color: white;
-  font-size: 36px;
-  margin-bottom: 20px;
-}
-
+.hero-goza h1,
 .hero-goza p {
-  color: white;
-  font-size: 18px;
-  margin-bottom: 30px;
+  color: white !important;
+  text-shadow: 1.5px 1.5px 4px rgba(0, 0, 0, 0.7);
 }
 
 .cta.dark {
@@ -132,11 +134,11 @@ nav a:hover {
 }
 
 .cta.dark:hover {
-  background: #000000;
+  background: #fc9e9e;
 }
 
 .features {
-  background: #fff;
+  background: #725252;
   padding: 60px 0;
   width: 100%;
 }
@@ -273,8 +275,7 @@ nav a:hover {
 }
 
 .about {
-  padding: 10px 0;
-  background: #fff;
+  margin-top: 60px !important;
   text-align: center;
   width: 100%;
 }
@@ -301,6 +302,7 @@ nav a:hover {
   flex-wrap: wrap;
   text-align: left;
   padding: 40px 0;
+  margin-top: 40px; /* espacio extra arriba */
 }
 
 .about-icon {
@@ -506,4 +508,7 @@ footer {
   .about-quote {
     text-align: center;
   }
+}
+.donate h2 {
+  color: white;
 }
