@@ -1,4 +1,3 @@
-// src/components/admin/UsersPanel.jsx
 import React, { useEffect, useState } from 'react';
 import '../../styles/admin.css';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +15,8 @@ const UsersPanel = () => {
   const [nombreFiltro, setNombreFiltro] = useState('');
   const [rolFiltro, setRolFiltro] = useState('');
   const [activosPrimero, setActivosPrimero] = useState(false);
-  const [ordenNombre, setOrdenNombre] = useState('az'); // A → Z por defecto
+  const [ordenNombre, setOrdenNombre] = useState('az');
+  const [loading, setLoading] = useState(true); // 👈
 
   const navigate = useNavigate();
 
@@ -27,7 +27,6 @@ const UsersPanel = () => {
         const data = await res.json();
         const usuariosSinAdmins = data.filter(user => user.rol !== 4);
 
-        // Obtener todas las entidades hijas
         const [donadores, receptores, voluntarios] = await Promise.all([
           fetch('http://127.0.0.1:8000/api/usuarios/donadores/').then(res => res.json()),
           fetch('http://127.0.0.1:8000/api/usuarios/receptores/').then(res => res.json()),
@@ -38,7 +37,6 @@ const UsersPanel = () => {
         const receptoresSet = new Set(receptores.map(r => r.usuario?.id));
         const voluntariosSet = new Set(voluntarios.map(v => v.usuario?.id));
 
-        // Filtrar usuarios que están activos o tienen su entidad hija todavía
         const filtrados = usuariosSinAdmins.filter(u => {
           if (u.activo) return true;
           if (u.rol === 1 && donadoresSet.has(u.id)) return true;
@@ -51,8 +49,10 @@ const UsersPanel = () => {
 
         setUsuarios(filtrados);
         setUsuariosFiltrados(filtrados);
+        setLoading(false); // ✅
       } catch (error) {
         console.error('❌ Error al obtener usuarios y entidades:', error);
+        setLoading(false); // ⚠️
       }
     };
 
@@ -109,26 +109,23 @@ const UsersPanel = () => {
           onChange={(e) => setNombreFiltro(e.target.value)}
         />
 
-
         <label className="checkbox-label">
-Activos primero
-  <input
+          Activos primero
+          <input
             type="checkbox"
             checked={activosPrimero}
             onChange={(e) => setActivosPrimero(e.target.checked)}
+            style={{ marginLeft: '8px' }}
           />
-         
-
-        <select value={rolFiltro} onChange={(e) => setRolFiltro(e.target.value)}>
-          <option value="">Todos los tipos</option>
-          <option value="1">Donador</option>
-          <option value="2">Receptor</option>
-          <option value="3">Voluntario</option>
-        </select>
- 
-        
+          <select value={rolFiltro} onChange={(e) => setRolFiltro(e.target.value)}>
+            <option value="">Todos los tipos</option>
+            <option value="1">Donador</option>
+            <option value="2">Receptor</option>
+            <option value="3">Voluntario</option>
+          </select>
         </label>
-    Ordenar por:
+
+        Ordenar por:
         <select value={ordenNombre} onChange={(e) => setOrdenNombre(e.target.value)}>
           <option value="az">A → Z</option>
           <option value="za">Z → A</option>
@@ -145,35 +142,50 @@ Activos primero
             <th>Acciones</th>
           </tr>
         </thead>
+
         <tbody>
-          {usuariosFiltrados.map(user => (
-            <tr key={user.id}>
-              <td>{user.nombre}</td>
-              <td>{user.correo}</td>
-              <td>{ROLES_MAP[user.rol] || 'Desconocido'}</td>
-              <td>
-                <button
-                  className={user.activo ? 'estado-btn activo' : 'estado-btn inactivo'}
-                >
-                  {user.activo ? '✅ Activo' : '⛔ Inactivo'}
-                </button>
-              </td>
-              <td>
-                <button
-                  className="edit-btn"
-                  onClick={() => navigate(`/usuarios/editar/${user.id}`)}
-                >
-                  ✏️ Editar
-                </button>
-                <button
-                  className="delete-btn"
-                  onClick={() => navigate(`/usuarios/eliminar/${user.id}`)}
-                >
-                  🗑️ Eliminar
-                </button>
+          {loading ? (
+            <tr>
+              <td colSpan="5" className="text-center text-gray-500 py-4">
+                ⏳ Cargando usuarios...
               </td>
             </tr>
-          ))}
+          ) : usuariosFiltrados.length === 0 ? (
+            <tr>
+              <td colSpan="5" className="text-center text-gray-500 py-4">
+                No hay coincidencias con los filtros aplicados.
+              </td>
+            </tr>
+          ) : (
+            usuariosFiltrados.map(user => (
+              <tr key={user.id}>
+                <td>{user.nombre}</td>
+                <td>{user.correo}</td>
+                <td>{ROLES_MAP[user.rol] || 'Desconocido'}</td>
+                <td>
+                  <button
+                    className={user.activo ? 'estado-btn activo' : 'estado-btn inactivo'}
+                  >
+                    {user.activo ? '✅ Activo' : '⛔ Inactivo'}
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="edit-btn"
+                    onClick={() => navigate(`/usuarios/editar/${user.id}`)}
+                  >
+                    ✏️ Editar
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => navigate(`/usuarios/eliminar/${user.id}`)}
+                  >
+                    🗑️ Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

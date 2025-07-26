@@ -95,7 +95,7 @@ const EditUser = () => {
       await fetch(`http://127.0.0.1:8000/api/usuarios/usuarios/${usuario.id}/`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ activo: usuario.activo }),
+        body: JSON.stringify({  activo: usuario.activo }),
       });
 
       alert('✅ Cambios guardados correctamente.');

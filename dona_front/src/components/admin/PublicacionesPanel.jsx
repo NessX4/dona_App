@@ -11,6 +11,7 @@ const PublicacionesPanel = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [donadores, setDonadores] = useState([]);
   const [estadosDonacion, setEstadosDonacion] = useState([]);
+  const [loading, setLoading] = useState(true); // 👈 NUEVO
 
   const [filtroTitulo, setFiltroTitulo] = useState('');
   const [estadoFiltro, setEstadoFiltro] = useState('');
@@ -19,8 +20,6 @@ const PublicacionesPanel = () => {
 
   const [modalAbierto, setModalAbierto] = useState(false);
   const [publicacionSeleccionada, setPublicacionSeleccionada] = useState(null);
-  
-  
 
   const navigate = useNavigate();
 
@@ -55,8 +54,10 @@ const PublicacionesPanel = () => {
         setUsuarios(await usuariosRes.json());
         setDonadores(await donadoresRes.json());
         setEstadosDonacion(await estadosRes.json());
+        setLoading(false); // ✅ TERMINÓ DE CARGAR
       } catch (error) {
         console.error('❌ Error al cargar datos:', error);
+        setLoading(false); // ⚠️ También en error
       }
     };
 
@@ -157,29 +158,41 @@ const PublicacionesPanel = () => {
           </tr>
         </thead>
         <tbody>
-          {publicacionesFiltradas.map(publi => {
-            const sucursal = obtenerSucursal(publi.sucursal);
-            const estadoNombre = obtenerNombreEstado(publi.estado);
-            const claseEstado = obtenerClaseEstado(estadoNombre);
+          {loading ? (
+            <tr>
+              <td colSpan="5" className="text-center text-gray-500 py-4">
+                ⏳ Cargando publicaciones...
+              </td>
+            </tr>
+          ) : publicacionesFiltradas.length === 0 ? (
+            <tr>
+              <td colSpan="5" className="text-center text-gray-500 py-4">
+                No hay publicaciones que coincidan con los filtros aplicados.
+              </td>
+            </tr>
+          ) : (
+            publicacionesFiltradas.map(publi => {
+              const sucursal = obtenerSucursal(publi.sucursal);
+              const estadoNombre = obtenerNombreEstado(publi.estado);
+              const claseEstado = obtenerClaseEstado(estadoNombre);
 
-            return (
-              <tr key={publi.id}>
-                <td>{publi.titulo}</td>
-                <td>{sucursal?.nombre || 'Sucursal desconocida'}</td>
-                <td>{publi.zona ? obtenerZona(publi.zona) : '—'}</td>
-                <td>
-                  <button className={claseEstado}>
-                    {estadoNombre}
-                  </button>
-                </td>
-                <td>
-                  <button className="view-btn" onClick={() => abrirModal(publi)}>🔍 Ver más</button>
-                  <button className="edit-btn" onClick={() => navigate(`/publicaciones/editar/${publi.id}`)}>✏️ Editar</button>
-                  <button className="delete-btn" onClick={() => navigate(`/publicaciones/eliminar/${publi.id}`)}>🗑️ Eliminar</button>
-                </td>
-              </tr>
-            );
-          })}
+              return (
+                <tr key={publi.id}>
+                  <td>{publi.titulo}</td>
+                  <td>{sucursal?.nombre || 'Sucursal desconocida'}</td>
+                  <td>{publi.zona ? obtenerZona(publi.zona) : '—'}</td>
+                  <td>
+                    <button className={claseEstado}>{estadoNombre}</button>
+                  </td>
+                  <td>
+                    <button className="view-btn" onClick={() => abrirModal(publi)}>🔍 Ver más</button>
+                    <button className="edit-btn" onClick={() => navigate(`/publicaciones/editar/${publi.id}`)}>✏️ Editar</button>
+                    <button className="delete-btn" onClick={() => navigate(`/publicaciones/eliminar/${publi.id}`)}>🗑️ Eliminar</button>
+                  </td>
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
 

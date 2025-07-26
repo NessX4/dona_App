@@ -15,6 +15,13 @@ import CreatePublicacion from './CreatePublicacion'; // ajusta el path si está 
 import EditPublicacion from './editPublicacion';
 import DeletePublicacion from './deletePublicacion';
 
+import ZonasPanel from './zonasPanel';
+import CreateZona from './createZona';
+import EditZona from './editZona';
+import DeleteZona from './deleteZona';
+
+
+
 
 const AdminPanel = () => {
   return (
@@ -36,6 +43,13 @@ const AdminPanel = () => {
             <Route path="publicaciones/crear" element={<CreatePublicacion />} />
             <Route path="publicaciones/editar/:id" element={<EditPublicacion />} />
             <Route path="publicaciones/eliminar/:id" element={<DeletePublicacion />} />
+
+                  
+            <Route path="zonas" element={<ZonasPanel />} />
+            <Route path="zonas/crear" element={<CreateZona />} />
+            <Route path="zonas/editar/:id" element={<EditZona />} />
+            <Route path="zonas/eliminar/:id" element={<DeleteZona />} />
+
 
 
 

@@ -649,6 +649,14 @@ html {
   color: #111;
 }
 
+.estado-activo,
+.estado-inactivo,
+.estado-destacado,
+.estado-btn {
+  font-weight: bold !important;
+}
+
+
 
 
 
