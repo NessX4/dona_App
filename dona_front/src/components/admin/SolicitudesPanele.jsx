@@ -10,6 +10,7 @@ const SolicitudesPanel = () => {
   const [estadosDonacion, setEstadosDonacion] = useState([]);
 
   const [filtroTexto, setFiltroTexto] = useState('');
+  const [estadoFiltro, setEstadoFiltro] = useState('');
   const [orden, setOrden] = useState('reciente');
   const [loading, setLoading] = useState(true);
 
@@ -47,10 +48,7 @@ const SolicitudesPanel = () => {
   const getPublicacion = (id) => publicaciones.find(p => p.id === id);
   const getSucursal = (id) => sucursales.find(s => s.id === id);
   const getReceptor = (id) => receptores.find(r => r.id === id);
-  const getEstadoDonacion = (publicacionId) => {
-    const pub = getPublicacion(publicacionId);
-    return estadosDonacion.find(e => e.id === pub?.estado)?.nombre || '—';
-  };
+  const getEstadoNombre = (estadoId) => estadosDonacion.find(e => e.id === parseInt(estadoId))?.nombre || '—';
 
   const obtenerClaseEstado = (estadoNombre) => {
     switch (estadoNombre?.toLowerCase()) {
@@ -66,14 +64,14 @@ const SolicitudesPanel = () => {
     .filter(s => {
       const pub = getPublicacion(s.publicacion);
       const texto = filtroTexto.toLowerCase();
-      return pub?.titulo?.toLowerCase().includes(texto);
+      const estado = getEstadoNombre(s.estado).toLowerCase();
+      return pub?.titulo?.toLowerCase().includes(texto) &&
+             (!estadoFiltro || estado === estadoFiltro.toLowerCase());
     })
     .sort((a, b) => {
-      if (orden === 'reciente') {
-        return new Date(b.fecha_solicitud) - new Date(a.fecha_solicitud);
-      } else {
-        return new Date(a.fecha_solicitud) - new Date(b.fecha_solicitud);
-      }
+      const fechaA = new Date(a.fecha_solicitud);
+      const fechaB = new Date(b.fecha_solicitud);
+      return orden === 'reciente' ? fechaB - fechaA : fechaA - fechaB;
     });
 
   const abrirModal = (s) => {
@@ -101,6 +99,14 @@ const SolicitudesPanel = () => {
           value={filtroTexto}
           onChange={(e) => setFiltroTexto(e.target.value)}
         />
+
+        <select value={estadoFiltro} onChange={(e) => setEstadoFiltro(e.target.value)}>
+          <option value="">Todos los estados</option>
+          {estadosDonacion.map(estado => (
+            <option key={estado.id} value={estado.nombre}>{estado.nombre}</option>
+          ))}
+        </select>
+
         Ordenar por:
         <select value={orden} onChange={(e) => setOrden(e.target.value)}>
           <option value="reciente">Más recientes</option>
@@ -133,7 +139,7 @@ const SolicitudesPanel = () => {
             solicitudesFiltradas.map((s) => {
               const pub = getPublicacion(s.publicacion);
               const suc = getSucursal(pub?.sucursal);
-              const estadoNombre = getEstadoDonacion(s.publicacion);
+              const estadoNombre = getEstadoNombre(s.estado);
               const claseEstado = obtenerClaseEstado(estadoNombre);
 
               return (
@@ -154,14 +160,13 @@ const SolicitudesPanel = () => {
         </tbody>
       </table>
 
+      {/* Modal con detalles */}
       {modalAbierto && solicitudSeleccionada && (() => {
         const pub = getPublicacion(solicitudSeleccionada.publicacion);
         const suc = getSucursal(pub?.sucursal);
-        console.log(solicitudSeleccionada.receptor)
-
         const rec = getReceptor(solicitudSeleccionada.receptor);
-
-        const estadoNombre = getEstadoDonacion(solicitudSeleccionada.publicacion);
+        const estadoNombre = getEstadoNombre(solicitudSeleccionada.estado);
+        const claseEstado = obtenerClaseEstado(estadoNombre);
 
         return (
           <div className="modal-overlay">
@@ -175,25 +180,14 @@ const SolicitudesPanel = () => {
                 <div className="campo"><span>Cantidad:</span> {pub?.cantidad || '—'}</div>
               </div>
 
-
-
-
-             <div className="modal-seccion">
-  <h4><i className="fas fa-store"></i> Sucursal</h4><div className="campo">
-  <span>Sucursal:</span>{' '}
-  {suc?.nombre ? `${suc.nombre} - ${suc.direccion}` : '—'}
-</div>
-
-  
-  <div className="campo"><span>Representante:</span> {suc?.representante || '—'}</div>
-  <div className="campo"><span>Teléfono:</span> {suc?.telefono || '—'}</div>
- </div>
-
-
-
-
-
-
+              <div className="modal-seccion">
+                <h4><i className="fas fa-store"></i> Sucursal</h4>
+                <div className="campo">
+                  <span>Sucursal:</span> {suc?.nombre ? `${suc.nombre} - ${suc.direccion}` : '—'}
+                </div>
+                <div className="campo"><span>Representante:</span> {suc?.representante || '—'}</div>
+                <div className="campo"><span>Teléfono:</span> {suc?.telefono || '—'}</div>
+              </div>
 
               <div className="modal-seccion">
                 <h4><i className="fas fa-hand-holding-heart"></i> Receptor</h4>
@@ -205,7 +199,10 @@ const SolicitudesPanel = () => {
               <div className="modal-seccion">
                 <h4><i className="fas fa-calendar-day"></i> Solicitud</h4>
                 <div className="campo"><span>Fecha de solicitud:</span> {solicitudSeleccionada.fecha_solicitud?.split('T')[0]}</div>
-                <div className="campo"><span>Estado:</span> {estadoNombre}</div>
+                <div className="campo">
+                  <span>Estado:</span>{' '}
+                  <span className={claseEstado} style={{ marginLeft: '8px' }}>{estadoNombre}</span>
+                </div>
                 <div className="campo"><span>Comentarios:</span> {solicitudSeleccionada.comentarios || '—'}</div>
               </div>
 
