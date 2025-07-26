@@ -10,6 +10,33 @@ const Donaciones = () => {
   const [categorias, setCategorias] = useState([]);
   const [archivosAdjuntos, setArchivosAdjuntos] = useState([]);
 
+  const [donaciones] = useState([
+    {
+      id: 1,
+      sucursal: "Sucursal Centro",
+      estado: "En proceso",
+      publicacion: "Comida para familias",
+      categoria: "Alimentos secos",
+      comida: "Arroz",
+    },
+    {
+      id: 2,
+      sucursal: "Sucursal Norte",
+      estado: "Completada",
+      publicacion: "Donación de frutas",
+      categoria: "Frutas",
+      comida: "Manzanas",
+    },
+    {
+      id: 3,
+      sucursal: "Sucursal Sur",
+      estado: "Pendiente",
+      publicacion: "Comida enlatada",
+      categoria: "Enlatados",
+      comida: "Atún",
+    },
+  ]);
+
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/")
       .then((res) => res.json())
@@ -64,37 +91,6 @@ const Donaciones = () => {
   const getArchivosPorPublicacion = (pubId) => {
     return archivosAdjuntos.filter((a) => a.publicacion === pubId);
   };
-import React, { useState } from "react";
-import VoluntarioHeader from "../../../components/VoluntarioHeader";
-
-const Donaciones = () => {
-  // Datos locales simulando la API
-  const [donaciones] = useState([
-    {
-      id: 1,
-      sucursal: "Sucursal Centro",
-      estado: "En proceso",
-      publicacion: "Comida para familias",
-      categoria: "Alimentos secos",
-      comida: "Arroz",
-    },
-    {
-      id: 2,
-      sucursal: "Sucursal Norte",
-      estado: "Completada",
-      publicacion: "Donación de frutas",
-      categoria: "Frutas",
-      comida: "Manzanas",
-    },
-    {
-      id: 3,
-      sucursal: "Sucursal Sur",
-      estado: "Pendiente",
-      publicacion: "Comida enlatada",
-      categoria: "Enlatados",
-      comida: "Atún",
-    },
-  ]);
 
   return (
     <>
@@ -114,7 +110,6 @@ const Donaciones = () => {
                 <div key={item.id} className="publicacion-card">
                   <h2>{item.titulo}</h2>
 
-                  {/* Imagen justo debajo del título */}
                   {archivosAsociados.length > 0 && (
                     <div className="imagen-wrapper">
                       <img
@@ -154,6 +149,7 @@ const Donaciones = () => {
             })}
           </div>
         )}
+
         <table>
           <thead>
             <tr>
