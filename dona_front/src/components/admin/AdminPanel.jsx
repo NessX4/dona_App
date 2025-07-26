@@ -27,6 +27,8 @@ import EditSucursal from './EditSucursal';
 import DeleteSucursal from './deleteSucursal';
 
 
+import SolicitudesPanel from './SolicitudesPanele';
+
 
 
 
@@ -62,9 +64,10 @@ const AdminPanel = () => {
             <Route path="sucursales" element={<SucursalesPanel />} />
             <Route path="sucursales/crear" element={<CreateSucursal />} />
             <Route path="sucursales/editar/:id" element={<EditSucursal />} />
-            
             <Route path="sucursales/eliminar/:id" element={<DeleteSucursal />} />
 
+
+            <Route path="solicitudes" element={<SolicitudesPanel />} />
 
 
 
