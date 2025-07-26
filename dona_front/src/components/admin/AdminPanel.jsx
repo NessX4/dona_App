@@ -27,7 +27,16 @@ import EditSucursal from './EditSucursal';
 import DeleteSucursal from './deleteSucursal';
 
 
+import SolicitudesPanel from './SolicitudesPanele';
+import CreateSolicitud from './CreateSolicitud';
+import EditSolicitud from './EditSolicitud';
+import HistorialSolicitud from './historialSolicitud'; 
 
+
+import NotificacionesPanel from './notificacionesPanel';
+
+
+import LogsPanel from './logsPanel'; // ajusta ruta si está en otra carpeta
 
 
 
@@ -62,8 +71,18 @@ const AdminPanel = () => {
             <Route path="sucursales" element={<SucursalesPanel />} />
             <Route path="sucursales/crear" element={<CreateSucursal />} />
             <Route path="sucursales/editar/:id" element={<EditSucursal />} />
-            
             <Route path="sucursales/eliminar/:id" element={<DeleteSucursal />} />
+
+
+            <Route path="solicitudes" element={<SolicitudesPanel />} />
+            <Route path="solicitudes/crear" element={<CreateSolicitud />} />
+            <Route path="solicitudes/editar/:id" element={<EditSolicitud />} />
+            <Route path="solicitudes/historial/:id" element={<HistorialSolicitud />} />  
+
+            <Route path="notificaciones" element={<NotificacionesPanel />} />
+
+            <Route path="logs" element={<LogsPanel />} />
+
 
 
 

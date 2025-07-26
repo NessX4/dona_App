@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from .models import Usuario, Rol, Donador, Receptor, Voluntario, Administrador
+from notificaciones.models import Notificacion
+
+# -------------------- Usuario y Rol --------------------
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,12 +17,34 @@ class UsuarioSerializer(serializers.ModelSerializer):
         usuario = Usuario(**validated_data)
         usuario.set_password(raw_password)
         usuario.save()
+
+        # ✅ Verifica si es administrador
+        if usuario.rol.nombre != 'Administrador':
+            mensaje = f"🆕 Nuevo {usuario.rol.nombre} registrado: {usuario.nombre}"
+
+            for admin in Usuario.objects.filter(rol__nombre='Administrador'):
+                # 🔥 Solo crear si NO existe una notificación igual
+                ya_existe = Notificacion.objects.filter(
+                    usuario=admin,
+                    mensaje=mensaje
+                ).exists()
+
+                if not ya_existe:
+                    Notificacion.objects.create(usuario=admin, mensaje=mensaje)
+
         return usuario
+
+
+
+
+
 
 class RolSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rol
         fields = '__all__'
+
+# -------------------- Donador --------------------
 
 class DonadorSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer()
@@ -30,10 +55,20 @@ class DonadorSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
-        usuario_data['rol'] = Rol.objects.get(nombre='Donador')  # Ajusta según datos reales
+        usuario_data['rol'] = Rol.objects.get(nombre='Donador')
         usuario = UsuarioSerializer().create(usuario_data)
         donador = Donador.objects.create(usuario=usuario, **validated_data)
+
+        # 🔔 Notificación para administradores
+        for admin in Usuario.objects.filter(rol__nombre='Administrador'):
+            Notificacion.objects.create(
+                usuario=admin,
+                mensaje=f"🆕 Nuevo Donador registrado: {usuario.nombre}"
+            )
+
         return donador
+
+# -------------------- Receptor --------------------
 
 class ReceptorSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer()
@@ -47,7 +82,16 @@ class ReceptorSerializer(serializers.ModelSerializer):
         usuario_data['rol'] = Rol.objects.get(nombre='Receptor')
         usuario = UsuarioSerializer().create(usuario_data)
         receptor = Receptor.objects.create(usuario=usuario, **validated_data)
+
+        for admin in Usuario.objects.filter(rol__nombre='Administrador'):
+            Notificacion.objects.create(
+                usuario=admin,
+                mensaje=f"🆕 Nuevo Receptor registrado: {usuario.nombre}"
+            )
+
         return receptor
+
+# -------------------- Voluntario --------------------
 
 class VoluntarioSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer()
@@ -61,7 +105,16 @@ class VoluntarioSerializer(serializers.ModelSerializer):
         usuario_data['rol'] = Rol.objects.get(nombre='Voluntario')
         usuario = UsuarioSerializer().create(usuario_data)
         voluntario = Voluntario.objects.create(usuario=usuario, **validated_data)
+
+        for admin in Usuario.objects.filter(rol__nombre='Administrador'):
+            Notificacion.objects.create(
+                usuario=admin,
+                mensaje=f"🆕 Nuevo Voluntario registrado: {usuario.nombre}"
+            )
+
         return voluntario
+
+# -------------------- Administrador --------------------
 
 class AdministradorSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer()
@@ -75,4 +128,11 @@ class AdministradorSerializer(serializers.ModelSerializer):
         usuario_data['rol'] = Rol.objects.get(nombre='Administrador')
         usuario = UsuarioSerializer().create(usuario_data)
         administrador = Administrador.objects.create(usuario=usuario)
+
+        for admin in Usuario.objects.filter(rol__nombre='Administrador'):
+            Notificacion.objects.create(
+                usuario=admin,
+                mensaje=f"🆕 Nuevo Administrador registrado: {usuario.nombre}"
+            )
+
         return administrador

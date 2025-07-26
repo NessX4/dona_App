@@ -62,11 +62,30 @@ const Sidebar = () => {
 
 
 
+<NavLink to="/solicitudes" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+  <li>
+    <i className="bi bi-inbox-fill"></i> Solicitudes
+  </li>
+</NavLink>
 
         
-        <li><i className="bi bi-inbox-fill"></i> Solicitudes</li>
-        <li><i className="bi bi-bell-fill"></i> Notificaciones</li>
-        <li><i className="bi bi-clock-history"></i> Logs</li>
+
+
+<NavLink to="/notificaciones" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+  <li>
+    <i className="bi bi-bell-fill"></i> Notificaciones
+  </li>
+</NavLink>
+
+
+
+<NavLink to="/logs" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+  <li>
+    <i className="bi bi-clock-history"></i> Logs
+  </li>
+</NavLink>
+
+        
       </ul>
     </div>
   );

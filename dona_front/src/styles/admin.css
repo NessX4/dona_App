@@ -980,3 +980,34 @@ table {
   color: black;
 }
 
+
+
+
+
+
+
+
+
+.estado-destacado {
+  padding: 0.4rem 1rem;
+  font-weight: bold;
+  border-radius: 20px;
+  width: fit-content;
+  margin: 1rem 0;
+  color: white;
+  text-transform: capitalize;
+}
+
+.estado-destacado.disponible {
+  background-color: #43a047;
+}
+.estado-destacado.cancelado {
+  background-color: #e53935;
+}
+.estado-destacado.en-camino {
+  background-color: #fbc02d;
+  color: #000;
+}
+.estado-destacado.entregado {
+  background-color: #64b5f6;
+}
