@@ -71,8 +71,15 @@ const Sidebar = () => {
         
 
 
+<NavLink to="/notificaciones" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+  <li>
+    <i className="bi bi-bell-fill"></i> Notificaciones
+  </li>
+</NavLink>
 
-        <li><i className="bi bi-bell-fill"></i> Notificaciones</li>
+
+
+
         <li><i className="bi bi-clock-history"></i> Logs</li>
       </ul>
     </div>

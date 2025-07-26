@@ -33,6 +33,8 @@ import EditSolicitud from './EditSolicitud';
 import HistorialSolicitud from './historialSolicitud'; 
 
 
+import NotificacionesPanel from './notificacionesPanel';
+
 
 
 
@@ -75,6 +77,9 @@ const AdminPanel = () => {
             <Route path="solicitudes/crear" element={<CreateSolicitud />} />
             <Route path="solicitudes/editar/:id" element={<EditSolicitud />} />
             <Route path="solicitudes/historial/:id" element={<HistorialSolicitud />} />  
+
+            <Route path="notificaciones" element={<NotificacionesPanel />} />
+
 
 
 
