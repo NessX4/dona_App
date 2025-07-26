@@ -151,7 +151,7 @@ const SolicitudesPanel = () => {
                   <td>
                     <button className="view-btn" onClick={() => abrirModal(s)}>🔍 Ver más</button>
                     <button className="edit-btn" onClick={() => navigate(`/solicitudes/editar/${s.id}`)}>✏️ Editar</button>
-                    <button className="delete-btn" onClick={() => navigate(`/solicitudes/historial/${s.id}`)}>📜 Historial</button>
+                    <button className="delete-btn" onClick={() => navigate(`/solicitudes/historial/${s.id}`)}>📜 Eliminar historial</button>
                   </td>
                 </tr>
               );
