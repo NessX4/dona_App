@@ -30,6 +30,7 @@ import DeleteSucursal from './deleteSucursal';
 import SolicitudesPanel from './SolicitudesPanele';
 import CreateSolicitud from './CreateSolicitud';
 import EditSolicitud from './EditSolicitud';
+import HistorialSolicitud from './historialSolicitud'; 
 
 
 
@@ -73,6 +74,7 @@ const AdminPanel = () => {
             <Route path="solicitudes" element={<SolicitudesPanel />} />
             <Route path="solicitudes/crear" element={<CreateSolicitud />} />
             <Route path="solicitudes/editar/:id" element={<EditSolicitud />} />
+            <Route path="solicitudes/historial/:id" element={<HistorialSolicitud />} />  
 
 
 

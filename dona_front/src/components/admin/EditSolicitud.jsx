@@ -71,24 +71,67 @@ const EditSolicitud = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(`http://localhost:8000/api/solicitudes/solicitudes/${id}/`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
 
-      if (!res.ok) throw new Error('Error al actualizar la solicitud');
 
-      alert('✅ Solicitud actualizada con éxito');
-      navigate('/solicitudes');
-    } catch (error) {
-      console.error('❌ Error al actualizar la solicitud:', error);
-      alert('❌ No se pudo actualizar la solicitud');
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    // PATCH de la solicitud
+    const res = await fetch(`http://localhost:8000/api/solicitudes/solicitudes/${id}/`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    if (!res.ok) throw new Error('Error al actualizar la solicitud');
+
+    // 🔍 Extraer datos necesarios para el historial
+    const sucursal = sucursales.find(s => s.id === publicacionCompleta?.sucursal);
+    const donadorId = sucursal?.donador;
+
+    // ⚠️ Validaciones mínimas
+    if (!formData.publicacion || !formData.receptor || !donadorId) {
+      console.error('❌ Faltan datos requeridos para historial');
+      alert('❌ No se pudo registrar en historial: datos incompletos');
+      return;
     }
-  };
+
+    // 📝 Crear el payload simple
+    const historialPayload = {
+      tipo: 'Actualizaciones',
+      publicacion: parseInt(formData.publicacion),
+      receptor: parseInt(formData.receptor),
+      donador: donadorId
+    };
+
+    // 🌐 POST al historial
+    const histRes = await fetch('http://localhost:8000/api/solicitudes/historiales/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(historialPayload)
+    });
+
+    if (!histRes.ok) {
+      const errorData = await histRes.json();
+      console.error('❌ Error al guardar historial:', errorData);
+      alert('❌ Falló el registro del historial');
+      return;
+    }
+
+    alert('✅ Solicitud actualizada con éxito');
+    navigate('/solicitudes');
+  } catch (error) {
+    console.error('❌ Error general en edición:', error);
+    alert('❌ No se pudo actualizar la solicitud');
+  }
+};
+
+
+
+
+
+
 
   const sucursalInfo = getSucursalInfo();
 
