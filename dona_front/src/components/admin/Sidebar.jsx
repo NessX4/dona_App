@@ -79,8 +79,13 @@ const Sidebar = () => {
 
 
 
+<NavLink to="/logs" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+  <li>
+    <i className="bi bi-clock-history"></i> Logs
+  </li>
+</NavLink>
 
-        <li><i className="bi bi-clock-history"></i> Logs</li>
+        
       </ul>
     </div>
   );
