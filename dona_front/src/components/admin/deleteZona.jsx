@@ -1,4 +1,3 @@
-// src/components/admin/DeleteZona.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import fondoDecorativo from '../../assets/DonalogoHD.png';
@@ -66,6 +65,29 @@ const DeleteZona = () => {
     }
   };
 
+  const marcarComoInactiva = async () => {
+    try {
+      const nombreInactivo = zona.nombre.toLowerCase().includes('inactiva')
+        ? zona.nombre
+        : `${zona.nombre} (inactiva)`;
+
+      const res = await fetch(`http://localhost:8000/api/zonas/zonas/${id}/`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre: nombreInactivo })
+      });
+
+      if (res.ok) {
+        alert('🚫 Zona marcada como inactiva');
+        window.location.hash = '#/zonas';
+      } else {
+        alert('❌ No se pudo marcar como inactiva');
+      }
+    } catch (error) {
+      console.error('❌ Error al marcar como inactiva:', error);
+    }
+  };
+
   if (loading) {
     return <div className="main-content">⏳ Cargando información...</div>;
   }
@@ -84,6 +106,8 @@ const DeleteZona = () => {
       </div>
     );
   }
+
+  const yaInactiva = zona.nombre.toLowerCase().includes('inactiva');
 
   return (
     <div className="main-content">
@@ -104,18 +128,25 @@ const DeleteZona = () => {
         </tbody>
       </table>
 
-      {relacionada ? (
-        <p style={{ marginTop: '1.2rem', color: '#c62828', fontWeight: 'bold' }}>
-          ⚠️ Esta zona tiene entidades relacionadas (ubicaciones o sucursales) y no puede ser eliminada.
-        </p>
-      ) : (
-        <p style={{ marginTop: '1.2rem', color: '#b00020', fontWeight: 'bold' }}>
-          ⚠️ Esta acción no se puede deshacer. ¿Estás segur@ que deseas eliminar esta zona?
-        </p>
-      )}
+      <p style={{ marginTop: '1.2rem', color: '#b00020', fontWeight: 'bold' }}>
+        {relacionada
+          ? yaInactiva
+            ? '⚠️ Esta zona está asociada a elementos del sistema y no puede ser eliminada.'
+            : '⚠️ Esta zona está asociada a elementos del sistema y no puede ser eliminada..'
+          : '⚠️ Esta acción no se puede deshacer. ¿Estás segur@ que deseas eliminar esta zona?'}
+      </p>
+
+{relacionada && !yaInactiva && (
+  <p style={{ marginTop: '1.5rem', marginBottom: '1rem', color: '#555', fontStyle: 'italic' }}>
+    Puedes marcar esta zona como inactiva para que no aparezca más en el sistema, sin eliminarla.
+  </p>
+)}
 
       <div className="delete-buttons">
+
+        
         {!relacionada && (
+        
           <button
             className="delete-confirm-btn"
             onClick={() => {
@@ -128,6 +159,22 @@ const DeleteZona = () => {
             <i className="fas fa-trash-alt"></i> Eliminar
           </button>
         )}
+
+        {relacionada && !yaInactiva && (
+          <button
+            className="delete-confirm-btn"
+            style={{ backgroundColor: '#bdbdbd', color: '#333' }}
+            onClick={() => {
+              const confirmar = window.confirm("⚠️ ¿Estás segur@ que deseas marcar esta zona como inactiva?");
+              if (confirmar) {
+                marcarComoInactiva();
+              }
+            }}
+          >
+            <i className="fas fa-ban"></i> Marcar como Inactiva
+          </button>
+        )}
+
         <button
           className="cancel-delete-btn"
           onClick={() => window.location.hash = '#/zonas'}

@@ -1,87 +1,98 @@
 // src/components/admin/EditZona.jsx
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../styles/admin.css";
 import fondoDecorativo from "../../assets/DonalogoHD.png";
 
 const EditZona = () => {
-  const { id } = useParams(); // ID de la zona
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const [zona, setZona] = useState(null);
+  const [nombre, setNombre] = useState("");
+  const [ciudad, setCiudad] = useState("");
+  const [estado, setEstado] = useState("");
+  const [codigoPostal, setCodigoPostal] = useState("");
   const [direccion, setDireccion] = useState("");
-  const [ubicacionId, setUbicacionId] = useState(null); // ID de la ubicación asociada
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Cargar zona
-    fetch(`http://localhost:8000/api/zonas/zonas/${id}/`)
-      .then((res) => res.json())
-      .then((data) => setZona(data))
-      .catch((err) => console.error("Error al cargar zona:", err));
+    const fetchZona = async () => {
+      try {
+        const [zonaRes, ubicacionesRes] = await Promise.all([
+          fetch(`http://localhost:8000/api/zonas/zonas/${id}/`),
+          fetch("http://localhost:8000/api/zonas/ubicaciones/")
+        ]);
 
-    // Cargar ubicación asociada
-    fetch("http://localhost:8000/api/zonas/ubicaciones/")
-      .then((res) => res.json())
-      .then((data) => {
-        const ubicacion = data.find((u) => u.zona === parseInt(id));
-        if (ubicacion) {
-          setDireccion(ubicacion.direccion);
-          setUbicacionId(ubicacion.id);
-        }
-      })
-      .catch((err) => console.error("Error al cargar ubicación:", err));
+        if (!zonaRes.ok) throw new Error("Error al cargar zona");
+
+        const zonaData = await zonaRes.json();
+        const ubicacionesData = await ubicacionesRes.json();
+
+        setNombre(zonaData.nombre);
+        setCiudad(zonaData.ciudad);
+        setEstado(zonaData.estado);
+        setCodigoPostal(zonaData.codigo_postal);
+
+        const ubicacionZona = ubicacionesData.find(
+          (u) => u.zona === zonaData.id
+        );
+        setDireccion(ubicacionZona?.direccion || "");
+      } catch (error) {
+        console.error("❌ Error al cargar datos:", error);
+        alert("Error al cargar zona");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchZona();
   }, [id]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setZona((prev) => ({ ...prev, [name]: value }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // PATCH a la zona
-      const resZona = await fetch(`http://localhost:8000/api/zonas/zonas/${id}/`, {
-        method: "PATCH",
+      // Actualizar zona
+      const zonaRes = await fetch(`http://localhost:8000/api/zonas/zonas/${id}/`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nombre: zona.nombre,
-          ciudad: zona.ciudad,
-          estado: zona.estado,
-          codigo_postal: zona.codigo_postal
+          nombre,
+          ciudad,
+          estado,
+          codigo_postal: codigoPostal
         })
       });
 
-      if (!resZona.ok) throw new Error("Error al actualizar la zona");
+      if (!zonaRes.ok) throw new Error("Error al actualizar zona");
 
-      // PATCH a la ubicación (si existe)
-      if (ubicacionId) {
-        const resUbicacion = await fetch(
-          `http://localhost:8000/api/zonas/ubicaciones/${ubicacionId}/`,
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              direccion,
-              latitud: 0,
-              longitud: 0
-            })
-          }
-        );
+      // Actualizar ubicación asociada
+      const ubicacionesRes = await fetch("http://localhost:8000/api/zonas/ubicaciones/");
+      const ubicaciones = await ubicacionesRes.json();
+      const ubicacion = ubicaciones.find((u) => u.zona === parseInt(id));
 
-        if (!resUbicacion.ok) throw new Error("Error al actualizar ubicación");
+      if (ubicacion) {
+        await fetch(`http://localhost:8000/api/zonas/ubicaciones/${ubicacion.id}/`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            direccion,
+            latitud: 0,
+            longitud: 0,
+            zona: id
+          })
+        });
       }
 
-      alert("✅ Zona actualizada correctamente");
+      alert("✅ Zona actualizada exitosamente");
       navigate("/zonas");
-    } catch (err) {
-      console.error("❌ Error:", err);
-      alert("Error al guardar los cambios.");
+    } catch (error) {
+      console.error("❌ Error:", error);
+      alert("Ocurrió un error al actualizar la zona.");
     }
   };
 
-  if (!zona) return <div className="main-content">Cargando zona...</div>;
+  if (loading) return <div className="main-content">⏳ Cargando zona...</div>;
 
   return (
     <div className="main-content" style={{ position: "relative" }}>
@@ -90,16 +101,42 @@ const EditZona = () => {
         alt="Decoración DonaApp"
         className="decorative-image"
       />
-      <h2 className="titulo-principal">✏️ Editar Zona</h2>
+      <h2 className="titulo-principal">✏️ Editar zona</h2>
       <div className="edit-card compacta">
         <form onSubmit={handleSubmit} className="user-form">
+
+          {/* Estado visual (Activo/Inactivo) */}
+          <div className="form-group">
+            <label>Estado de la zona:</label>
+            <select
+              value={nombre.toLowerCase().includes("inactiva") ? "inactiva" : "activa"}
+              onChange={(e) => {
+                const estado = e.target.value;
+                setNombre((prev) => {
+                  const limpio = prev.replace(/\s*\(inactiva\)/i, "").trim();
+                  return estado === "inactiva" ? `${limpio} (INACTIVA)` : limpio;
+                });
+              }}
+            >
+              <option value="activa">✅ Activa</option>
+              <option value="inactiva">⛔ Inactiva</option>
+            </select>
+          </div>
+
+          {/* Nombre editable sin sufijo */}
           <div className="form-group">
             <label>Nombre:</label>
             <input
               type="text"
-              name="nombre"
-              value={zona.nombre}
-              onChange={handleChange}
+              value={nombre.replace(/\s*\(inactiva\)/i, "").trim()}
+              onChange={(e) => {
+                const limpio = e.target.value;
+                setNombre((prev) =>
+                  prev.toLowerCase().includes("inactiva")
+                    ? `${limpio} (INACTIVA)`
+                    : limpio
+                );
+              }}
               required
             />
           </div>
@@ -108,9 +145,8 @@ const EditZona = () => {
             <label>Ciudad:</label>
             <input
               type="text"
-              name="ciudad"
-              value={zona.ciudad}
-              onChange={handleChange}
+              value={ciudad}
+              onChange={(e) => setCiudad(e.target.value)}
               required
             />
           </div>
@@ -119,9 +155,8 @@ const EditZona = () => {
             <label>Estado:</label>
             <input
               type="text"
-              name="estado"
-              value={zona.estado}
-              onChange={handleChange}
+              value={estado}
+              onChange={(e) => setEstado(e.target.value)}
               required
             />
           </div>
@@ -130,9 +165,8 @@ const EditZona = () => {
             <label>Código Postal:</label>
             <input
               type="text"
-              name="codigo_postal"
-              value={zona.codigo_postal}
-              onChange={handleChange}
+              value={codigoPostal}
+              onChange={(e) => setCodigoPostal(e.target.value)}
               required
             />
           </div>
@@ -149,7 +183,7 @@ const EditZona = () => {
 
           <button type="submit" className="guardar-btn">
             <i className="fas fa-save" style={{ color: "white", marginRight: "13px" }}></i>
-            Guardar Cambios
+            Guardar cambios
           </button>
         </form>
       </div>

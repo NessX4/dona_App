@@ -1,4 +1,3 @@
-// src/components/admin/zonasPanel.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/admin.css";
@@ -10,6 +9,8 @@ const ZonasPanel = () => {
   const [ciudadFiltro, setCiudadFiltro] = useState('');
   const [ordenNombre, setOrdenNombre] = useState('az');
   const [ciudadesDisponibles, setCiudadesDisponibles] = useState([]);
+  const [activosPrimero, setActivosPrimero] = useState(false);
+  const [loading, setLoading] = useState(true); // 🚩 nuevo estado
 
   const navigate = useNavigate();
 
@@ -27,11 +28,12 @@ const ZonasPanel = () => {
         setZonas(zonasData);
         setUbicaciones(ubicacionesData);
 
-        // Obtener ciudades únicas
         const ciudadesUnicas = [...new Set(zonasData.map(z => z.ciudad))];
         setCiudadesDisponibles(ciudadesUnicas);
       } catch (error) {
         console.error("❌ Error al cargar zonas o ubicaciones:", error);
+      } finally {
+        setLoading(false); // ✅ termina de cargar
       }
     };
 
@@ -43,6 +45,10 @@ const ZonasPanel = () => {
     return ubicacion?.direccion || "Ubicación no encontrada";
   };
 
+  const esZonaActiva = (zona) => {
+    return !zona.nombre.toLowerCase().includes("inactiva");
+  };
+
   const zonasFiltradas = zonas
     .filter((zona) =>
       zona.nombre.toLowerCase().includes(nombreFiltro.toLowerCase())
@@ -50,11 +56,16 @@ const ZonasPanel = () => {
     .filter((zona) =>
       ciudadFiltro === '' || zona.ciudad === ciudadFiltro
     )
-    .sort((a, b) =>
-      ordenNombre === 'az'
+    .sort((a, b) => {
+      if (activosPrimero) {
+        const aActivo = esZonaActiva(a);
+        const bActivo = esZonaActiva(b);
+        if (aActivo !== bActivo) return aActivo ? -1 : 1;
+      }
+      return ordenNombre === 'az'
         ? a.nombre.localeCompare(b.nombre)
-        : b.nombre.localeCompare(a.nombre)
-    );
+        : b.nombre.localeCompare(a.nombre);
+    });
 
   return (
     <div className="main-content">
@@ -85,6 +96,16 @@ const ZonasPanel = () => {
           ))}
         </select>
 
+        <label className="checkbox-label">
+          Activos primero
+          <input
+            type="checkbox"
+            checked={activosPrimero}
+            onChange={(e) => setActivosPrimero(e.target.checked)}
+            style={{ marginLeft: "8px" }}
+          />
+        </label>
+
         Ordenar por:
         <select value={ordenNombre} onChange={(e) => setOrdenNombre(e.target.value)}>
           <option value="az">A → Z</option>
@@ -100,25 +121,39 @@ const ZonasPanel = () => {
             <th>CP</th>
             <th>Ciudad</th>
             <th>Estado</th>
+            <th>Estatus</th>
             <th>Acciones</th>
           </tr>
         </thead>
 
         <tbody>
-          {zonasFiltradas.length === 0 ? (
+          {loading ? (
             <tr>
-              <td colSpan="6" className="text-center text-gray-500 py-4">
-                No hay zonas registradas.
+              <td colSpan="7" className="text-center text-gray-500 py-4">
+                ⏳ Cargando zonas...
+              </td>
+            </tr>
+          ) : zonasFiltradas.length === 0 ? (
+            <tr>
+              <td colSpan="7" className="text-center text-gray-500 py-4">
+                No hay zonas que coincidan con los filtros aplicados.
               </td>
             </tr>
           ) : (
             zonasFiltradas.map((zona) => (
               <tr key={zona.id}>
-                <td>{zona.nombre}</td>
+                <td>{zona.nombre.replace(/ *\(?inactiva\)?/i, "").trim()}</td>
                 <td>{obtenerDireccion(zona)}</td>
                 <td>{zona.codigo_postal}</td>
                 <td>{zona.ciudad}</td>
                 <td>{zona.estado}</td>
+                <td>
+                  <span
+                    className={`estado-btn ${esZonaActiva(zona) ? "activo" : "inactivo"}`}
+                  >
+                    {esZonaActiva(zona) ? "✅ Activo" : "⛔ Inactivo"}
+                  </span>
+                </td>
                 <td>
                   <button
                     className="edit-btn"
