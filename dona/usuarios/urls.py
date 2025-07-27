@@ -4,7 +4,8 @@ from .views import (
     UsuarioViewSet, RolViewSet,
     DonadorViewSet, ReceptorViewSet,
     VoluntarioViewSet, AdministradorViewSet,
-    login_view
+    login_jwt, usuario_logueado,
+    cambiar_contrasena, reset_password_simple
 )
 from .views import LogSistemaViewSet
 
@@ -20,5 +21,9 @@ router.register(r'logs', LogSistemaViewSet, basename='logs')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('login/', login_view, name='login')
+    path('login/', login_jwt, name='login'),
+    path('me/', usuario_logueado, name='usuario_logueado'),
+    path('cambiar-contrasena/', cambiar_contrasena, name='cambiar_contrasena'),
+    path('reset-password/', reset_password_simple, name='reset_password_simple'),
+
 ]

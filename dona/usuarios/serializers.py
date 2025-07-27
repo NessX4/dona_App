@@ -10,11 +10,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = '__all__'
         extra_kwargs = {
-            'contraseña': {'write_only': True}
+            'password': {'write_only': True}
         }
 
     def create(self, validated_data):
-        raw_password = validated_data.pop('contraseña')
+        raw_password = validated_data.pop('password')
         usuario = Usuario(**validated_data)
         usuario.set_password(raw_password)
         usuario.save()
@@ -145,3 +145,5 @@ class AdministradorSerializer(serializers.ModelSerializer):
             )
 
         return administrador
+
+# checar que hacer con admin
