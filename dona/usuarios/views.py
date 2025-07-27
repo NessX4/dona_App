@@ -1,11 +1,16 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, UpdateView, DeleteView, CreateView
-from django.urls import reverse_lazy
-from .models import Donador, Usuario, Rol, Receptor, Voluntario, Administrador
-from .forms import UsuarioDonadorForm, DonadorForm, UsuarioReceptorForm, ReceptorForm, UsuarioVoluntarioForm, VoluntarioForm, UsuarioGenForm
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
-from .forms import AdministradorForm
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth import authenticate
+
+from .models import Usuario, Rol, Donador, Receptor, Voluntario, Administrador
+from .serializers import (
+    UsuarioSerializer, RolSerializer,
+    DonadorSerializer, ReceptorSerializer,
+    VoluntarioSerializer, AdministradorSerializer
+)
 
 
 class RolListView(ListView):
@@ -59,206 +64,65 @@ class DonadorUpdateView(UpdateView):
         context['usuario'] = self.object.usuario
         return context
 
-# Delete
-class DonadorDeleteView(DeleteView):
-    model = Donador
-    template_name = 'usuarios/eliminar_donador.html'
-    success_url = reverse_lazy('usuarios:lista_donadores')
-  
-# Login View  
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('email')  # Usamos email como username
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # Cambia 'home' por tu URL de inicio
-        else:
-            messages.error(request, 'Correo o contraseña incorrectos')
-    
-    return render(request, 'usuarios/login.html')
+# Login que devuelve JWT tokens
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def login_jwt(request):
+    correo = request.data.get('correo')
+    password = request.data.get('password')
 
-# Registro
-def registro_receptor(request):
-    if request.method == 'POST':
-        user_form = UsuarioReceptorForm(request.POST)
-        receptor_form = ReceptorForm(request.POST)
-        
-        if user_form.is_valid() and receptor_form.is_valid():
-            # Crear usuario
-            usuario = user_form.save(commit=False)
-            usuario.rol = Rol.objects.get(nombre='Receptor')  # Asegúrate que exista
-            usuario.save()
-            
-            # Crear receptor
-            receptor = receptor_form.save(commit=False)
-            receptor.usuario = usuario
-            receptor.save()
-            
-            return redirect('usuarios:lista_receptores')
+    usuario = authenticate(request, username=correo, password=password)
+    if usuario is not None:
+        refresh = RefreshToken.for_user(usuario)
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'usuario_id': usuario.id,
+            'rol': usuario.rol.nombre
+        })
     else:
-        user_form = UsuarioReceptorForm()
-        receptor_form = ReceptorForm()
+        return Response({"error": "Correo o contraseña incorrectos"}, status=status.HTTP_401_UNAUTHORIZED)
 
-    return render(request, 'usuarios/registro_receptor.html', {
-        'user_form': user_form,
-        'receptor_form': receptor_form
-    })
+# Obtener info del usuario logueado
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def usuario_logueado(request):
+    serializer = UsuarioSerializer(request.user)
+    return Response(serializer.data)
 
-# Lista
-class ReceptorListView(ListView):
-    model = Receptor
-    template_name = 'usuarios/lista_receptores.html'
-    context_object_name = 'receptores'
-    paginate_by = 10
+# Cambiar contraseña
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def cambiar_contrasena(request):
+    usuario = request.user
+    password_actual = request.data.get('password_actual')
+    new_password = request.data.get('new_password')
 
-# Edición
-class ReceptorUpdateView(UpdateView):
-    model = Receptor
-    form_class = ReceptorForm
-    template_name = 'usuarios/editar_receptor.html'
-    success_url = reverse_lazy('usuarios:lista_receptores')
+    if not usuario.check_password(password_actual):
+        return Response({"error": "Contraseña actual incorrecta"}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['usuario'] = self.object.usuario
-        return context
+    if not new_password or len(new_password) < 6:
+        return Response({"error": "Nueva contraseña inválida"}, status=status.HTTP_400_BAD_REQUEST)
 
-# Eliminación
-class ReceptorDeleteView(DeleteView):
-    model = Receptor
-    template_name = 'usuarios/eliminar_receptor.html'
-    success_url = reverse_lazy('usuarios:lista_receptores')
-    
+    usuario.set_password(new_password)
+    usuario.save()
+    return Response({"message": "Contraseña cambiada correctamente"})
 
-# Registro
-def registro_voluntario(request):
-    if request.method == 'POST':
-        user_form = UsuarioVoluntarioForm(request.POST)
-        voluntario_form = VoluntarioForm(request.POST)
-        
-        if user_form.is_valid() and voluntario_form.is_valid():
-            # Crear usuario
-            usuario = user_form.save(commit=False)
-            usuario.rol = Rol.objects.get(nombre='Voluntario')  # Asegúrate que exista
-            usuario.save()
-            
-            # Crear voluntario
-            voluntario = voluntario_form.save(commit=False)
-            voluntario.usuario = usuario
-            voluntario.save()
-            
-            return redirect('usuarios:lista_voluntarios')
-    else:
-        user_form = UsuarioVoluntarioForm()
-        voluntario_form = VoluntarioForm()
+# Resetear contraseña simple sin email (solo con correo)
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def reset_password_simple(request):
+    correo = request.data.get('correo')
+    new_password = request.data.get('new_password')
 
-    return render(request, 'usuarios/registro_voluntario.html', {
-        'user_form': user_form,
-        'voluntario_form': voluntario_form
-    })
+    if not new_password or len(new_password) < 6:
+        return Response({"error": "Nueva contraseña inválida"}, status=status.HTTP_400_BAD_REQUEST)
 
-# Lista
-class VoluntarioListView(ListView):
-    model = Voluntario
-    template_name = 'usuarios/lista_voluntarios.html'
-    context_object_name = 'voluntarios'
-    paginate_by = 10
+    try:
+        usuario = Usuario.objects.get(correo=correo)
+    except Usuario.DoesNotExist:
+        return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
-    def get_queryset(self):
-        return Voluntario.objects.select_related('usuario', 'zona').all()
-
-# Edición
-class VoluntarioUpdateView(UpdateView):
-    model = Voluntario
-    form_class = VoluntarioForm
-    template_name = 'usuarios/editar_voluntario.html'
-    success_url = reverse_lazy('usuarios:lista_voluntarios')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['usuario'] = self.object.usuario
-        return context
-
-# Eliminación
-class VoluntarioDeleteView(DeleteView):
-    model = Voluntario
-    template_name = 'usuarios/eliminar_voluntario.html'
-    success_url = reverse_lazy('usuarios:lista_voluntarios')
-    
-
-class UsuarioListView(ListView):
-    model = Usuario
-    template_name = 'usuarios/lista_usuarios.html'
-    context_object_name = 'usuarios'
-    paginate_by = 20
-    
-    def get_queryset(self):
-        return Usuario.objects.select_related('rol').all()
-
-class UsuarioCreateView(CreateView):
-    model = Usuario
-    form_class = UsuarioGenForm
-    template_name = 'usuarios/form_usuario.html'
-    success_url = reverse_lazy('usuarios:lista_usuarios')
-    
-    def form_valid(self, form):
-        # Asignar contraseña por defecto (deberías implementar algo más seguro)
-        usuario = form.save(commit=False)
-        usuario.contraseña = "passwordtemporal"  # El usuario deberá cambiar esto
-        usuario.save()
-        return super().form_valid(form)
-
-class UsuarioUpdateView(UpdateView):
-    model = Usuario
-    form_class = UsuarioGenForm
-    template_name = 'usuarios/form_usuario.html'
-    success_url = reverse_lazy('usuarios:lista_usuarios')
-
-class UsuarioDeleteView(DeleteView):
-    model = Usuario
-    template_name = 'usuarios/eliminar_usuario.html'
-    success_url = reverse_lazy('usuarios:lista_usuarios')
-    
-    def post(self, request, *args, **kwargs):
-        # Desactivar en lugar de borrar
-        usuario = self.get_object()
-        usuario.activo = False
-        usuario.save()
-        return redirect(self.success_url)
-    
-
-# Lista de administradores
-class AdministradorListView(ListView):
-    model = Administrador
-    template_name = 'usuarios/lista_administradores.html'
-    context_object_name = 'administradores'
-    paginate_by = 10
-
-# Crear administrador
-class AdministradorCreateView(CreateView):
-    model = Administrador
-    form_class = AdministradorForm
-    template_name = 'usuarios/registro_administrador.html'
-    success_url = reverse_lazy('usuarios:lista_administradores')
-
-# Editar administrador
-class AdministradorUpdateView(UpdateView):
-    model = Administrador
-    form_class = AdministradorForm
-    template_name = 'usuarios/editar_administrador.html'
-    success_url = reverse_lazy('usuarios:lista_administradores')
-
-# "Eliminar" administrador - desactivar
-class AdministradorDeleteView(DeleteView):
-    model = Administrador
-    template_name = 'usuarios/eliminar_administrador.html'
-    success_url = reverse_lazy('usuarios:lista_administradores')
-
-    def post(self, request, *args, **kwargs):
-        administrador = self.get_object()
-        administrador.activo = False
-        administrador.save()
-        return redirect(self.success_url)
+    usuario.set_password(new_password)
+    usuario.save()
+    return Response({"message": "Contraseña restablecida correctamente"})

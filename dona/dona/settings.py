@@ -45,6 +45,17 @@ INSTALLED_APPS = [
     'solicitudes',
     'usuarios',
     'zonas',
+    
+    'rest_framework',
+    'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
+]
+
+AUTH_USER_MODEL = 'usuarios.Usuario'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Aquí va la URL de tu frontend
+    "http://127.0.0.1:3000",
 ]
 
 MIDDLEWARE = [
@@ -141,3 +152,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'usuarios:login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'usuarios:login'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
+
+AUTHENTICATION_BACKENDS = [
+    'usuarios.backend.CorreoBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
