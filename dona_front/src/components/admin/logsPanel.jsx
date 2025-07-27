@@ -7,12 +7,13 @@ const LogsPanel = () => {
   const [loading, setLoading] = useState(true);
   const [ordenFecha, setOrdenFecha] = useState('recientes');
   const [busqueda, setBusqueda] = useState('');
+  const [filtroTipo, setFiltroTipo] = useState('todos');
 
   useEffect(() => {
     fetch('http://localhost:8000/api/usuarios/logs/')
       .then(res => res.json())
       .then(data => {
-        setLogsOriginal(data);  // data ya es un array plano
+        setLogsOriginal(data);
         setLoading(false);
       })
       .catch(error => {
@@ -32,6 +33,12 @@ const LogsPanel = () => {
       );
     }
 
+    if (filtroTipo !== 'todos') {
+      filtrados = filtrados.filter(log =>
+        getCrudType(log.accion).toLowerCase() === filtroTipo
+      );
+    }
+
     filtrados.sort((a, b) => {
       const fechaA = new Date(a.fecha);
       const fechaB = new Date(b.fecha);
@@ -39,7 +46,25 @@ const LogsPanel = () => {
     });
 
     setLogsFiltrados(filtrados);
-  }, [busqueda, ordenFecha, logsOriginal]);
+  }, [busqueda, ordenFecha, filtroTipo, logsOriginal]);
+
+  const getBadgeClass = (accion) => {
+    if (!accion) return '';
+    const lower = accion.toLowerCase();
+    if (lower.includes('creación')) return 'badge badge-create';
+    if (lower.includes('eliminación')) return 'badge badge-delete';
+    if (lower.includes('edición')) return 'badge badge-edit';
+    return 'badge';
+  };
+
+  const getCrudType = (accion) => {
+    if (!accion) return '';
+    const lower = accion.toLowerCase();
+    if (lower.includes('creación')) return 'CREATE';
+    if (lower.includes('eliminación')) return 'DELETE';
+    if (lower.includes('edición')) return 'EDIT';
+    return '';
+  };
 
   return (
     <div className="main-content">
@@ -48,25 +73,33 @@ const LogsPanel = () => {
       <div className="filtro-barra">
         <input
           type="text"
-          placeholder="🔍 Buscar por usuario, acción o detalle"
+          placeholder="🔍 Buscar por usuario"
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
         />
 
-        <label style={{ marginLeft: '1rem' }}>Ordenar por fecha:</label>
+        <label>Ordenar por:</label>
         <select value={ordenFecha} onChange={(e) => setOrdenFecha(e.target.value)}>
           <option value="recientes">Más recientes primero</option>
           <option value="antiguas">Más antiguas primero</option>
+        </select>
+
+        <label>Filtrar por tipo:</label>
+        <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
+          <option value="todos">Todos</option>
+          <option value="create">Creaciones</option>
+          <option value="edit">Ediciones</option>
+          <option value="delete">Eliminaciones</option>
         </select>
       </div>
 
       <table className="user-table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Fecha</th>
             <th>Usuario</th>
             <th>Acción</th>
+            <th>Tipo</th>
             <th>Detalle</th>
           </tr>
         </thead>
@@ -83,10 +116,10 @@ const LogsPanel = () => {
           ) : (
             logsFiltrados.map((log) => (
               <tr key={log.id}>
-                <td>{log.id}</td>
                 <td>{new Date(log.fecha).toLocaleString()}</td>
                 <td>{log.usuario || '—'}</td>
                 <td>{log.accion}</td>
+                <td><span className={getBadgeClass(log.accion)}>{getCrudType(log.accion)}</span></td>
                 <td>{log.detalle}</td>
               </tr>
             ))
