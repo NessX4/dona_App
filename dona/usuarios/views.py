@@ -9,6 +9,10 @@ from .serializers import (
     VoluntarioSerializer, AdministradorSerializer
 )
 
+from .serializers import LogSistemaSerializer
+
+from .models import LogSistema
+
 # CRUD General
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
@@ -97,3 +101,8 @@ def reset_password_simple(request):
     usuario.set_password(new_password)
     usuario.save()
     return Response({"message": "Contraseña restablecida correctamente"})
+
+
+class LogSistemaViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = LogSistema.objects.all().order_by('-fecha')
+    serializer_class = LogSistemaSerializer
