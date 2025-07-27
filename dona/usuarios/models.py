@@ -76,3 +76,17 @@ class Administrador(models.Model):
     def __str__(self):
         return self.nombre
 
+
+
+
+
+
+
+class LogSistema(models.Model):
+    fecha = models.DateTimeField(auto_now_add=True)
+    usuario = models.CharField(max_length=100, blank=True, null=True)
+    accion = models.CharField(max_length=100)
+    detalle = models.TextField()
+
+    def __str__(self):
+        return f"{self.fecha} - {self.accion}"

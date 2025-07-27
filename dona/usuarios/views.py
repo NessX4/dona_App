@@ -8,6 +8,10 @@ from .serializers import (
     VoluntarioSerializer, AdministradorSerializer
 )
 
+from .serializers import LogSistemaSerializer
+
+from .models import LogSistema
+
 # CRUD General
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
@@ -52,3 +56,10 @@ def login_view(request):
             return Response({"error": "Contraseña incorrecta"}, status=status.HTTP_401_UNAUTHORIZED)
     except Usuario.DoesNotExist:
         return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
+class LogSistemaViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = LogSistema.objects.all().order_by('-fecha')
+    serializer_class = LogSistemaSerializer
