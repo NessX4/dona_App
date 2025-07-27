@@ -6,6 +6,7 @@ from .views import (
     VoluntarioViewSet, AdministradorViewSet,
     login_view
 )
+from .views import LogSistemaViewSet
 
 router = DefaultRouter()
 router.register(r'usuarios', UsuarioViewSet)
@@ -14,6 +15,8 @@ router.register(r'donadores', DonadorViewSet)
 router.register(r'receptores', ReceptorViewSet)
 router.register(r'voluntarios', VoluntarioViewSet)
 router.register(r'administradores', AdministradorViewSet)
+
+router.register(r'logs', LogSistemaViewSet, basename='logs')
 
 urlpatterns = [
     path('', include(router.urls)),

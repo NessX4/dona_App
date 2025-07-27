@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Usuario, Rol, Donador, Receptor, Voluntario, Administrador
 from notificaciones.models import Notificacion
+from .models import LogSistema
 
 # -------------------- Usuario y Rol --------------------
 
@@ -33,6 +34,14 @@ class UsuarioSerializer(serializers.ModelSerializer):
                     Notificacion.objects.create(usuario=admin, mensaje=mensaje)
 
         return usuario
+
+
+
+
+class LogSistemaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogSistema
+        fields = '__all__'
 
 
 
