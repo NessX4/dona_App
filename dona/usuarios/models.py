@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password, check_password
-
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.utils import timezone
 
 class Rol(models.Model):
     nombre = models.CharField(max_length=50)
@@ -8,28 +8,56 @@ class Rol(models.Model):
     def __str__(self):
         return self.nombre
 
-class Usuario(models.Model):
+class UsuarioManager(BaseUserManager):
+    def create_user(self, correo, nombre, rol, password=None, **extra_fields):
+        if not correo:
+            raise ValueError("El correo debe ser proporcionado")
+        correo = self.normalize_email(correo)
+        usuario = self.model(correo=correo, nombre=nombre, rol=rol, **extra_fields)
+        if password:
+            usuario.set_password(password)
+        else:
+            usuario.set_password(self.make_random_password())
+        usuario.save(using=self._db)
+        return usuario
+
+    def create_superuser(self, correo, nombre, rol, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('activo', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('El superusuario debe tener is_staff=True')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('El superusuario debe tener is_superuser=True')
+
+        return self.create_user(correo, nombre, rol, password, **extra_fields)
+
+class Usuario(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField(max_length=100)
     correo = models.EmailField(unique=True)
-    contraseña = models.CharField(max_length=255)
     rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
-    fecha_registro = models.DateTimeField(auto_now_add=True)
+    fecha_registro = models.DateTimeField(default=timezone.now)
     activo = models.BooleanField(default=True)
+
+    # Campos que Django usa para permisos y administración
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    objects = UsuarioManager()
+
+    USERNAME_FIELD = 'correo'
+    REQUIRED_FIELDS = ['nombre', 'rol']
 
     def __str__(self):
         return self.nombre
 
-    def set_password(self, raw_password):
-        self.contraseña = make_password(raw_password)
+    def get_full_name(self):
+        return self.nombre
 
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.contraseña)
+    def get_short_name(self):
+        return self.nombre
 
-    def save(self, *args, **kwargs):
-        # Hash de la contraseña si no está encriptada
-        if not self.contraseña.startswith('pbkdf2_'):
-            self.contraseña = make_password(self.contraseña)
-        super().save(*args, **kwargs)
 
 class Donador(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='donador')
@@ -69,10 +97,9 @@ class Voluntario(models.Model):
 class Administrador(models.Model):
     nombre = models.CharField(max_length=100)
     correo = models.EmailField(unique=True)
-    contraseña = models.CharField(max_length=128)  # Puedes usar hashed si quieres
+    password = models.CharField(max_length=255)
     fecha_registro = models.DateTimeField(auto_now_add=True)
     activo = models.BooleanField(default=True)
-
+ 
     def __str__(self):
         return self.nombre
-
