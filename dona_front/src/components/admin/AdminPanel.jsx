@@ -35,8 +35,10 @@ import HistorialSolicitud from './historialSolicitud';
 
 import NotificacionesPanel from './notificacionesPanel';
 
+import LogsPanel from './logsPanel'; 
 
-import LogsPanel from './logsPanel'; // ajusta ruta si está en otra carpeta
+import Configuracion from './Configuracion'; // ajusta el path si está en otra carpeta
+
 
 
 
@@ -82,6 +84,9 @@ const AdminPanel = () => {
             <Route path="notificaciones" element={<NotificacionesPanel />} />
 
             <Route path="logs" element={<LogsPanel />} />
+
+            <Route path="configuracion" element={<Configuracion />} />
+
 
 
 
