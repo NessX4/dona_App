@@ -13,7 +13,14 @@ import Sucursales from "./pages/Voluntario/Sucursales/Sucursales.jsx";
 import Zonas from "./pages/Voluntario/Zonas/Zonas.jsx";
 import Notificaciones from "./pages/Voluntario/Notificaciones/Notificaciones.jsx";
 import Perfil from "./pages/Voluntario/Perfil/Perfil.jsx";
-import HistorialDona from "./pages/Voluntario/HistorialDona/HistorialDona.jsx"; // ✅ usa un nombre diferente
+import HistorialDona from "./pages/Voluntario/HistorialDona/HistorialDona.jsx"; //  usa un nombre diferente
+import Donadores from "./pages/Donadores/Donadores.jsx";
+import PerfilDonador from "./pages/Donadores/PerfilDonador/PerfilDonador.jsx";
+import NotificacionesDonador from "./pages/Donadores/NotificacionesDonador/NotificacionesDonador.jsx";
+import SolicitudesDonador from "./pages/Donadores/SolicitudesDonador/SolicitudesDonador.jsx";
+import DonacionesRest from "./pages/Donadores/DonacionesRest/DonacionesRest.jsx";
+import NuevaDona from "./pages/Donadores/NuevaDona/NuevaDona.jsx";
+
 function App() {
   return (
     <Routes>
@@ -29,7 +36,16 @@ function App() {
       <Route path="/notificaciones" element={<Notificaciones />} />
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/historial" element={<HistorialDona />} />
-    </Routes>
+      <Route path="/donadores" element={<Donadores />} />
+      <Route path="/donadores/perfil" element={<PerfilDonador />} />
+      <Route path="/donadores/notificaciones" element={<NotificacionesDonador />} />
+      <Route path="/donadores/solicitudes" element={<SolicitudesDonador />} />
+      <Route path="/donadores/donaciones" element={<DonacionesRest />} />
+      <Route path="/donadores/nueva-donacion" element={<NuevaDona />} />
+      {/* Rutas adicionales si las necesitas */}
+      {/* <Route path="/otra-ruta" element={<OtroComponente />} /> */}
+    
+      </Routes>
   );
 }
 

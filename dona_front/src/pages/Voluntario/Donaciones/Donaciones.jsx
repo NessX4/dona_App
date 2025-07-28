@@ -149,29 +149,6 @@ const Donaciones = () => {
             })}
           </div>
         )}
-
-        <table>
-          <thead>
-            <tr>
-              <th>Sucursal</th>
-              <th>Estado Donación</th>
-              <th>Publicación</th>
-              <th>Categoría Comida</th>
-              <th>Comida</th>
-            </tr>
-          </thead>
-          <tbody>
-            {donaciones.map((item) => (
-              <tr key={item.id}>
-                <td data-label="Sucursal">{item.sucursal}</td>
-                <td data-label="Estado Donación">{item.estado}</td>
-                <td data-label="Publicación">{item.publicacion}</td>
-                <td data-label="Categoría Comida">{item.categoria}</td>
-                <td data-label="Comida">{item.comida}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </main>
     </>
   );
