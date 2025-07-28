@@ -19,12 +19,12 @@ class UsuarioSerializer(serializers.ModelSerializer):
         usuario.set_password(raw_password)
         usuario.save()
 
-        # ✅ Verifica si es administrador
+        # Verifica si es administrador
         if usuario.rol.nombre != 'Administrador':
             mensaje = f"🆕 Nuevo {usuario.rol.nombre} registrado: {usuario.nombre}"
 
             for admin in Usuario.objects.filter(rol__nombre='Administrador'):
-                # 🔥 Solo crear si NO existe una notificación igual
+                #  Solo crear si NO existe una notificación igual
                 ya_existe = Notificacion.objects.filter(
                     usuario=admin,
                     mensaje=mensaje
