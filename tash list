@@ -1,0 +1,28 @@
+[33mc08f38e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbranch-Arthur[m[33m, [m[1;31morigin/branch-Arthur[m[33m)[m HEAD@{0}: commit: privatizacion de rutas, login, registro %50 y etc...
+[33mc09113f[m HEAD@{1}: reset: moving to HEAD
+[33mc09113f[m HEAD@{2}: reset: moving to HEAD
+[33mc09113f[m HEAD@{3}: checkout: moving from develop-owner to branch-Arthur
+[33m56bcae9[m[33m ([m[1;31morigin/develop-owner[m[33m, [m[1;32mdevelop-owner[m[33m)[m HEAD@{4}: reset: moving to HEAD
+[33m56bcae9[m[33m ([m[1;31morigin/develop-owner[m[33m, [m[1;32mdevelop-owner[m[33m)[m HEAD@{5}: pull: Fast-forward
+[33m59d37ea[m HEAD@{6}: pull: Fast-forward
+[33me4fbead[m HEAD@{7}: pull: Fast-forward
+[33m9d82b52[m HEAD@{8}: checkout: moving from arthur/api-usuarios-v2 to develop-owner
+[33mbf22bac[m[33m ([m[1;32marthur/api-usuarios-v2[m[33m)[m HEAD@{9}: commit: Refactor API usuarios v2: server corre, falta hacer pruebas y revisar clase/rol admin
+[33mc09113f[m HEAD@{10}: checkout: moving from branch-Arthur to arthur/api-usuarios-v2
+[33mc09113f[m HEAD@{11}: reset: moving to origin/develop-owner
+[33me0cb22c[m HEAD@{12}: checkout: moving from branch-Arthur to branch-Arthur
+[33me0cb22c[m HEAD@{13}: checkout: moving from develop-owner to branch-Arthur
+[33m9d82b52[m HEAD@{14}: checkout: moving from branch-Arthur to develop-owner
+[33me0cb22c[m HEAD@{15}: merge develop-owner: Merge made by the 'ort' strategy.
+[33mb66c191[m HEAD@{16}: checkout: moving from branch-Arthur to branch-Arthur
+[33mb66c191[m HEAD@{17}: checkout: moving from develop-owner to branch-Arthur
+[33m9d82b52[m HEAD@{18}: pull origin develop-owner: Fast-forward
+[33mf9ad34b[m HEAD@{19}: checkout: moving from branch-Arthur to develop-owner
+[33mb66c191[m HEAD@{20}: checkout: moving from branch-Arthur to branch-Arthur
+[33mb66c191[m HEAD@{21}: commit: Cambios en el dashboard como logo que no se mostraba y sombreados que estaban en la seccion incorrecta corregidos
+[33mf9ad34b[m HEAD@{22}: checkout: moving from develop-owner to branch-Arthur
+[33mf9ad34b[m HEAD@{23}: checkout: moving from develop-owner to develop-owner
+[33mf9ad34b[m HEAD@{24}: reset: moving to HEAD
+[33mf9ad34b[m HEAD@{25}: checkout: moving from main to develop-owner
+[33m9fc6217[m[33m ([m[1;32mmain[m[33m)[m HEAD@{26}: reset: moving to HEAD
+[33m9fc6217[m[33m ([m[1;32mmain[m[33m)[m HEAD@{27}: clone: from https://github.com/NessX4/dona_App.git

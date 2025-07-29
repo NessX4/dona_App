@@ -1,0 +1,239 @@
+[33mcommit c08f38e4552d7278e0f84d96b75b1196bbee0761[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbranch-Arthur[m[33m, [m[1;31morigin/branch-Arthur[m[33m)[m
+Author: ArturoBloodborne <munozcarpinteyro.angelarturo@gmail.com>
+Date:   Tue Jul 29 04:46:37 2025 -0700
+
+    privatizacion de rutas, login, registro %50 y etc...
+
+[33mcommit c09113f56b439001cf2f46dc6cb693e34842a566[m
+Author: NessX4 <0322103677@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 22:34:15 2025 -0700
+
+    fix merge errors
+
+[33mcommit 05244de50e0d92dd3dbe0ac2e85a86783a41be30[m
+Merge: 22b353c d24962a
+Author: Vanessa Balderas Martinez <141200434+NessX4@users.noreply.github.com>
+Date:   Fri Jul 25 22:25:32 2025 -0700
+
+    Merge pull request #42 from NessX4/user/Voluntario-Donaciones
+    
+    Resuelto conflicto: mantengo mis cambios para archivos eliminados en …
+
+[33mcommit d24962a555d36a19d67a17d7332282553f1b0308[m[33m ([m[1;31morigin/user/Voluntario-Donaciones[m[33m)[m
+Merge: a82256b 22b353c
+Author: Vanessa Balderas Martinez <141200434+NessX4@users.noreply.github.com>
+Date:   Fri Jul 25 22:25:18 2025 -0700
+
+    Merge branch 'develop-owner' into user/Voluntario-Donaciones
+
+[33mcommit 22b353cfab6b89be69cf0c52def6e8aa80358be2[m
+Merge: 6b57104 597af6a
+Author: Vanessa Balderas Martinez <141200434+NessX4@users.noreply.github.com>
+Date:   Fri Jul 25 22:21:35 2025 -0700
+
+    Merge pull request #41 from NessX4/merli/admMod-ZonasySolicitudes
+    
+    Merli/adm mod zonasy solicitudes
+
+[33mcommit a82256b1023af9db5171b9e9a948ed99349ad795[m
+Author: yamilethluna18 <lu.yamileth378@gmail.com>
+Date:   Fri Jul 25 21:16:57 2025 -0700
+
+    Resuelto conflicto: mantengo mis cambios para archivos eliminados en upstream
+
+[33mcommit 597af6a8f69c75b5be2afdf8f12b1ecef141c8e0[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 19:45:41 2025 -0700
+
+    Detallitos css, cruds 4 ok
+
+[33mcommit f87fc9c5271b81998ab0f57a940546ae244f1bb6[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 19:38:45 2025 -0700
+
+    Nuevo: Apartado sucursales, CRUD OK
+
+[33mcommit 6b57104093261e451754a9f31cf7a3ccf6879468[m
+Author: NessX4 <0322103677@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 19:16:21 2025 -0700
+
+    dependecies updated
+
+[33mcommit 8973bd70afc4e69455463f01e08aa1fafc378be4[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 18:21:53 2025 -0700
+
+    Sucursal panel Create and read
+
+[33mcommit 53e023173ea74161047e2464a3055aa998deafde[m
+Author: NessX4 <0322103677@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 18:00:29 2025 -0700
+
+    urls removed
+
+[33mcommit 0553af5566af72c7b671ce7e1bd0e934be5c670f[m
+Merge: b508405 0811406
+Author: Vanessa Balderas Martinez <141200434+NessX4@users.noreply.github.com>
+Date:   Fri Jul 25 17:49:07 2025 -0700
+
+    Merge pull request #40 from NessX4/merli/admMod-ZonasySolicitudes
+    
+    Merli/adm mod zonasy solicitudes
+
+[33mcommit b508405ec3c31903c024f5d618ea9278fecfa36c[m
+Merge: 6b77165 e7f3f35
+Author: Vanessa Balderas Martinez <141200434+NessX4@users.noreply.github.com>
+Date:   Fri Jul 25 17:48:36 2025 -0700
+
+    Merge pull request #39 from NessX4/merli/admModule2-publicaciones
+    
+    Merli/adm module2 publicaciones
+
+[33mcommit 081140600bdbea7e316edb855f2ace024ea87208[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 17:23:39 2025 -0700
+
+    Crud Zonas listo!
+
+[33mcommit c4da3ff43dccc13d1f55f96f5b826b79874b5057[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 16:39:10 2025 -0700
+
+    Crud casi listo
+
+[33mcommit 1e33a4a33c0c07b74d75ec5a10d567e6c159e9ac[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 16:04:35 2025 -0700
+
+    ✅ Finalizado ZonasPanel con filtros y lectura funcional
+
+[33mcommit e7f3f3575c1999c9957d10ce4f0bee08522c6377[m[33m ([m[1;31morigin/merli/admModule2-publicaciones[m[33m)[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 02:30:45 2025 -0700
+
+    Ligero detalle pero OK, CRUD publicaciones listo
+
+[33mcommit f4df5a794eeb9c232111fb9148c69a96f6311a6c[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 02:07:16 2025 -0700
+
+    CRUD de publicaciones funcional! OK
+
+[33mcommit 7b043eff5faa4bd52920e0a75f9334b0d5a8f709[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Fri Jul 25 01:11:41 2025 -0700
+
+    Publicaciones, create read and update
+
+[33mcommit 63c1859964958e1a31d394b2eb5ebd045eafcee0[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 23:33:04 2025 -0700
+
+    Publicaciones Read and Create listop
+
+[33mcommit eb1469f2bcfd2d6bfdeec0abf3cebb00c808d2b4[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 23:32:25 2025 -0700
+
+    Publicaciones Read and Create listop
+
+[33mcommit 6fc00d39324e3fed3400b0fb4113c5c78501780c[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 22:54:04 2025 -0700
+
+    JSJSJ detallito del crud, ya quedo
+
+[33mcommit 6b77165229a2120efbcff4d0866b580f4585b109[m
+Author: NessX4 <0322103677@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 21:42:42 2025 -0700
+
+    deleted templates/ requirements updated
+
+[33mcommit b9eacf3f62922c38d72693446fb4bbd0f4dfba45[m
+Merge: ef3f4a2 06d1951
+Author: Vanessa Balderas Martinez <141200434+NessX4@users.noreply.github.com>
+Date:   Thu Jul 24 21:35:14 2025 -0700
+
+    Merge pull request #34 from NessX4/user/voluntario
+    
+    User/voluntario
+
+[33mcommit 06d1951c4fa9ef7100a2dffc837abc621cdb92c7[m[33m ([m[1;31morigin/user/voluntario[m[33m)[m
+Merge: 3e9b281 ef3f4a2
+Author: Vanessa Balderas Martinez <141200434+NessX4@users.noreply.github.com>
+Date:   Thu Jul 24 21:34:31 2025 -0700
+
+    Merge branch 'develop-owner' into user/voluntario
+
+[33mcommit ef3f4a2082def0d1bb3e63ba819ad002bc9839a9[m
+Merge: 2d501a6 4f4c5bb
+Author: Vanessa Balderas Martinez <141200434+NessX4@users.noreply.github.com>
+Date:   Thu Jul 24 21:33:11 2025 -0700
+
+    Merge pull request #33 from NessX4/merli/adminModule1
+    
+    Merli/admin module1
+
+[33mcommit 3e9b28102f3410101c9cf05bf69224ae6fe947ff[m
+Author: yamilethluna18 <lu.yamileth378@gmail.com>
+Date:   Thu Jul 24 19:55:47 2025 -0700
+
+    Agrego nuevos assets y componentes para voluntario
+
+[33mcommit 05fe7d20e19cddeb5d4792dd5e4d6f3395043db6[m
+Author: yamilethluna18 <lu.yamileth378@gmail.com>
+Date:   Thu Jul 24 19:54:04 2025 -0700
+
+    Resuelto conflicto en package.json y package-lock.json tras aplicar stash
+
+[33mcommit 4f4c5bb5de90ed494557f7ca872a22b11f67f830[m[33m ([m[1;31morigin/merli/adminModule1[m[33m)[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 17:29:37 2025 -0700
+
+    CRUD terminado usuarios, reflejados en BD
+
+[33mcommit ae2cd77434f6322661a601cb3bcdb2d5393b66fa[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 16:53:28 2025 -0700
+
+    Crud casi listo
+
+[33mcommit e37567029ddb2f83839248d7aa2fefeaa53179fd[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 15:33:00 2025 -0700
+
+    Detalles validacaiones delete
+
+[33mcommit 1c0b14a9a1e45e2f4341254b1c7d08d639f8e6d3[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 03:04:19 2025 -0700
+
+    Hecho el delete, se borra de la tabla hija, se desactiva en tabla padre, super
+
+[33mcommit 0b056c75ead1c5029edb1b423dbfb373e3f98bcf[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 02:31:03 2025 -0700
+
+    Delete1/2
+
+[33mcommit e8b77da1fdea9158df29acabe6ac9a1d743594e0[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Thu Jul 24 01:24:27 2025 -0700
+
+    Diseño de uusuarios panel listo OK
+
+[33mcommit 1ed262b1ec41acc4d4de4d4e224030cb9d9a1ed2[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Wed Jul 23 23:01:58 2025 -0700
+
+    boton
+
+[33mcommit 4e57a42de3fce90c4f1b10c526e937b09a654c2f[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Wed Jul 23 22:05:33 2025 -0700
+
+    archivo necesario pa que se copien los admin
+
+[33mcommit c308c445becbef321de00e6eb312579fd48dc118[m
+Author: Mariela Higuera <0322103734@ut-tijuana.edu.mx>
+Date:   Wed Jul 23 22:04:41 202
