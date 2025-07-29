@@ -162,34 +162,42 @@ export default function Login() {
 
   // Registrar refugio
   const handleRefugioSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("http://localhost:8000/api/usuarios/refugios/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          usuario: {
-            nombre: usuarioForm.nombre,
-            correo: usuarioForm.correo,
-            password: usuarioForm.password,
-            rol: 2,
-          },
-          refugio: { ...refugioForm },
-        }),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Error al registrar refugio");
-      }
-      
-      alert("Refugio registrado con éxito");
-      resetForms();
-    } catch (error) {
-      alert(error.message);
-      console.error("Error:", error);
+  e.preventDefault();
+  try {
+    const response = await fetch("http://localhost:8000/api/usuarios/receptores/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        usuario: {
+          nombre: usuarioForm.nombre,
+          correo: usuarioForm.correo,
+          password: usuarioForm.password,
+          rol: 4,
+        },
+        nombre_lugar: refugioForm.nombre,
+        encargado: refugioForm.encargado,
+        telefono: refugioForm.telefono,
+        direccion: refugioForm.direccion,
+        capacidad: refugioForm.capacidad,
+        horario_apertura: refugioForm.horarioapertura,
+        horario_cierre: refugioForm.horariocierre,
+        zona_id: refugioForm.zona_id,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al registrar refugio");
     }
-  };
+
+    alert("Refugio registrado con éxito");
+    resetForms();
+  } catch (error) {
+    alert(error.message);
+    console.error("Error:", error);
+  }
+};
+
 
   // Registrar voluntario
   const handleVoluntarioSubmit = async (e) => {
@@ -204,13 +212,14 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           usuario: {
-            nombre: usuarioForm.nombre,
-            correo: usuarioForm.correo,
-            password: usuarioForm.password,
-            rol: 3,
-          },
-          voluntario: { ...voluntarioForm },
-        }),
+          nombre: usuarioForm.nombre,
+          correo: usuarioForm.correo,
+          password: usuarioForm.password,
+          rol: 5,
+        },
+        telefono: voluntarioForm.telefono,
+        zona: voluntarioForm.zona_id
+      }),
       });
       
       if (!response.ok) {

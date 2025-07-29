@@ -124,7 +124,8 @@ class ReceptorSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
-        usuario_data['rol'] = Rol.objects.get(nombre='Receptor')
+        if 'rol' not in usuario_data:
+            usuario_data['rol'] = Rol.objects.get(nombre='Refugio')
         usuario = UsuarioSerializer().create(usuario_data)
         receptor = Receptor.objects.create(usuario=usuario, **validated_data)
 
