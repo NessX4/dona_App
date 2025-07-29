@@ -1,3 +1,5 @@
+//Angel Alejandro Chavez Castillon
+
 import React, { useEffect, useState } from "react";
 import RefugioHeader from "../../../components/RefugioHeader";
 import {
@@ -34,7 +36,6 @@ const DonacionesDisponibles = () => {
           categoriasRes,
           archivosRes,
         ] = await Promise.all([
-          fetch("http://127.0.0.1:8000/api/refugio/donaciones-disponibles/"),
           fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/"),
           fetch("http://127.0.0.1:8000/api/donaciones/sucursales/"),
           fetch("http://127.0.0.1:8000/api/donaciones/estados/"),
