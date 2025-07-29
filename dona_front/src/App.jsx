@@ -13,7 +13,7 @@ import Sucursales from "./pages/Voluntario/Sucursales/Sucursales.jsx";
 import Zonas from "./pages/Voluntario/Zonas/Zonas.jsx";
 import Notificaciones from "./pages/Voluntario/Notificaciones/Notificaciones.jsx";
 import Perfil from "./pages/Voluntario/Perfil/Perfil.jsx";
-import HistorialDona from "./pages/Voluntario/HistorialDona/HistorialDona.jsx";
+import HistorialVoluntario from "./pages/Voluntario/HistorialDona/HistorialDona.jsx";
 
 // Vistas del refugio
 import LayoutPrincipal from "./pages/Refugios/LayoutPrincipal/LayoutPrincipal.jsx";
@@ -23,6 +23,14 @@ import HistorialDonaciones from "./pages/Refugios/HistorialDonaciones/HistorialD
 import NotificacionesRefugio from "./pages/Refugios/NotificacionesRefugio/NotificacionesRefugio.jsx";
 import PerfilRefugio from "./pages/Refugios/PerfilRefugio/PerfilRefugio.jsx";
 import ZonasRefugios from "./pages/Refugios/ZonasRefugio/ZonasRefugio.jsx";
+
+// Vistas del donador
+import Donadores from "./pages/Donadores/Donadores.jsx";
+import PerfilDonador from "./pages/Donadores/PerfilDonador/PerfilDonador.jsx";
+import NotificacionesDonador from "./pages/Donadores/NotificacionesDonador/NotificacionesDonador.jsx";
+import SolicitudesDonador from "./pages/Donadores/SolicitudesDonador/SolicitudesDonador.jsx";
+import DonacionesRest from "./pages/Donadores/DonacionesRest/DonacionesRest.jsx";
+import NuevaDona from "./pages/Donadores/NuevaDona/NuevaDona.jsx";
 
 function App() {
   return (
@@ -40,7 +48,7 @@ function App() {
       <Route path="/zonas/zonas" element={<Zonas />} />
       <Route path="/notificaciones" element={<Notificaciones />} />
       <Route path="/perfil" element={<Perfil />} />
-      <Route path="/historial" element={<HistorialDona />} />
+      <Route path="/historial-voluntario" element={<HistorialVoluntario />} />
 
       {/* Rutas del refugio con LayoutPrincipal */}
       <Route path="/refugio" element={<LayoutPrincipal />}>
@@ -55,6 +63,14 @@ function App() {
         <Route path="perfil" element={<PerfilRefugio />} />
         <Route path="zonas-refugios" element={<ZonasRefugios />} />
       </Route>
+
+      {/* Rutas del donador */}
+      <Route path="/donadores" element={<Donadores />} />
+      <Route path="/donadores/perfil" element={<PerfilDonador />} />
+      <Route path="/donadores/notificaciones" element={<NotificacionesDonador />} />
+      <Route path="/donadores/solicitudes" element={<SolicitudesDonador />} />
+      <Route path="/donadores/donaciones" element={<DonacionesRest />} />
+      <Route path="/donadores/nueva-donacion" element={<NuevaDona />} />
     </Routes>
   );
 }
