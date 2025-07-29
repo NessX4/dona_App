@@ -21,7 +21,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
         # Verifica si es administrador
         if usuario.rol.nombre != 'Administrador':
-            mensaje = f"🆕 Nuevo {usuario.rol.nombre} registrado: {usuario.nombre}"
+            mensaje = f" Nuevo {usuario.rol.nombre} registrado: {usuario.nombre}"
 
             for admin in Usuario.objects.filter(rol__nombre='Administrador'):
                 #  Solo crear si NO existe una notificación igual
@@ -35,7 +35,43 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
         return usuario
 
+class ReceptorSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
 
+    class Meta:
+        model = Receptor
+        fields = [
+            'id',
+            'usuario',
+            'nombre_lugar',
+            'encargado',
+            'telefono',
+            'direccion',
+            'capacidad',
+            'horario_apertura',
+            'horario_cierre',
+        ]
+
+    def create(self, validated_data):
+        usuario_data = validated_data.pop('usuario')
+        # Crear usuario primero
+        usuario_serializer = UsuarioSerializer(data=usuario_data)
+        usuario_serializer.is_valid(raise_exception=True)
+        usuario = usuario_serializer.save()
+
+        # Crear receptor con el usuario creado
+        receptor = Receptor.objects.create(usuario=usuario, **validated_data)
+        return receptor
+
+    def update(self, instance, validated_data):
+        usuario_data = validated_data.pop('usuario', None)
+
+        if usuario_data:
+            usuario_serializer = UsuarioSerializer(instance=instance.usuario, data=usuario_data, partial=True)
+            usuario_serializer.is_valid(raise_exception=True)
+            usuario_serializer.save()
+
+        return super().update(instance, validated_data)
 
 
 class LogSistemaSerializer(serializers.ModelSerializer):
@@ -68,11 +104,11 @@ class DonadorSerializer(serializers.ModelSerializer):
         usuario = UsuarioSerializer().create(usuario_data)
         donador = Donador.objects.create(usuario=usuario, **validated_data)
 
-        # 🔔 Notificación para administradores
+        #  Notificación para administradores
         for admin in Usuario.objects.filter(rol__nombre='Administrador'):
             Notificacion.objects.create(
                 usuario=admin,
-                mensaje=f"🆕 Nuevo Donador registrado: {usuario.nombre}"
+                mensaje=f" Nuevo Donador registrado: {usuario.nombre}"
             )
 
         return donador
@@ -95,7 +131,7 @@ class ReceptorSerializer(serializers.ModelSerializer):
         for admin in Usuario.objects.filter(rol__nombre='Administrador'):
             Notificacion.objects.create(
                 usuario=admin,
-                mensaje=f"🆕 Nuevo Receptor registrado: {usuario.nombre}"
+                mensaje=f" Nuevo Receptor registrado: {usuario.nombre}"
             )
 
         return receptor
@@ -118,7 +154,7 @@ class VoluntarioSerializer(serializers.ModelSerializer):
         for admin in Usuario.objects.filter(rol__nombre='Administrador'):
             Notificacion.objects.create(
                 usuario=admin,
-                mensaje=f"🆕 Nuevo Voluntario registrado: {usuario.nombre}"
+                mensaje=f" Nuevo Voluntario registrado: {usuario.nombre}"
             )
 
         return voluntario
@@ -141,7 +177,7 @@ class AdministradorSerializer(serializers.ModelSerializer):
         for admin in Usuario.objects.filter(rol__nombre='Administrador'):
             Notificacion.objects.create(
                 usuario=admin,
-                mensaje=f"🆕 Nuevo Administrador registrado: {usuario.nombre}"
+                mensaje=f" Nuevo Administrador registrado: {usuario.nombre}"
             )
 
         return administrador
