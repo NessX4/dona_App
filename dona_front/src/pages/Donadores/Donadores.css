@@ -1,0 +1,326 @@
+/* donadores.css */
+
+.bienvenida-donador {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background-color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  background-color: #cc0000; /* rojo intenso */
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+header {
+  background-color: #fff5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 15px 20px;
+}
+
+header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 15px; /* separación del borde */
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.dona-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #cc0000; /* rojo intenso */
+  text-decoration: none;
+}
+
+nav a {
+  margin-right: 15px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+nav a:hover,
+nav a.active {
+  color: #cc0000; /* rojo intenso */
+  border-bottom: 2px solid #cc0000;
+  padding-bottom: 3px;
+}
+
+.donar-btn {
+  background-color: #cc0000; /* rojo intenso */
+  border: none;
+  color: white;
+  font-weight: 700;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.donar-btn:hover {
+  background-color: #990000; /* rojo oscuro */
+}
+
+/* Sección principal hero con padding lateral */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 30px; /* mayor padding horizontal */
+  background: #fff5f5;
+  box-sizing: border-box;
+}
+
+.hero-left {
+  max-width: 50%;
+  padding-left: 20px; /* espacio lateral */
+  padding-right: 20px;
+}
+
+.hero-left h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #cc0000; /* rojo intenso */
+}
+
+.hero-left p {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.course-info {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  padding-left: 10px; /* padding lateral para no pegar */
+  padding-right: 10px;
+}
+
+.course-info > div {
+  text-align: center;
+}
+
+.course-info strong {
+  display: block;
+  font-size: 1.6rem;
+  color: #cc0000; /* rojo intenso */
+}
+
+.course-info span {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.hero-right {
+  padding-right: 20px; /* espacio derecho */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-right img {
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+  margin-left: 20px; /* separación de la imagen del borde */
+}
+
+.features {
+  padding: 40px 20px;
+  background: white;
+  text-align: center;
+}
+
+.features h2 {
+  color: #cc0000; /* rojo intenso */
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.feature-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.feature-box {
+  max-width: 250px;
+}
+
+.feature-box img {
+  width: 80px;
+  margin-bottom: 15px;
+}
+
+.feature-box h3 {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.steps {
+  background: #fff5f5;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.steps h2 {
+  color: #cc0000; /* rojo intenso */
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.steps-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.step-box {
+  max-width: 250px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.step-box h3 {
+  margin-bottom: 12px;
+  color: #cc0000; /* rojo intenso */
+}
+
+.step-box p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.3;
+}
+
+.about,
+.security {
+  padding: 40px 20px;
+  text-align: center;
+  background: white;
+  margin-top: 20px;
+}
+
+.about h2,
+.security h2 {
+  color: #cc0000; /* rojo intenso */
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.about-icon,
+.security-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.about-text p,
+.security-text p {
+  max-width: 600px;
+  margin: 0 auto 10px auto;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.4;
+}
+/* Estilos base del modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal {
+  background-color: #ffffff; /* Fondo blanco */
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal h3 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn-confirm,
+.btn-cancel {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-confirm {
+  background-color: #cc0000;
+  color: #fff;
+}
+
+.btn-confirm:hover {
+  background-color: #a80000;
+}
+
+.btn-cancel {
+  background-color: #eee;
+  color: #333;
+}
+
+.btn-cancel:hover {
+  background-color: #ddd;
+}
+
+/* Animación para el modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

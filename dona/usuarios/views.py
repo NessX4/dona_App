@@ -106,3 +106,6 @@ def reset_password_simple(request):
 class LogSistemaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = LogSistema.objects.all().order_by('-fecha')
     serializer_class = LogSistemaSerializer
+
+
+

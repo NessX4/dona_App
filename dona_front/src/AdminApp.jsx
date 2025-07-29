@@ -6,7 +6,7 @@ import './styles/admin.css';
 
 function AdminApp() {
   useEffect(() => {
-    console.log("✅ Panel de administrador montado");
+    console.log("Panel de administrador montado");
   }, []);
 
   return <AdminPanel />;

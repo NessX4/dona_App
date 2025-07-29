@@ -1,0 +1,68 @@
+.container.historialDonador {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff5f5;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.historialDonador h1 {
+  font-size: 2rem;
+  color: #cc0000;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.historial-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.historial-table th,
+.historial-table td {
+  padding: 0.9rem 1.2rem;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.historial-table th {
+  background-color: #cc0000;
+  color: white;
+}
+
+.historial-table tr:nth-child(even) {
+  background-color: #fdf0f0;
+}
+
+.status {
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.status.pendiente {
+  background-color: #ffe066;
+  color: #856404;
+}
+
+.status.en_proceso {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status.completada {
+  background-color: #c3e6cb;
+  color: #155724;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 1rem;
+}
