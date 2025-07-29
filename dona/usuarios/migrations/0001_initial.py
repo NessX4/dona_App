@@ -27,16 +27,16 @@ class Migration(migrations.Migration):
                 ('activo', models.BooleanField(default=True)),
             ],
         ),
-        migrations.CreateModel(
-            name='LogSistema',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('fecha', models.DateTimeField(auto_now_add=True)),
-                ('usuario', models.CharField(blank=True, max_length=100, null=True)),
-                ('accion', models.CharField(max_length=100)),
-                ('detalle', models.TextField()),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name='LogSistema',
+        #     fields=[
+        #         ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        #         ('fecha', models.DateTimeField(auto_now_add=True)),
+        #         ('usuario', models.CharField(blank=True, max_length=100, null=True)),
+        #         ('accion', models.CharField(max_length=100)),
+        #         ('detalle', models.TextField()),
+        #     ],
+        # ),
         migrations.CreateModel(
             name='Rol',
             fields=[
