@@ -211,13 +211,14 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           usuario: {
-            nombre: usuarioForm.nombre,
-            correo: usuarioForm.correo,
-            password: usuarioForm.password,
-            rol: 3,
-          },
-          voluntario: { ...voluntarioForm },
-        }),
+          nombre: usuarioForm.nombre,
+          correo: usuarioForm.correo,
+          password: usuarioForm.password,
+          rol: 5,
+        },
+        telefono: voluntarioForm.telefono,
+        zona: voluntarioForm.zona_id
+      }),
       });
       
       if (!response.ok) {
