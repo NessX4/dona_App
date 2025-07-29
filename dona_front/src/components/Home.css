@@ -1,3 +1,4 @@
+/*  Luna FLores Yamileth Guadalupe */
 * {
   margin: 0;
   padding: 0;
@@ -9,8 +10,8 @@ body {
   color: #333;
   background-color: #fff5f5;
   line-height: 1.7;
-  overflow-x: hidden; /* Previene el desplazamiento horizontal */
-  width: 100%; /* Asegura que el body ocupe todo el ancho */
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .topbar {

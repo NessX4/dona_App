@@ -1,3 +1,4 @@
+// Luna FLores Yamileth Guadalupe
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import logoDona from "../../assets/Logotipo.png";
@@ -7,25 +8,22 @@ const BienvenidaVoluntario = () => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
 
-      const handleLogout = () => {
-        setModalOpen(true);
-    };
+  const handleLogout = () => {
+    setModalOpen(true);
+  };
 
-    const confirmLogout = () => {
+  const confirmLogout = () => {
     setModalOpen(false);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("usuarioId");
     localStorage.removeItem("rol");
+    navigate("/login");
+  };
 
-    navigate("/login"); // Mejor redirigir al login
-};
-
-
-    const cancelLogout = () => {
-        setModalOpen(false);
-    };
-
+  const cancelLogout = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="bienvenida-voluntario">
@@ -36,11 +34,11 @@ const BienvenidaVoluntario = () => {
       <header>
         <div className="container">
           <div className="logo">
-              <img src={logoDona} alt="Logo Dona" />
-              <NavLink to="/voluntario" className="dona-text">
-                DonaApp
-              </NavLink>
-            </div>
+            <img src={logoDona} alt="Logo Dona" />
+            <NavLink to="/voluntario" className="dona-text">
+              DonaApp
+            </NavLink>
+          </div>
           <nav>
             <NavLink to="/donaciones/publicaciones">Donaciones</NavLink>
             <NavLink to="/solicitudes">Solicitudes</NavLink>
@@ -55,23 +53,22 @@ const BienvenidaVoluntario = () => {
           </nav>
         </div>
       </header>
-      
-                  {modalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal">
-                        <h3>¿Estás seguro que deseas salir?</h3>
-                        <div className="modal-buttons">
-                            <button className="btn-confirm" onClick={confirmLogout}>
-                                Sí, salir
-                            </button>
-                            <button className="btn-cancel" onClick={cancelLogout}>
-                                Cancelar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
 
+      {modalOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>¿Estás seguro que deseas salir?</h3>
+            <div className="modal-buttons">
+              <button className="btn-confirm" onClick={confirmLogout}>
+                Sí, salir
+              </button>
+              <button className="btn-cancel" onClick={cancelLogout}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <main className="hero">
         <div className="hero-left">
