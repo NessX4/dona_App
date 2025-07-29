@@ -1,3 +1,5 @@
+//Angel Alejandro Chavez Castillon
+
 import React, { useState, useEffect } from "react";
 import RefugioHeader from "../../../components/RefugioHeader";
 import {
@@ -16,7 +18,6 @@ import {
 import "./NotificacionesRefugio.css";
 
 const NotificacionesRefugio = () => {
-  // Estado optimizado
   const [state, setState] = useState({
     notificaciones: [],
     loading: true,
@@ -25,55 +26,48 @@ const NotificacionesRefugio = () => {
     expandidas: {},
   });
 
-  // Datos de ejemplo mejorados
-  const notificacionesEjemplo = [
-    {
-      id: 1,
-      tipo: "donacion",
-      titulo: "Nueva donación recibida",
-      mensaje:
-        "Has recibido 50kg de alimentos no perecederos de Supermercado Solidario",
-      fecha: new Date(),
-      leida: false,
-      urgente: true,
-      detalles:
-        "Contiene: 20kg de arroz, 15kg de frijol, 10kg de azúcar y 5kg de harina. Puedes recogerla en nuestra bodega central.",
-    },
-    {
-      id: 2,
-      tipo: "voluntario",
-      titulo: "Nuevo voluntario asignado",
-      mensaje: "María González se ha unido como voluntaria a tu refugio",
-      fecha: new Date(Date.now() - 86400000),
-      leida: true,
-      urgente: false,
-      detalles:
-        "Especialidad: Logística\nDisponibilidad: Tardes\nContacto: maria.g@example.com",
-    },
-    {
-      id: 3,
-      tipo: "sistema",
-      titulo: "Actualización disponible",
-      mensaje: "Nueva versión 2.1.0 del sistema de gestión",
-      fecha: new Date(Date.now() - 172800000),
-      leida: false,
-      urgente: false,
-      detalles:
-        "Nuevas características:\n- Dashboard mejorado\n- Exportación de reportes\n- Corrección de errores",
-    },
-  ];
-
-  // Carga inicial
+  // Cargar notificaciones desde la API
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setState((prev) => ({
-        ...prev,
-        notificaciones: notificacionesEjemplo,
-        loading: false,
-      }));
-    }, 800);
+    const cargarNotificaciones = async () => {
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:8000/api/notificaciones/notifiaciones/"
+        );
 
-    return () => clearTimeout(timer);
+        if (!response.ok) {
+          throw new Error("Error al cargar notificaciones");
+        }
+
+        const data = await response.json();
+        const notificacionesAPI = data.results || data;
+
+        // Mapear datos de la API al formato esperado por el componente
+        const notificacionesFormateadas = notificacionesAPI.map((notif) => ({
+          id: notif.id,
+          tipo: notif.tipo || "sistema",
+          titulo: notif.titulo || "Notificación",
+          mensaje: notif.mensaje,
+          fecha: notif.fecha ? new Date(notif.fecha) : new Date(),
+          leida: notif.leido || false,
+          urgente: notif.urgente || false,
+          detalles: notif.detalles || "No hay detalles adicionales",
+        }));
+
+        setState((prev) => ({
+          ...prev,
+          notificaciones: notificacionesFormateadas,
+          loading: false,
+        }));
+      } catch (err) {
+        setState((prev) => ({
+          ...prev,
+          error: err.message,
+          loading: false,
+        }));
+      }
+    };
+
+    cargarNotificaciones();
   }, []);
 
   // Funciones de ayuda
@@ -87,23 +81,68 @@ const NotificacionesRefugio = () => {
     }));
   };
 
-  const marcarComoLeida = (id) => {
-    setState((prev) => ({
-      ...prev,
-      notificaciones: prev.notificaciones.map((notif) =>
-        notif.id === id ? { ...notif, leida: true } : notif
-      ),
-    }));
+  const marcarComoLeida = async (id) => {
+    try {
+      // Actualizar en la API
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/notificaciones/notifiaciones/${id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ leido: true }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Error al marcar como leída");
+
+      // Actualizar en el estado local
+      setState((prev) => ({
+        ...prev,
+        notificaciones: prev.notificaciones.map((notif) =>
+          notif.id === id ? { ...notif, leida: true } : notif
+        ),
+      }));
+    } catch (err) {
+      console.error("Error:", err);
+      setState((prev) => ({ ...prev, error: err.message }));
+    }
   };
 
-  const marcarTodasComoLeidas = () => {
-    setState((prev) => ({
-      ...prev,
-      notificaciones: prev.notificaciones.map((notif) => ({
-        ...notif,
-        leida: true,
-      })),
-    }));
+  const marcarTodasComoLeidas = async () => {
+    try {
+      // Actualizar todas en la API
+      const notificacionesSinLeer = state.notificaciones.filter(
+        (n) => !n.leida
+      );
+      await Promise.all(
+        notificacionesSinLeer.map((notif) =>
+          fetch(
+            `http://127.0.0.1:8000/api/notificaciones/notifiaciones/${notif.id}/`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ leido: true }),
+            }
+          )
+        )
+      );
+
+      // Actualizar en el estado local
+      setState((prev) => ({
+        ...prev,
+        notificaciones: prev.notificaciones.map((notif) => ({
+          ...notif,
+          leida: true,
+        })),
+      }));
+    } catch (err) {
+      console.error("Error:", err);
+      setState((prev) => ({ ...prev, error: err.message }));
+    }
   };
 
   // Filtrado
