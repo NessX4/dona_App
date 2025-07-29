@@ -161,7 +161,7 @@ LOGOUT_REDIRECT_URL = 'usuarios:login'
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5175",  # <-- tu frontend de Vite
+    "http://localhost:5173",  # <-- tu frontend de Vite
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

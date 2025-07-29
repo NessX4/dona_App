@@ -1,15 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import logoDona from "../../assets/Logotipo.png";
 import "./voluntario.css";
 
 const BienvenidaVoluntario = () => {
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const handleLogout = () => {
-    // Aquí podrías limpiar tokens o sesiones si las usas
-    navigate("/"); // Redirige a Home
-  };
+      const handleLogout = () => {
+        setModalOpen(true);
+    };
+
+    const confirmLogout = () => {
+    setModalOpen(false);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("usuarioId");
+    localStorage.removeItem("rol");
+
+    navigate("/login"); // Mejor redirigir al login
+};
+
+
+    const cancelLogout = () => {
+        setModalOpen(false);
+    };
+
 
   return (
     <div className="bienvenida-voluntario">
@@ -39,6 +55,23 @@ const BienvenidaVoluntario = () => {
           </nav>
         </div>
       </header>
+      
+                  {modalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <h3>¿Estás seguro que deseas salir?</h3>
+                        <div className="modal-buttons">
+                            <button className="btn-confirm" onClick={confirmLogout}>
+                                Sí, salir
+                            </button>
+                            <button className="btn-cancel" onClick={cancelLogout}>
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
 
       <main className="hero">
         <div className="hero-left">
