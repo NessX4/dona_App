@@ -1,9 +1,10 @@
+// Luna FLores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import "./NuevaDona.css";
 import DonadoresHeader from "../../../components/DonadoresHeader";
 
 const NuevaDona = () => {
-  // Obtener fecha hoy en formato YYYY-MM-DD
+  // Fecha  en formato YYYY-MM-DD
   const hoy = new Date().toISOString().split("T")[0];
 
   const [sucursales, setSucursales] = useState([]);
@@ -27,7 +28,6 @@ const NuevaDona = () => {
       .then((data) => setSucursales(data.results || data))
       .catch((err) => console.error("Error al cargar sucursales:", err));
 
-    // Cargar zonas desde API
     fetch("http://localhost:8000/api/zonas/zonas/")
       .then((res) => res.json())
       .then((data) => setZonas(data.results || data))
@@ -48,7 +48,7 @@ const NuevaDona = () => {
       cantidad: parseInt(form.cantidad),
       estado: form.estado,
       ubicacion: form.ubicacion,
-      zona: parseInt(form.zona), // asumimos que zona es un id numérico
+      zona: parseInt(form.zona),
       fecha_caducidad: form.fecha_caducidad,
     };
 
@@ -61,7 +61,7 @@ const NuevaDona = () => {
 
       if (!response.ok) throw new Error("Error al registrar publicación");
 
-      setMensaje("✅ ¡Publicación registrada exitosamente!");
+      setMensaje(" ¡Publicación registrada exitosamente!");
       setForm({
         sucursal: "",
         titulo: "",
@@ -70,10 +70,10 @@ const NuevaDona = () => {
         estado: "",
         ubicacion: "",
         zona: "",
-        fecha_caducidad: hoy,  // Reiniciar a fecha actual tras enviar
+        fecha_caducidad: hoy,  
       });
     } catch (err) {
-      setMensaje("❌ Hubo un problema al registrar la publicación.");
+      setMensaje(" Hubo un problema al registrar la publicación.");
     }
   };
 

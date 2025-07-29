@@ -1,3 +1,4 @@
+/* luna Flores Yamileth Guadalupe */
 .login-wrapper * {
   box-sizing: border-box;
   margin: 0;
@@ -56,11 +57,11 @@
 }
 
 .titulo-dona {
-  color: #c00107; /* rojo fuerte */
+  color: #c00107; 
   font-weight: bold;
   font-size: 2rem;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    margin-top: 60px; /* Ajusta este valor según lo que necesites */
+    margin-top: 60px;
 }
 h2 {
   font-size: 1.6rem;
@@ -201,7 +202,6 @@ button:hover {
   cursor: pointer !important;
 }
 
-/* Modal styles */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0;

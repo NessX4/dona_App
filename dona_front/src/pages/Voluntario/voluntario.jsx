@@ -1,14 +1,24 @@
-import React from "react";
+    // Luna FLores Yamileth Guadalu
+
+import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import logoDona from "../../assets/Logotipo.png";
 import "./voluntario.css";
 
 const BienvenidaVoluntario = () => {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
   const handleLogout = () => {
-    // Aquí podrías limpiar tokens o sesiones si las usas
-    navigate("/"); // Redirige a Home
+    navigate("/");
+  };
+
+  const confirmLogout = () => {
+    setShowModal(true);
+  };
+
+  const cancelLogout = () => {
+    setShowModal(false);
   };
 
   return (
@@ -20,11 +30,11 @@ const BienvenidaVoluntario = () => {
       <header>
         <div className="container">
           <div className="logo">
-              <img src={logoDona} alt="Logo Dona" />
-              <NavLink to="/voluntario" className="dona-text">
-                DonaApp
-              </NavLink>
-            </div>
+            <img src={logoDona} alt="Logo Dona" />
+            <NavLink to="/voluntario" className="dona-text">
+              DonaApp
+            </NavLink>
+          </div>
           <nav>
             <NavLink to="/donaciones/publicaciones">Donaciones</NavLink>
             <NavLink to="/solicitudes">Solicitudes</NavLink>
@@ -33,12 +43,28 @@ const BienvenidaVoluntario = () => {
             <NavLink to="/zonas/zonas">Zonas</NavLink>
             <NavLink to="/notificaciones">Alertas</NavLink>
             <NavLink to="/perfil">Mi Perfil</NavLink>
-            <button onClick={handleLogout} className="donar-btn">
+            <button onClick={confirmLogout} className="donar-btn">
               Salir
             </button>
           </nav>
         </div>
       </header>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>¿Estás seguro que deseas salir?</h3>
+            <div className="modal-buttons">
+              <button onClick={handleLogout} className="confirm-btn">
+                Sí, salir
+              </button>
+              <button onClick={cancelLogout} className="cancel-btn">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <main className="hero">
         <div className="hero-left">
