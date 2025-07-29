@@ -1,5 +1,4 @@
-    // Luna FLores Yamileth Guadalu
-
+// Luna FLores Yamileth Guadalupe
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import logoDona from "../../assets/Logotipo.png";
@@ -7,18 +6,23 @@ import "./voluntario.css";
 
 const BienvenidaVoluntario = () => {
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleLogout = () => {
-    navigate("/");
+    setModalOpen(true);
   };
 
   const confirmLogout = () => {
-    setShowModal(true);
+    setModalOpen(false);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("usuarioId");
+    localStorage.removeItem("rol");
+    navigate("/login");
   };
 
   const cancelLogout = () => {
-    setShowModal(false);
+    setModalOpen(false);
   };
 
   return (
@@ -43,22 +47,22 @@ const BienvenidaVoluntario = () => {
             <NavLink to="/zonas/zonas">Zonas</NavLink>
             <NavLink to="/notificaciones">Alertas</NavLink>
             <NavLink to="/perfil">Mi Perfil</NavLink>
-            <button onClick={confirmLogout} className="donar-btn">
+            <button onClick={handleLogout} className="donar-btn">
               Salir
             </button>
           </nav>
         </div>
       </header>
 
-      {showModal && (
+      {modalOpen && (
         <div className="modal-overlay">
           <div className="modal">
             <h3>¿Estás seguro que deseas salir?</h3>
             <div className="modal-buttons">
-              <button onClick={handleLogout} className="confirm-btn">
+              <button className="btn-confirm" onClick={confirmLogout}>
                 Sí, salir
               </button>
-              <button onClick={cancelLogout} className="cancel-btn">
+              <button className="btn-cancel" onClick={cancelLogout}>
                 Cancelar
               </button>
             </div>

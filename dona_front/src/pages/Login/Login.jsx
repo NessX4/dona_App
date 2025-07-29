@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
 import logoDona from "../../assets/Logotipo.png";
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+    const navigate = useNavigate();
   // Estados del modal y formularios
   const [modalOpen, setModalOpen] = useState(false);
   const [activeForm, setActiveForm] = useState(null); // "donador", "refugio", "voluntario", "recuperar"
@@ -20,8 +22,48 @@ export default function Login() {
   const [usuarioForm, setUsuarioForm] = useState({
     nombre: "",
     correo: "",
-    contrasena: "",
+    password: "",
   });
+
+    const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/usuarios/login/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          correo: usuarioForm.correo,
+          password: usuarioForm.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Credenciales incorrectas");
+      }
+
+      // Guardar en localStorage
+      localStorage.setItem("accessToken", data.access);
+      localStorage.setItem("refreshToken", data.refresh);
+      localStorage.setItem("usuarioId", data.usuario_id);
+      localStorage.setItem("rol", data.rol);
+
+      // Redirección por rol usando navigate
+      if (data.rol === "Donador") {
+        navigate("/donadores");
+      } else if (data.rol === "Refugio") {
+        navigate("/refugio/dashboard");
+      } else if (data.rol === "Voluntario") {
+        navigate("/voluntario");
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      alert(err.message);
+      console.error("Error en login:", err);
+    }
+  };
 
   // Datos específicos para cada tipo de usuario
   const [donadorForm, setDonadorForm] = useState({
@@ -98,8 +140,8 @@ export default function Login() {
           usuario: {
             nombre: usuarioForm.nombre,
             correo: usuarioForm.correo,
-            contrasena: usuarioForm.contrasena,
-            rol_id: 1,
+            password: usuarioForm.password,
+            rol: 1,
           },
           donador: { ...donadorForm },
         }),
@@ -129,8 +171,8 @@ export default function Login() {
           usuario: {
             nombre: usuarioForm.nombre,
             correo: usuarioForm.correo,
-            contrasena: usuarioForm.contrasena,
-            rol_id: 2,
+            password: usuarioForm.password,
+            rol: 2,
           },
           refugio: { ...refugioForm },
         }),
@@ -164,8 +206,8 @@ export default function Login() {
           usuario: {
             nombre: usuarioForm.nombre,
             correo: usuarioForm.correo,
-            contrasena: usuarioForm.contrasena,
-            rol_id: 3,
+            password: usuarioForm.password,
+            rol: 3,
           },
           voluntario: { ...voluntarioForm },
         }),
@@ -209,7 +251,7 @@ export default function Login() {
 
   // Limpiar todos los formularios
   const resetForms = () => {
-    setUsuarioForm({ nombre: "", correo: "", contrasena: "" });
+    setUsuarioForm({ nombre: "", correo: "", password: "" });
     setDonadorForm({
       nombrelugar: "",
       representante: "",
@@ -275,7 +317,7 @@ export default function Login() {
           </div>
 
           <h2>Iniciar Sesión</h2>
-          <form onSubmit={(e) => { e.preventDefault(); window.location.href = "/landing"; }}>
+            <form onSubmit={handleLoginSubmit}>
             <label htmlFor="email">Correo electrónico</label>
             <input
               type="email"
@@ -290,8 +332,8 @@ export default function Login() {
               type="password"
               id="password"
               required
-              value={usuarioForm.contrasena}
-              onChange={(e) => setUsuarioForm({...usuarioForm, contrasena: e.target.value})}
+              value={usuarioForm.password}
+              onChange={(e) => setUsuarioForm({...usuarioForm, password: e.target.value})}
             />
             
             <div className="forgot">
@@ -383,9 +425,9 @@ export default function Login() {
                   
                   <input
                     type="password"
-                    name="contrasena"
+                    name="password"
                     placeholder="Contraseña (mínimo 8 caracteres)"
-                    value={usuarioForm.contrasena}
+                    value={usuarioForm.password}
                     onChange={(e) => handleChange(e, setUsuarioForm, usuarioForm)}
                     required
                     minLength={8}

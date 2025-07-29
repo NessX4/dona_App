@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'solicitudes',
     'usuarios',
     'zonas',
+    'admin_tools',
     
     'rest_framework',
     'corsheaders',
@@ -101,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dona_app_django',  # Updated to match the new database name
         "USER": "postgres",
-        "PASSWORD": "2305",
+        "PASSWORD": "1234",
         "HOST": "localhost",
         "PORT": "5432",
 
@@ -177,3 +178,5 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

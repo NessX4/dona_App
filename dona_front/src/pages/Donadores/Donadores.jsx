@@ -13,10 +13,15 @@ const Donadores = () => {
     };
 
     const confirmLogout = () => {
-        setModalOpen(false);
-        // Aquí limpias tokens o sesión si usas
-        navigate("/");
-    };
+    setModalOpen(false);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("usuarioId");
+    localStorage.removeItem("rol");
+
+    navigate("/login"); // Mejor redirigir al login
+};
+
 
     const cancelLogout = () => {
         setModalOpen(false);

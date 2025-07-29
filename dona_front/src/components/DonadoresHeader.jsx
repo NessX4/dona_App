@@ -13,8 +13,13 @@ const DonadoresHeader = () => {
 
   const confirmLogout = () => {
     setShowModal(false);
-    navigate("/"); // Redirige a Home o Login
-  };
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("usuarioId");
+    localStorage.removeItem("rol");
+
+    navigate("/login"); // Mejor redirigir al login
+};
 
   const cancelLogout = () => {
     setShowModal(false);

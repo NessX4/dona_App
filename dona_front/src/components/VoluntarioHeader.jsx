@@ -1,13 +1,31 @@
 // Luna FLores Yamileth Guadalupe
 import React from "react";
+import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
+import { FiAlertTriangle } from "react-icons/fi";
 import logoDona from "../assets/Logotipo.png";
 
 const VoluntarioHeader = () => {
   const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleLogout = () => {
-    navigate("/"); // Redirige a Home.jsx
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutModal(false);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("usuarioId");
+    localStorage.removeItem("rol");
+
+    navigate("/login"); // Mejor redirigir al login
+};
+
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   return (
@@ -74,6 +92,29 @@ const VoluntarioHeader = () => {
           </nav>
         </div>
       </header>
+
+      {showLogoutModal && (
+              <div className="logout-modal-overlay">
+                <div className="logout-modal">
+                  <div className="modal-header">
+                    <FiAlertTriangle className="modal-icon" />
+                    <h3>Confirmar cierre de sesión</h3>
+                  </div>
+                  <div className="modal-body">
+                    <p>¿Estás seguro que deseas cerrar la sesión?</p>
+                  </div>
+                  <div className="modal-footer">
+                    <button onClick={cancelLogout} className="modal-btn cancel-btn">
+                      Cancelar
+                    </button>
+                    <button onClick={confirmLogout} className="modal-btn confirm-btn">
+                      Sí, cerrar sesión
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
     </>
   );
 };
