@@ -52,28 +52,30 @@ def restore_database(request):
     if not uploaded_file:
         return JsonResponse({"error": "No file uploaded"}, status=400)
 
-    filepath = default_storage.save("tmp/restore_backup.sql", uploaded_file)  # Guarda el archivo temporalmente
+    # Guardar archivo temporalmente
+    filepath = default_storage.save("tmp/restore_backup.sql", uploaded_file)
     full_path = os.path.join(settings.MEDIA_ROOT, filepath)
 
+    # Ejecutar comando psql para restaurar la base
     command = [
         "psql",
-        "-U", settings.DATABASES["default"]["USER"],  # Usuario de la base de datos
-        "-h", settings.DATABASES["default"].get("HOST", "localhost"),  # Host de la base de datos
-        "-p", str(settings.DATABASES["default"].get("PORT", 5432)),    # Puerto de la base de datos
-        "-d", settings.DATABASES["default"]["NAME"],  # Nombre de la base de datos
-        "-f", full_path  # Archivo de entrada
+        "-U", settings.DATABASES["default"]["USER"],
+        "-h", settings.DATABASES["default"].get("HOST", "localhost"),
+        "-p", str(settings.DATABASES["default"].get("PORT", 5432)),
+        "-d", settings.DATABASES["default"]["NAME"],
+        "-f", full_path
     ]
 
     env = os.environ.copy()
-    env["PGPASSWORD"] = settings.DATABASES["default"]["PASSWORD"]  # Contraseña de la base de datos
+    env["PGPASSWORD"] = settings.DATABASES["default"]["PASSWORD"]
 
     try:
-        subprocess.run(command, env=env, check=True)  # Ejecuta el comando de restauración
+        subprocess.run(command, env=env, check=True)
     except subprocess.CalledProcessError as e:
-        return JsonResponse({"error": f"Error al exportar base de datos: {e}"}, status=500)
+        return JsonResponse({"error": f"Error al restaurar la base de datos: {str(e)}"}, status=500)
 
-    response = FileResponse(open(filepath, "rb"), as_attachment=True, filename=filename)
-    return response
+    return JsonResponse({"status": "Base de datos restaurada correctamente"})
+
 
 def reset_database(request):
     # Resetea todas las tablas de la base de datos (elimina datos y reinicia IDs)
