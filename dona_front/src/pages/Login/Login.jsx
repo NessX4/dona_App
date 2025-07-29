@@ -141,9 +141,15 @@ export default function Login() {
             nombre: usuarioForm.nombre,
             correo: usuarioForm.correo,
             password: usuarioForm.password,
-            rol: 1,
+            rol:1,
           },
-          donador: { ...donadorForm },
+          nombre_lugar: donadorForm.nombrelugar,
+          representante: donadorForm.representante,
+          telefono: donadorForm.telefono,
+          descripcion: donadorForm.descripcion,
+          horario_apertura: donadorForm.horarioapertura,
+          horario_cierre: donadorForm.horariocierre,
+
         }),
       });
       

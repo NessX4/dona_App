@@ -148,7 +148,8 @@ class VoluntarioSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
-        usuario_data['rol'] = Rol.objects.get(nombre='Voluntario')
+        if 'rol' not in usuario_data:
+            usuario_data['rol'] = Rol.objects.get(nombre='Voluntario')
         usuario = UsuarioSerializer().create(usuario_data)
         voluntario = Voluntario.objects.create(usuario=usuario, **validated_data)
 
