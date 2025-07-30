@@ -1,3 +1,4 @@
+/* luna Flores Yamileth Guadalupe */
 .solicitudesDonador {
   max-width: 1300px;
   margin: 40px auto;
@@ -64,13 +65,12 @@
   text-transform: capitalize;
 }
 
-/* Estados, cambia colores según el estado */
 .solicitudesDonador .status.pendiente {
-  background-color: #ff6600;
+  background-color: #ff660088;
 }
 
 .solicitudesDonador .status.enproceso {
-  background-color: #ffa500;
+  background-color: #ffa60095;
 }
 
 .solicitudesDonador .status.completada {

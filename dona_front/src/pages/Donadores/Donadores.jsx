@@ -1,3 +1,4 @@
+// Luna FLores Yamileth Guadalupe
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import logoDona from "../../assets/Logotipo.png";
@@ -12,10 +13,15 @@ const Donadores = () => {
     };
 
     const confirmLogout = () => {
-        setModalOpen(false);
-        // Aquí limpias tokens o sesión si usas
-        navigate("/");
-    };
+    setModalOpen(false);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("usuarioId");
+    localStorage.removeItem("rol");
+
+    navigate("/login"); // Mejor redirigir al login
+};
+
 
     const cancelLogout = () => {
         setModalOpen(false);

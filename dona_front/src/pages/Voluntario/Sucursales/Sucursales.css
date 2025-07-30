@@ -1,11 +1,10 @@
-/* Container general */
+/* luna Flores Yamileth Guadalupe */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
 
-/* Título centrado */
 .container h1 {
   text-align: center;
   color: #ff7a00;
@@ -14,14 +13,12 @@
   font-weight: bold;
 }
 
-/* Contenedor de cards con grid para filas y columnas */
 .zonas-wrapper {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 40px;
 }
 
-/* Cada card individual */
 .zona-card {
   background: #fff;
   border-radius: 10px;
@@ -33,7 +30,6 @@
   flex-direction: column;
 }
 
-/* Nombre de la sucursal destacado */
 .zona-card h2 {
   font-size: 1.5rem;
   margin-bottom: 15px;
@@ -42,7 +38,6 @@
   padding-bottom: 8px;
 }
 
-/* Lista sin estilo */
 .zona-card ul {
   list-style: none;
   padding: 0;
@@ -51,7 +46,6 @@
   overflow-y: auto;
 }
 
-/* Items de datos */
 .zona-card ul li {
   background: #f9f9f9;
   margin-bottom: 8px;

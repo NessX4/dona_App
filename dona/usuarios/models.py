@@ -1,7 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
+from django.apps import AppConfig
+from django.db.models.signals import post_migrate
 
+
+def crear_roles(sender, **kwargs):
+    from .models import Rol
+    for nombre in ['Admin', 'Donador', 'Refugio', 'Voluntario']:
+        Rol.objects.get_or_create(nombre=nombre)
+
+class UsuariosConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'usuarios'
+
+    def ready(self):
+        post_migrate.connect(crear_roles, sender=self)
+        
 class Rol(models.Model):
     nombre = models.CharField(max_length=50)
 
@@ -12,12 +27,25 @@ class UsuarioManager(BaseUserManager):
     def create_user(self, correo, nombre, rol, password=None, **extra_fields):
         if not correo:
             raise ValueError("El correo debe ser proporcionado")
+
+        # Normalizar correo
         correo = self.normalize_email(correo)
+
+        # Si el rol viene como un ID numérico, lo convertimos a instancia
+        from .models import Rol
+        if isinstance(rol, int):
+            try:
+                rol = Rol.objects.get(id=rol)
+            except Rol.DoesNotExist:
+                raise ValueError("El Rol proporcionado no existe")
+
         usuario = self.model(correo=correo, nombre=nombre, rol=rol, **extra_fields)
+
         if password:
             usuario.set_password(password)
         else:
             usuario.set_password(self.make_random_password())
+
         usuario.save(using=self._db)
         return usuario
 
@@ -32,6 +60,7 @@ class UsuarioManager(BaseUserManager):
             raise ValueError('El superusuario debe tener is_superuser=True')
 
         return self.create_user(correo, nombre, rol, password, **extra_fields)
+
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField(max_length=100)

@@ -1,7 +1,82 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import '../../styles/admin.css';
 
 const Configuracion = () => {
+  const fileInputRef = useRef(null);
+
+  // ==========================
+  // NUEVAS FUNCIONES BASE DE DATOS
+  // ==========================
+
+  // 📤 Exportar base de datos completa (.sql)
+  const handleExportDatabase = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/admin-tools/export-db/', {
+        method: 'GET',
+        // credentials: 'include'
+      });
+      if (!response.ok) throw new Error('Error al exportar la base de datos');
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'backup.sql';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (error) {
+      console.error(error);
+      alert('No se pudo exportar la base de datos.');
+    }
+  };
+
+  // 📥 Restaurar base de datos desde archivo
+  const handleRestoreDatabase = async () => {
+    const file = fileInputRef.current.files[0];
+    if (!file) {
+      alert("Selecciona un archivo .sql primero");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch('http://localhost:8000/admin-tools/restore-db/', {
+        method: 'POST',
+        body: formData,
+        // credentials: 'include'
+      });
+      if (!response.ok) throw new Error('Error al restaurar la base de datos');
+      alert('Base de datos restaurada correctamente');
+      fileInputRef.current.value = null;
+    } catch (error) {
+      console.error(error);
+      alert('No se pudo restaurar la base de datos.');
+    }
+  };
+
+  // 🧹 Resetear base de datos (borrar datos y mantener estructura)
+  const handleResetDatabase = async () => {
+    if (!window.confirm('⚠️ Esto borrará TODOS los datos de la base de datos. ¿Continuar?')) return;
+
+    try {
+      const response = await fetch('http://localhost:8000/admin-tools/reset-db/', {
+        method: 'GET',
+        // credentials: 'include'
+      });
+      if (!response.ok) throw new Error('Error al resetear la base de datos');
+      alert('Base de datos reseteada correctamente');
+    } catch (error) {
+      console.error(error);
+      alert('No se pudo resetear la base de datos.');
+    }
+  };
+
+  // ==========================
+  // FUNCIONES EXISTENTES (CSV)
+  // ==========================
   const exportCSV = async (endpoint, filename, headers, rowMapper) => {
     try {
       const res = await fetch(endpoint);
@@ -98,6 +173,7 @@ const Configuracion = () => {
     );
   };
 
+  // TABLA REUTILIZABLE
   const renderTabla = (titulo, filas) => (
     <div className="tarjeta-dashboard2">
       <h3>{titulo}</h3>
@@ -115,7 +191,19 @@ const Configuracion = () => {
               <td><strong>{fila.nombre}</strong></td>
               <td>{fila.desc}</td>
               <td style={{ textAlign: 'center' }}>
-                <button className="exportar-btn" onClick={fila.onClick}> Exportar</button>
+                {fila.input ? (
+                  <>
+                    <input
+                      type="file"
+                      accept=".sql"
+                      ref={fileInputRef}
+                      style={{ marginRight: '10px' }}
+                    />
+                    <button className="exportar-btn" onClick={fila.onClick}> Restaurar</button>
+                  </>
+                ) : (
+                  <button className="exportar-btn" onClick={fila.onClick}>{fila.boton || 'Exportar'}</button>
+                )}
               </td>
             </tr>
           ))}
@@ -128,8 +216,15 @@ const Configuracion = () => {
     <div className="main-content">
       <h2>⚙️ Panel de Configuración</h2>
       <p className="descripcion-config">
-        Desde aquí puedes administrar exportaciones del sistema y ajustes generales.
+        Desde aquí puedes administrar exportaciones del sistema, respaldos y restauraciones de la base de datos.
       </p>
+
+      {/* 💾 NUEVO PANEL BASE DE DATOS */}
+      {renderTabla("💾 Base de Datos", [
+        { nombre: 'Exportar BD', desc: 'Descarga un respaldo completo en formato .sql', onClick: handleExportDatabase, boton: 'Exportar' },
+        { nombre: 'Restaurar BD', desc: 'Sube un archivo .sql para restaurar datos', onClick: handleRestoreDatabase, input: true },
+        { nombre: 'Resetear BD', desc: 'Borra todos los datos, mantiene la estructura', onClick: handleResetDatabase, boton: 'Resetear' },
+      ])}
 
       {/* 🧑‍🤝‍🧑 POR ROL */}
       {renderTabla("🧑‍🤝‍🧑 Usuarios por Rol", [
