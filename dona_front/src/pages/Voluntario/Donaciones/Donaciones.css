@@ -1,3 +1,5 @@
+/* luna Flores Yamileth Guadalupe */
+
 /* Variables de color (coherentes con el dashboard) */
 :root {
   --primary-color: #e74c3c;
@@ -19,6 +21,8 @@
 .donaciones-container {
   padding: 30px 20px;
   max-width: 1400px;
+.container {
+  max-width: 1200px;
   margin: 0 auto;
   background-color: var(--light-gray);
   min-height: calc(100vh - 120px);

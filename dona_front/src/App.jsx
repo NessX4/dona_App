@@ -1,12 +1,12 @@
+// Luna FLores Yamileth Guadalupe
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-// Rutas existentes
 import Home from "./components/Home.jsx";
 import Login from "./pages/Login/Login.jsx";
-import Voluntario from "./pages/Voluntario/voluntario.jsx";
 
 // Vistas del voluntario
+import Voluntario from "./pages/Voluntario/voluntario.jsx";
 import Donaciones from "./pages/Voluntario/Donaciones/Donaciones.jsx";
 import Solicitudes from "./pages/Voluntario/Solicitudes/Solicitudes.jsx";
 import Sucursales from "./pages/Voluntario/Sucursales/Sucursales.jsx";
@@ -32,45 +32,198 @@ import SolicitudesDonador from "./pages/Donadores/SolicitudesDonador/Solicitudes
 import DonacionesRest from "./pages/Donadores/DonacionesRest/DonacionesRest.jsx";
 import NuevaDona from "./pages/Donadores/NuevaDona/NuevaDona.jsx";
 
+// Componente de protección
+import PrivateRoute from "./components/PrivateRoute.jsx";
+
 function App() {
   return (
     <Routes>
       {/* Rutas públicas */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/voluntario" element={<Voluntario />} />
 
       {/* Rutas del voluntario */}
-      <Route path="/voluntario" element={<Voluntario />} />
-      <Route path="/donaciones/publicaciones" element={<Donaciones />} />
-      <Route path="/solicitudes" element={<Solicitudes />} />
-      <Route path="/donaciones/sucursales" element={<Sucursales />} />
-      <Route path="/zonas/zonas" element={<Zonas />} />
-      <Route path="/notificaciones" element={<Notificaciones />} />
-      <Route path="/perfil" element={<Perfil />} />
-      <Route path="/historial-voluntario" element={<HistorialVoluntario />} />
+      <Route
+        path="/voluntario"
+        element={
+          <PrivateRoute allowedRoles={["Voluntario"]}>
+            <Voluntario />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/donaciones/publicaciones"
+        element={
+          <PrivateRoute allowedRoles={["Voluntario"]}>
+            <Donaciones />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/solicitudes"
+        element={
+          <PrivateRoute allowedRoles={["Voluntario"]}>
+            <Solicitudes />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/donaciones/sucursales"
+        element={
+          <PrivateRoute allowedRoles={["Voluntario"]}>
+            <Sucursales />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/zonas/zonas"
+        element={
+          <PrivateRoute allowedRoles={["Voluntario"]}>
+            <Zonas />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/notificaciones"
+        element={
+          <PrivateRoute allowedRoles={["Voluntario"]}>
+            <Notificaciones />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/perfil"
+        element={
+          <PrivateRoute allowedRoles={["Voluntario"]}>
+            <Perfil />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/historial-voluntario"
+        element={
+          <PrivateRoute allowedRoles={["Voluntario"]}>
+            <HistorialVoluntario />
+          </PrivateRoute>
+        }
+      />
 
       {/* Rutas del refugio con LayoutPrincipal */}
-      <Route path="/refugio" element={<LayoutPrincipal />}>
-        <Route index element={<DashboardRefugio />} />
-        <Route path="dashboard" element={<DashboardRefugio />} />
+      <Route
+        path="/refugio"
+        element={
+          <PrivateRoute allowedRoles={["Refugio"]}>
+            <LayoutPrincipal />
+          </PrivateRoute>
+        }
+      >
+        <Route
+          index
+          element={
+            <PrivateRoute allowedRoles={["Refugio"]}>
+              <DashboardRefugio />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="dashboard"
+          element={
+            <PrivateRoute allowedRoles={["Refugio"]}>
+              <DashboardRefugio />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="donaciones-disponibles"
-          element={<DonacionesDisponibles />}
+          element={
+            <PrivateRoute allowedRoles={["Refugio"]}>
+              <DonacionesDisponibles />
+            </PrivateRoute>
+          }
         />
-        <Route path="historial-donaciones" element={<HistorialDonaciones />} />
-        <Route path="notificaciones" element={<NotificacionesRefugio />} />
-        <Route path="perfil" element={<PerfilRefugio />} />
-        <Route path="zonas-refugios" element={<ZonasRefugios />} />
+        <Route
+          path="historial-donaciones"
+          element={
+            <PrivateRoute allowedRoles={["Refugio"]}>
+              <HistorialDonaciones />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="notificaciones"
+          element={
+            <PrivateRoute allowedRoles={["Refugio"]}>
+              <NotificacionesRefugio />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="perfil"
+          element={
+            <PrivateRoute allowedRoles={["Refugio"]}>
+              <PerfilRefugio />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="zonas-refugios"
+          element={
+            <PrivateRoute allowedRoles={["Refugio"]}>
+              <ZonasRefugios />
+            </PrivateRoute>
+          }
+        />
       </Route>
 
       {/* Rutas del donador */}
-      <Route path="/donadores" element={<Donadores />} />
-      <Route path="/donadores/perfil" element={<PerfilDonador />} />
-      <Route path="/donadores/notificaciones" element={<NotificacionesDonador />} />
-      <Route path="/donadores/solicitudes" element={<SolicitudesDonador />} />
-      <Route path="/donadores/donaciones" element={<DonacionesRest />} />
-      <Route path="/donadores/nueva-donacion" element={<NuevaDona />} />
+      <Route
+        path="/donadores"
+        element={
+          <PrivateRoute allowedRoles={["Donador"]}>
+            <Donadores />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/donadores/perfil"
+        element={
+          <PrivateRoute allowedRoles={["Donador"]}>
+            <PerfilDonador />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/donadores/notificaciones"
+        element={
+          <PrivateRoute allowedRoles={["Donador"]}>
+            <NotificacionesDonador />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/donadores/solicitudes"
+        element={
+          <PrivateRoute allowedRoles={["Donador"]}>
+            <SolicitudesDonador />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/donadores/donaciones"
+        element={
+          <PrivateRoute allowedRoles={["Donador"]}>
+            <DonacionesRest />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/donadores/nueva-donacion"
+        element={
+          <PrivateRoute allowedRoles={["Donador"]}>
+            <NuevaDona />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

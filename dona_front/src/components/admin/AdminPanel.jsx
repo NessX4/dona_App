@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import UsersPanel from './UsersPanel';
 import Dashboard from './Dashboard';
-import CreateUser from './createUser';
+import CreateUser from './CreateUser';
 import EditUser from './editUser';
 import DeleteUser from './deleteUser';
 

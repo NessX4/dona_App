@@ -1,3 +1,4 @@
+// Luna FLores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import DonadoresHeader from "../../../components/DonadoresHeader";
 import "./PerfilDonador.css";
@@ -17,7 +18,6 @@ const PerfilDonador = () => {
     });
 
     useEffect(() => {
-        // Simula carga de datos desde backend o API
         setTimeout(() => {
             const datos = {
                 usuario: "donador123",
@@ -43,7 +43,6 @@ const PerfilDonador = () => {
 
     const handleGuardar = (e) => {
         e.preventDefault();
-        // Aquí guardas el formulario (API o backend)
         setPerfil(formData);
         setEditarVisible(false);
     };

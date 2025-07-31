@@ -1,9 +1,10 @@
-// Luna Flores Yamileth Guadalupe
+// Luna FLores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import "./NuevaDona.css";
 import DonadoresHeader from "../../../components/DonadoresHeader";
 
 const NuevaDona = () => {
+  // Fecha  en formato YYYY-MM-DD
   const hoy = new Date().toISOString().split("T")[0];
 
   const [sucursales, setSucursales] = useState([]);
@@ -31,7 +32,7 @@ const NuevaDona = () => {
       .then((data) => setSucursales(data.results || data))
       .catch((err) => console.error("Error al cargar sucursales:", err));
 
-    fetch("http://127.0.0.1:8000/api/zonas/zonas/")
+    fetch("http://localhost:8000/api/zonas/zonas/")
       .then((res) => res.json())
       .then((data) => setZonas(data.results || data))
       .catch((err) => console.error("Error al cargar zonas:", err));
@@ -58,6 +59,9 @@ const NuevaDona = () => {
       titulo: form.titulo,
       descripcion: form.descripcion,
       cantidad: parseInt(form.cantidad),
+      estado: form.estado,
+      ubicacion: form.ubicacion,
+      zona: parseInt(form.zona),
       fecha_caducidad: form.fecha_caducidad,
       estado: parseInt(form.estado),
       ubicacion: parseInt(form.ubicacion),
@@ -66,14 +70,12 @@ const NuevaDona = () => {
     };
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:8000/api/donaciones/publicaciones/",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(nuevaPublicacion),
-        }
-      );
+
+      const response = await fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nuevaPublicacion),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();

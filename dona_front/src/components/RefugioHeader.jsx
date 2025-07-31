@@ -10,10 +10,17 @@ const RefugioHeader = () => {
 
   const handleLogout = () => setShowLogoutModal(true);
   const confirmLogout = () => {
-    navigate("/");
+    setShowLogoutModal(false);
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("usuarioId");
+    localStorage.removeItem("rol");
+    navigate("/login"); // Mejor redirigir al login
+  };
+
+  const cancelLogout = () => {
     setShowLogoutModal(false);
   };
-  const cancelLogout = () => setShowLogoutModal(false);
 
   return (
     <>
