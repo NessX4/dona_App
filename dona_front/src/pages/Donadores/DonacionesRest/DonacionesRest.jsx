@@ -1,74 +1,84 @@
-// Luna FLores Yamileth Guadalupe
+// Luna Flores Yamileth Guadalupe
 import React, { useEffect, useState } from "react";
 import DonadoresHeader from "../../../components/DonadoresHeader";
 import "./DonacionesRest.css";
 
-const DonacionesRest = ({ donadorId }) => {
-  const [solicitudes, setSolicitudes] = useState([]);
+const DonacionesRest = () => {
+  const [publicaciones, setPublicaciones] = useState([]);
+  const [donadorId, setDonadorId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const cargarDatos = async () => {
+  const usuarioId = localStorage.getItem("usuarioId");
+
+  // Paso 1: Buscar el donador correspondiente al usuarioId
+  const obtenerDonadorId = async () => {
     try {
-      const [solicRes, pubRes, sucRes] = await Promise.all([
-        fetch("http://127.0.0.1:8000/api/solicitudes/solicitudes/"),
-        fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/"),
-        fetch("http://127.0.0.1:8000/api/donaciones/sucursales/"),
-      ]);
+      const res = await fetch("http://127.0.0.1:8000/api/donaciones/donadores/");
 
-      if (!solicRes.ok) throw new Error("Error al obtener solicitudes");
-      if (!pubRes.ok) throw new Error("Error al obtener publicaciones");
-      if (!sucRes.ok) throw new Error("Error al obtener sucursales");
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Respuesta no válida:", text);
+        throw new Error(`Error HTTP: ${res.status}`);
+      }
 
-      const [solicData, pubData, sucData] = await Promise.all([
-        solicRes.json(),
-        pubRes.json(),
-        sucRes.json(),
-      ]);
+      const data = await res.json();
+      const donador = data.find((d) => d.usuario === parseInt(usuarioId));
 
-      const solicitudesArray = solicData.results || solicData;
-      const publicacionesArray = pubData.results || pubData;
-      const sucursalesArray = sucData.results || sucData;
-
-      // Filtrar solicitudes SOLO del donador actual
-      const solicitudesDonador = solicitudesArray.filter(
-        (solicitud) => solicitud.donador === donadorId
-      );
-
-      // Mapear detalles
-      const solicitudesConDetalles = solicitudesDonador.map((solicitud) => {
-        const publicacion = publicacionesArray.find(
-          (p) => p.id === solicitud.publicacion
-        ) || null;
-
-        let receptorSucursal = null;
-
-        if (typeof solicitud.receptor === "object" && solicitud.receptor !== null) {
-          receptorSucursal = solicitud.receptor;
-        } else {
-          receptorSucursal = sucursalesArray.find(
-            (s) => s.id === solicitud.receptor
-          ) || null;
-        }
-
-        return {
-          ...solicitud,
-          publicacionDetalle: publicacion,
-          receptorDetalle: receptorSucursal,
-        };
-      });
-
-      setSolicitudes(solicitudesConDetalles);
-      setLoading(false);
+      if (donador) {
+        setDonadorId(donador.id);
+      } else {
+        setError("No se encontró el donador correspondiente.");
+        setLoading(false);
+      }
     } catch (err) {
-      setError(err.message);
+      console.error("Error al obtener donador:", err.message);
+      setError("Error al obtener información del donador.");
       setLoading(false);
     }
   };
 
+  // Paso 2: Cargar publicaciones del donador
+  const cargarPublicaciones = async () => {
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/");
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Respuesta no válida:", text);
+        throw new Error(`Error HTTP: ${res.status}`);
+      }
+
+      const data = await res.json();
+      const publicacionesArray = data.results || data;
+
+      const publicacionesFiltradas = publicacionesArray.filter(
+        (p) => p.donador === donadorId
+      );
+
+      setPublicaciones(publicacionesFiltradas);
+      setLoading(false);
+    } catch (err) {
+      console.error("Error al cargar publicaciones:", err.message);
+      setError("Error al obtener publicaciones.");
+      setLoading(false);
+    }
+  };
+
+  // useEffect para obtener el donadorId
   useEffect(() => {
-    if (donadorId) {
-      cargarDatos();
+    if (usuarioId) {
+      obtenerDonadorId();
+    } else {
+      setError("No se encontró el ID de usuario.");
+      setLoading(false);
+    }
+  }, [usuarioId]);
+
+  // useEffect para cargar publicaciones cuando ya se tenga el donadorId
+  useEffect(() => {
+    if (donadorId !== null) {
+      cargarPublicaciones();
     }
   }, [donadorId]);
 
@@ -76,36 +86,36 @@ const DonacionesRest = ({ donadorId }) => {
     <>
       <DonadoresHeader />
       <main className="container historialDonador">
-        <h1>Mis Donaciones</h1>
+        <h1>Mis Publicaciones</h1>
 
-        {loading && <p>Cargando donaciones...</p>}
+        {loading && <p>Cargando publicaciones...</p>}
         {error && <p className="error">{error}</p>}
 
-        {!loading && !error && solicitudes.length === 0 && (
-          <p>No tienes donaciones registradas.</p>
+        {!loading && !error && publicaciones.length === 0 && (
+          <p>No tienes publicaciones registradas.</p>
         )}
 
-        {!loading && !error && solicitudes.length > 0 && (
+        {!loading && !error && publicaciones.length > 0 && (
           <table className="historial-table">
             <thead>
               <tr>
-                <th>Publicación</th>
-                <th>Receptor</th>
-                <th>Estado</th>
-                <th>Comentarios</th>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Fecha de Publicación</th>
+                <th>Fecha de Caducidad</th>
               </tr>
             </thead>
             <tbody>
-              {solicitudes.map((solicitud) => (
-                <tr key={solicitud.id}>
-                  <td>{solicitud.publicacionDetalle?.titulo || "N/A"}</td>
-                  <td>{solicitud.receptorDetalle?.nombre || "N/A"}</td>
-                  <td>
-                    <span className={`status ${solicitud.estado.toLowerCase()}`}>
-                      {solicitud.estado}
-                    </span>
-                  </td>
-                  <td>{solicitud.comentarios || "-"}</td>
+              {publicaciones.map((pub) => (
+                <tr key={pub.id}>
+                  <td>{pub.id}</td>
+                  <td>{pub.titulo}</td>
+                  <td>{pub.descripcion}</td>
+                  <td>{pub.cantidad}</td>
+                  <td>{new Date(pub.fecha_publicacion).toLocaleDateString()}</td>
+                  <td>{pub.fecha_caducidad}</td>
                 </tr>
               ))}
             </tbody>

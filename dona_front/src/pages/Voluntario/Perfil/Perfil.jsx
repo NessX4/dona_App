@@ -1,4 +1,3 @@
-// Luna FLores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import VoluntarioHeader from "../../../components/VoluntarioHeader";
 import FotoVoluntario from "../../../assets/FotoVoluntario.avif";
@@ -6,24 +5,60 @@ import "./Perfil.css";
 
 const Perfil = () => {
   const [perfil, setPerfil] = useState(null);
+  const [zonas, setZonas] = useState([]);
   const [editarVisible, setEditarVisible] = useState(false);
   const [formData, setFormData] = useState({
     usuario: "",
+    correo: "",
     telefono: "",
     zona: "",
   });
+useEffect(() => {
+  const usuarioId = localStorage.getItem("usuarioId");
+  console.log("usuario_id desde localStorage:", usuarioId);
 
-  useEffect(() => {
-    setTimeout(() => {
+  if (!usuarioId) {
+    console.warn("No hay usuario_id en localStorage");
+    return;
+  }
+
+  // Hacemos ambos fetch al mismo tiempo
+  Promise.all([
+    fetch("http://localhost:8000/api/usuarios/voluntarios/").then((res) => {
+      if (!res.ok) throw new Error("Error al obtener voluntarios");
+      return res.json();
+    }),
+    fetch("http://localhost:8000/api/zonas/zonas/").then((res) => {
+      if (!res.ok) throw new Error("Error al obtener zonas");
+      return res.json();
+    }),
+  ])
+    .then(([voluntariosData, zonasData]) => {
+      const voluntario = voluntariosData.find(
+        (v) => v.usuario.id === parseInt(usuarioId, 10)
+      );
+
+      if (!voluntario) {
+        console.warn("No se encontró voluntario con ese usuario_id");
+        return;
+      }
+
+      const zonaEncontrada = zonasData.find((z) => z.id === voluntario.zona);
+
       const datos = {
-        usuario: "Ana Luz",
-        telefono: "123-456-7890",
-        zona: "Zona Río",
+        usuario: voluntario.usuario.nombre || "Sin nombre",
+        correo: voluntario.usuario.correo || "Sin correo",
+        telefono: voluntario.telefono || "",
+        zona: zonaEncontrada ? zonaEncontrada.nombre : "Zona no encontrada",
       };
+
       setPerfil(datos);
       setFormData(datos);
-    }, 1000);
-  }, []);
+    })
+    .catch((error) => {
+      console.error("Error en fetch:", error);
+    });
+}, []);
 
   const handleEditar = () => {
     setEditarVisible(true);
@@ -68,6 +103,10 @@ const Perfil = () => {
                 <p className="valor-perfil">{perfil.usuario}</p>
               </div>
               <div className="campo-perfil">
+                <label>Correo</label>
+                <p className="valor-perfil">{perfil.correo}</p>
+              </div>
+              <div className="campo-perfil">
                 <label>Teléfono</label>
                 <p className="valor-perfil">{perfil.telefono}</p>
               </div>
@@ -96,6 +135,16 @@ const Perfil = () => {
                     type="text"
                     name="usuario"
                     value={formData.usuario}
+                    onChange={handleCambio}
+                    required
+                  />
+                </label>
+                <label>
+                  Correo:
+                  <input
+                    type="email"
+                    name="correo"
+                    value={formData.correo}
                     onChange={handleCambio}
                     required
                   />
