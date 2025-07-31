@@ -78,7 +78,9 @@ const NotificacionesDonador = () => {
                 <tr
                   key={id}
                   className={leida ? "leida" : "no-leida"}
-                  onClick={() => abrirNotificacion({ id, titulo, mensaje, fecha, leida })}
+                  onClick={() =>
+                    abrirNotificacion({ id, titulo, mensaje, fecha, leida })
+                  }
                   style={{ cursor: "pointer" }}
                 >
                   <td>{id}</td>
