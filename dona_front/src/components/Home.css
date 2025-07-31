@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   color: #333;
   background-color: #fff5f5;
   line-height: 1.7;
@@ -108,7 +108,12 @@ nav a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4); /* si quieres efecto visual, o pon transparent */
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.4
+  ); /* si quieres efecto visual, o pon transparent */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -191,7 +196,7 @@ nav a:hover {
   background: white;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .step-box h3 {
@@ -410,12 +415,12 @@ footer {
   .hero-goza p {
     font-size: 16px;
   }
-  
+
   .stats-content,
   .stats-text {
     flex-direction: column;
   }
-  
+
   .about-content,
   .security-content {
     flex-direction: column;
@@ -493,7 +498,7 @@ footer {
   max-width: 100%;
   height: auto;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 768px) {

@@ -1,72 +1,76 @@
 import React, { useEffect, useState } from "react";
 import VoluntarioHeader from "../../../components/VoluntarioHeader";
+import {
+  FiPackage,
+  FiTruck,
+  FiCalendar,
+  FiUser,
+  FiCheckCircle,
+  FiClock,
+} from "react-icons/fi";
 import "./Donaciones.css";
 
 const Donaciones = () => {
+  const [donaciones, setDonaciones] = useState([]);
   const [publicaciones, setPublicaciones] = useState([]);
   const [sucursales, setSucursales] = useState([]);
   const [estados, setEstados] = useState([]);
   const [comidas, setComidas] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [archivosAdjuntos, setArchivosAdjuntos] = useState([]);
-
-  const [donaciones] = useState([
-    {
-      id: 1,
-      sucursal: "Sucursal Centro",
-      estado: "En proceso",
-      publicacion: "Comida para familias",
-      categoria: "Alimentos secos",
-      comida: "Arroz",
-    },
-    {
-      id: 2,
-      sucursal: "Sucursal Norte",
-      estado: "Completada",
-      publicacion: "Donación de frutas",
-      categoria: "Frutas",
-      comida: "Manzanas",
-    },
-    {
-      id: 3,
-      sucursal: "Sucursal Sur",
-      estado: "Pendiente",
-      publicacion: "Comida enlatada",
-      categoria: "Enlatados",
-      comida: "Atún",
-    },
-  ]);
+  const [loading, setLoading] = useState(true);
+  const [filtro, setFiltro] = useState("todas");
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/")
-      .then((res) => res.json())
-      .then(setPublicaciones)
-      .catch((err) => console.error("Error publicaciones:", err));
+    const fetchData = async () => {
+      try {
+        const [
+          publicacionesRes,
+          sucursalesRes,
+          estadosRes,
+          comidasRes,
+          categoriasRes,
+          archivosRes,
+        ] = await Promise.all([
+          fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/"),
+          fetch("http://127.0.0.1:8000/api/donaciones/sucursales/"),
+          fetch("http://127.0.0.1:8000/api/donaciones/estados/"),
+          fetch("http://127.0.0.1:8000/api/donaciones/comidas/"),
+          fetch("http://127.0.0.1:8000/api/donaciones/categorias/"),
+          fetch("http://127.0.0.1:8000/api/donaciones/archivos/"),
+        ]);
 
-    fetch("http://127.0.0.1:8000/api/donaciones/sucursales/")
-      .then((res) => res.json())
-      .then(setSucursales)
-      .catch((err) => console.error("Error sucursales:", err));
+        const [
+          publicacionesData,
+          sucursalesData,
+          estadosData,
+          comidasData,
+          categoriasData,
+          archivosData,
+        ] = await Promise.all([
+          publicacionesRes.json(),
+          sucursalesRes.json(),
+          estadosRes.json(),
+          comidasRes.json(),
+          categoriasRes.json(),
+          archivosRes.json(),
+        ]);
 
-    fetch("http://127.0.0.1:8000/api/donaciones/estados/")
-      .then((res) => res.json())
-      .then(setEstados)
-      .catch((err) => console.error("Error estados:", err));
+        setPublicaciones(publicacionesData);
+        setSucursales(sucursalesData);
+        setEstados(estadosData);
+        setComidas(comidasData);
+        setCategorias(categoriasData);
+        setArchivosAdjuntos(archivosData);
+        setDonaciones(publicacionesData); // usando publicaciones como donaciones base
+        setLoading(false);
+      } catch (error) {
+        console.error("Error cargando datos:", error);
+        setLoading(false);
+      }
+    };
 
-    fetch("http://127.0.0.1:8000/api/donaciones/comidas/")
-      .then((res) => res.json())
-      .then(setComidas)
-      .catch((err) => console.error("Error comidas:", err));
-
-    fetch("http://127.0.0.1:8000/api/donaciones/categorias/")
-      .then((res) => res.json())
-      .then(setCategorias)
-      .catch((err) => console.error("Error categorias:", err));
-
-    fetch("http://127.0.0.1:8000/api/donaciones/archivos/")
-      .then((res) => res.json())
-      .then(setArchivosAdjuntos)
-      .catch((err) => console.error("Error archivos:", err));
+    fetchData();
   }, []);
 
   const getSucursalNombre = (id) => {
@@ -92,58 +96,119 @@ const Donaciones = () => {
     return archivosAdjuntos.filter((a) => a.publicacion === pubId);
   };
 
+  const filtrarDonaciones = () => {
+    if (filtro === "todas") return donaciones;
+    return donaciones.filter(
+      (donacion) => getEstadoNombre(donacion.estado).toLowerCase() === filtro
+    );
+  };
+
+  const donacionesFiltradas = filtrarDonaciones();
+
   return (
     <>
       <VoluntarioHeader />
-      <main className="container">
-        <h1>Publicaciones de Donaciones</h1>
+      <main className="donaciones-container">
+        <div className="donaciones-header">
+          <h1>Donaciones Publicadas</h1>
+          <div className="filtros">
+            <button
+              className={`filtro-btn ${filtro === "todas" ? "active" : ""}`}
+              onClick={() => setFiltro("todas")}
+            >
+              Todas
+            </button>
+            <button
+              className={`filtro-btn ${filtro === "pendiente" ? "active" : ""}`}
+              onClick={() => setFiltro("pendiente")}
+            >
+              Pendientes
+            </button>
+            <button
+              className={`filtro-btn ${
+                filtro === "en proceso" ? "active" : ""
+              }`}
+              onClick={() => setFiltro("en proceso")}
+            >
+              En Proceso
+            </button>
+          </div>
+        </div>
 
-        {publicaciones.length === 0 ? (
-          <p>No hay publicaciones cargadas.</p>
+        {loading ? (
+          <div className="loading">
+            <p>Cargando donaciones...</p>
+          </div>
+        ) : donacionesFiltradas.length === 0 ? (
+          <div className="no-donaciones">
+            <FiPackage size={48} />
+            <p>No hay donaciones disponibles</p>
+          </div>
         ) : (
-          <div className="publicaciones-wrapper">
-            {publicaciones.map((item) => {
-              const comidasAsociadas = getComidaPorPublicacion(item.id);
-              const archivosAsociados = getArchivosPorPublicacion(item.id);
+          <div className="donaciones-grid">
+            {donacionesFiltradas.map((pub) => {
+              const comidasAsociadas = getComidaPorPublicacion(pub.id);
+              const archivosAsociados = getArchivosPorPublicacion(pub.id);
 
               return (
-                <div key={item.id} className="publicacion-card">
-                  <h2>{item.titulo}</h2>
+                <div key={pub.id} className="donacion-card">
+                  <div className="donacion-header">
+                    <h3>{pub.titulo}</h3>
+                    <span
+                      className={`estado-badge ${getEstadoNombre(
+                        pub.estado
+                      ).toLowerCase()}`}
+                    >
+                      {pub.estado === 1 ? <FiCheckCircle /> : <FiClock />}
+                      {getEstadoNombre(pub.estado)}
+                    </span>
+                  </div>
 
                   {archivosAsociados.length > 0 && (
-                    <div className="imagen-wrapper">
+                    <div className="donacion-imagen">
                       <img
                         src={archivosAsociados[0].url}
                         alt={archivosAsociados[0].tipo}
-                        className="imagen-adjunta"
                       />
                     </div>
                   )}
 
-                  <p><strong>Descripción:</strong> {item.descripcion}</p>
-                  <p><strong>Cantidad:</strong> {item.cantidad}</p>
-                  <p><strong>Fecha Publicación:</strong> {new Date(item.fecha_publicacion).toLocaleDateString()}</p>
-                  <p><strong>Fecha Caducidad:</strong> {item.fecha_caducidad}</p>
-                  <p><strong>Sucursal:</strong> {getSucursalNombre(item.sucursal)}</p>
-                  <p><strong>Estado:</strong> {getEstadoNombre(item.estado)}</p>
+                  <div className="donacion-info">
+                    <div className="info-item">
+                      <FiPackage className="info-icon" />
+                      <span>{pub.cantidad} unidades</span>
+                    </div>
+                    <div className="info-item">
+                      <FiCalendar className="info-icon" />
+                      <span>
+                        Expira el:{" "}
+                        {new Date(pub.fecha_caducidad).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="info-item">
+                      <FiTruck className="info-icon" />
+                      <span>Ubicación: {getSucursalNombre(pub.sucursal)}</span>
+                    </div>
+                  </div>
 
-                  <p><strong>Comidas:</strong>{" "}
-                    {comidasAsociadas.length > 0
-                      ? comidasAsociadas.map((c) => (
-                          <span key={c.id} className="badge">{c.nombre}</span>
-                        ))
-                      : "Ninguna"}
-                  </p>
+                  <div className="donacion-descripcion">
+                    <p>{pub.descripcion}</p>
+                  </div>
 
-                  <p><strong>Categorías:</strong>{" "}
-                    {comidasAsociadas.length > 0
-                      ? comidasAsociadas.map((c) => (
-                          <span key={c.id} className="badge categoria">
-                            {getCategoriaNombre(c.categoria)}
+                  {comidasAsociadas.length > 0 && (
+                    <div className="donacion-comidas">
+                      <p>
+                        <strong>Comidas:</strong>
+                      </p>
+                      <div className="comidas-lista">
+                        {comidasAsociadas.map((c) => (
+                          <span key={c.id} className="comida-badge">
+                            {c.nombre} ({getCategoriaNombre(c.categoria)})
                           </span>
-                        ))
-                      : "Ninguna"}
-                  </p>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               );
             })}

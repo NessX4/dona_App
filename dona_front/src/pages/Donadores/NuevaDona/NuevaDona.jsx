@@ -1,13 +1,16 @@
+// Luna Flores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import "./NuevaDona.css";
 import DonadoresHeader from "../../../components/DonadoresHeader";
 
 const NuevaDona = () => {
-  // Obtener fecha hoy en formato YYYY-MM-DD
   const hoy = new Date().toISOString().split("T")[0];
 
   const [sucursales, setSucursales] = useState([]);
   const [zonas, setZonas] = useState([]);
+  const [estados, setEstados] = useState([]);
+  const [ubicaciones, setUbicaciones] = useState([]);
+
   const [form, setForm] = useState({
     sucursal: "",
     titulo: "",
@@ -16,22 +19,32 @@ const NuevaDona = () => {
     estado: "",
     ubicacion: "",
     zona: "",
-    fecha_caducidad: hoy,  // Fecha inicial con valor de hoy
+    fecha_caducidad: hoy,
   });
+
   const [mensaje, setMensaje] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Cargar sucursales
     fetch("http://127.0.0.1:8000/api/donaciones/sucursales/")
       .then((res) => res.json())
       .then((data) => setSucursales(data.results || data))
       .catch((err) => console.error("Error al cargar sucursales:", err));
 
-    // Cargar zonas desde API
-    fetch("http://localhost:8000/api/zonas/zonas/")
+    fetch("http://127.0.0.1:8000/api/zonas/zonas/")
       .then((res) => res.json())
       .then((data) => setZonas(data.results || data))
       .catch((err) => console.error("Error al cargar zonas:", err));
+
+    fetch("http://127.0.0.1:8000/api/donaciones/estados/")
+      .then((res) => res.json())
+      .then((data) => setEstados(data.results || data))
+      .catch((err) => console.error("Error al cargar estados:", err));
+
+    fetch("http://127.0.0.1:8000/api/zonas/ubicaciones/")
+      .then((res) => res.json())
+      .then((data) => setUbicaciones(data.results || data))
+      .catch((err) => console.error("Error al cargar ubicaciones:", err));
   }, []);
 
   const handleChange = (e) => {
@@ -42,26 +55,36 @@ const NuevaDona = () => {
     e.preventDefault();
 
     const nuevaPublicacion = {
-      sucursal: parseInt(form.sucursal),
       titulo: form.titulo,
       descripcion: form.descripcion,
       cantidad: parseInt(form.cantidad),
-      estado: form.estado,
-      ubicacion: form.ubicacion,
-      zona: parseInt(form.zona), // asumimos que zona es un id numérico
       fecha_caducidad: form.fecha_caducidad,
+      estado: parseInt(form.estado),
+      ubicacion: parseInt(form.ubicacion),
+      zona: parseInt(form.zona),
+      sucursal: parseInt(form.sucursal),
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevaPublicacion),
-      });
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/donaciones/publicaciones/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nuevaPublicacion),
+        }
+      );
 
-      if (!response.ok) throw new Error("Error al registrar publicación");
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error al registrar publicación:", errorData);
+        setMensaje("Error: " + JSON.stringify(errorData));
+        setShowModal(true);
+        return;
+      }
 
-      setMensaje("✅ ¡Publicación registrada exitosamente!");
+      setMensaje("¡Publicación registrada exitosamente!");
+      setShowModal(true);
       setForm({
         sucursal: "",
         titulo: "",
@@ -70,12 +93,16 @@ const NuevaDona = () => {
         estado: "",
         ubicacion: "",
         zona: "",
-        fecha_caducidad: hoy,  // Reiniciar a fecha actual tras enviar
+        fecha_caducidad: hoy,
       });
     } catch (err) {
-      setMensaje("❌ Hubo un problema al registrar la publicación.");
+      console.error("Error en catch:", err);
+      setMensaje("Hubo un problema al registrar la publicación.");
+      setShowModal(true);
     }
   };
+
+  const closeModal = () => setShowModal(false);
 
   return (
     <>
@@ -85,7 +112,12 @@ const NuevaDona = () => {
         <h2>Agregar Publicación</h2>
         <form onSubmit={handleSubmit}>
           <label>Sucursal:</label>
-          <select name="sucursal" value={form.sucursal} onChange={handleChange} required>
+          <select
+            name="sucursal"
+            value={form.sucursal}
+            onChange={handleChange}
+            required
+          >
             <option value="">Seleccione una sucursal</option>
             {sucursales.map((s) => (
               <option key={s.id} value={s.id}>
@@ -122,24 +154,42 @@ const NuevaDona = () => {
           />
 
           <label>Estado:</label>
-          <select name="estado" value={form.estado} onChange={handleChange} required>
+          <select
+            name="estado"
+            value={form.estado}
+            onChange={handleChange}
+            required
+          >
             <option value="">Seleccione estado</option>
-            <option value="Nuevo">Nuevo</option>
-            <option value="Usado">Usado</option>
-            <option value="Deteriorado">Deteriorado</option>
+            {estados.map((e) => (
+              <option key={e.id} value={e.id}>
+                {e.nombre}
+              </option>
+            ))}
           </select>
 
           <label>Ubicación:</label>
-          <input
-            type="text"
+          <select
             name="ubicacion"
             value={form.ubicacion}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Seleccione ubicación</option>
+            {ubicaciones.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.direccion}
+              </option>
+            ))}
+          </select>
 
           <label>Zona:</label>
-          <select name="zona" value={form.zona} onChange={handleChange} required>
+          <select
+            name="zona"
+            value={form.zona}
+            onChange={handleChange}
+            required
+          >
             <option value="">Seleccione zona</option>
             {zonas.map((z) => (
               <option key={z.id} value={z.id}>
@@ -159,9 +209,20 @@ const NuevaDona = () => {
 
           <button type="submit">Agregar Publicación</button>
         </form>
-
-        {mensaje && <p className="mensaje">{mensaje}</p>}
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="modal-backdrop" onClick={closeModal}>
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()} // evita cerrar modal al click dentro
+          >
+            <p>{mensaje}</p>
+            <button onClick={closeModal}>Cerrar</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
