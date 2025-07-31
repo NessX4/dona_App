@@ -1,196 +1,237 @@
 /* luna Flores Yamileth Guadalupe */
+
+/* Variables de color (coherentes con el dashboard) */
+:root {
+  --primary-color: #e74c3c;
+  --primary-dark: #c0392b;
+  --primary-light: #ff6b5b;
+  --secondary-color: #3498db;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --white: #ffffff;
+  --light-gray: #f9f9f9;
+  --medium-gray: #ecf0f1;
+  --dark-gray: #7f8c8d;
+  --text-dark: #2c3e50;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos base */
+.donaciones-container {
+  padding: 30px 20px;
+  max-width: 1400px;
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px;
-  background-color: #fffaf5;
+  background-color: var(--light-gray);
+  min-height: calc(100vh - 120px);
 }
 
-/* Título principal */
-.container h1 {
-  text-align: center;
-  color: #c00107;
-  margin-bottom: 40px;
-  font-size: 2.5rem;
-  font-weight: bold;
-  letter-spacing: 1px;
+/* HEADER: título + filtros alineados en la misma fila */
+.donaciones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+  flex-wrap: nowrap; /* evita que se envuelvan en escritorio */
 }
 
-/* Grid de publicaciones */
-.publicaciones-wrapper {
+.donaciones-header h1 {
+  margin: 0;
+  white-space: nowrap; /* evita que el título se rompa en varias líneas */
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.filtros {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Botones de filtro */
+.filtro-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--medium-gray);
+  background-color: var(--white);
+  color: var(--dark-gray);
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap; /* evitar que el texto del botón se parta */
+}
+
+.filtro-btn:hover:not(.active) {
+  background-color: var(--medium-gray);
+}
+
+.filtro-btn.active {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+/* Grid de donaciones */
+.donaciones-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
 }
 
-/* Tarjeta individual */
-.publicacion-card {
-  background: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  padding: 25px 20px;
+/* Tarjeta de donación */
+.donacion-card {
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-left: 6px solid #ff7a00;
 }
 
-.publicacion-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+.donacion-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Título de la publicación */
-.publicacion-card h2 {
-  font-size: 1.6rem;
-  margin-bottom: 15px;
-  color: #ff6f61;
-  border-bottom: 2px solid #ffd8cc;
-  padding-bottom: 6px;
+.donacion-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--medium-gray);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Información de texto */
-.publicacion-card p {
-  margin: 10px 0;
-  color: #444;
-  font-size: 1rem;
+.donacion-header h3 {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.estado-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: capitalize;
+}
+
+.estado-badge.disponible {
+  background-color: var(--success-color);
+  color: var(--white);
+}
+
+.estado-badge.pendiente {
+  background-color: var(--warning-color);
+  color: var(--white);
+}
+
+.donacion-body {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.donacion-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-dark);
+}
+
+.info-icon {
+  color: var(--primary-color);
+  min-width: 20px;
+}
+
+.donacion-descripcion {
+  padding: 15px 0;
+  border-top: 1px solid var(--medium-gray);
+  color: var(--dark-gray);
   line-height: 1.5;
 }
 
-/* Etiquetas (badges) generales */
-.badge {
-  display: inline-block;
-  background-color: #ff7a00c9;
-  color: #fff;
-  padding: 6px 12px;
-  margin: 5px 6px 5px 0;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: background 0.2s ease;
+.donacion-actions {
+  padding: 0 20px 20px;
 }
 
-.badge:hover {
-  background-color: #e26500;
-}
-
-/* Badge para categorías */
-.badge.categoria {
-  background-color: #1fc443d0;
-}
-
-.badge.categoria:hover {
-  background-color: #179c35;
-}
-
-/* Imagen adjunta */
-.archivo-adjunto {
-  display: inline-block;
-  margin: 8px 8px 0 0;
-}
-
-.imagen-adjunta {
-  max-width: 100%;
-  max-height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.imagen-wrapper {
+.btn-primary {
   width: 100%;
-  text-align: center;
-  margin-bottom: 10px;
-}
-/* Donaciones.css */
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-}
-
-h1 {
-  color: #ff7a00;
-  text-align: center;
-  margin-bottom: 30px;
-  font-weight: 700;
-  font-size: 2.2rem;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  box-shadow: 0 0 10px rgba(255, 122, 0, 0.15);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-thead {
-  background-color: #ff7a00;
-  color: #fff;
-}
-
-thead th {
-  padding: 12px 15px;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
   font-weight: 600;
-  text-align: left;
-}
-
-tbody tr {
-  background-color: #fff;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+.btn-primary:hover {
+  background-color: var(--primary-dark);
 }
 
-tbody tr:hover {
-  background-color: #ffe5cc;
+/* Estados vacío y loading */
+.no-donaciones,
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  color: var(--dark-gray);
+  text-align: center;
 }
 
-tbody td {
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
+.no-donaciones svg {
+  margin-bottom: 20px;
+  color: var(--medium-gray);
 }
 
-/* Responsive para pantallas pequeñas */
-@media (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
+/* Responsive: en móvil se apilan título y filtros */
+@media (max-width: 768px) {
+  .donaciones-container {
+    padding: 20px 15px;
   }
-  
-  thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
+
+  .donaciones-header {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px;
   }
-  
-  tbody tr {
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
+
+  .donaciones-header h1 {
+    white-space: normal;
+    width: 100%;
   }
-  
-  tbody td {
-    border: none;
-    position: relative;
-    padding-left: 50%;
-    text-align: left;
-    font-size: 0.95rem;
+
+  .filtros {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
   }
-  
-  tbody td::before {
-    position: absolute;
-    left: 15px;
-    top: 10px;
-    font-weight: 700;
-    white-space: nowrap;
-    content: attr(data-label);
+
+  .donaciones-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -7,7 +7,7 @@
 
 /* Estilos generales de body */
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   color: #333;
   background-color: #fff5f5;
   line-height: 1.7;
@@ -105,10 +105,10 @@ nav a {
   font-weight: 500;
   font-size: 14px;
 
-  display: flex;          /* alinea texto verticalmente */
+  display: flex; /* alinea texto verticalmente */
   align-items: center;
-  height: 40px;           /* altura fija para todos */
-  line-height: 40px;      /* centrado vertical */
+  height: 40px; /* altura fija para todos */
+  line-height: 40px; /* centrado vertical */
   padding: 0 10px;
 }
 
@@ -126,7 +126,7 @@ nav a.active-link {
 
 /* Botón salir */
 nav .donar-btn {
-  margin-left: auto;      /* empuja el botón a la derecha */
+  margin-left: auto; /* empuja el botón a la derecha */
   font-size: 14px;
   background-color: #e74c3c;
   color: white;
@@ -140,7 +140,7 @@ nav .donar-btn {
   justify-content: center;
 
   padding: 0 16px;
-  line-height: 40px;      /* centrado vertical */
+  line-height: 40px; /* centrado vertical */
   box-sizing: border-box;
 
   transition: background 0.3s;
@@ -255,7 +255,7 @@ nav .donar-btn:hover {
   background: white;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .step-box h3 {
@@ -340,7 +340,7 @@ nav .donar-btn:hover {
 }
 
 /* About & Security sections */
-.about, 
+.about,
 .security {
   padding: 50px 20px;
   max-width: 900px;
@@ -351,7 +351,7 @@ nav .donar-btn:hover {
   box-shadow: 0 2px 12px rgba(204, 0, 0, 0.1);
 }
 
-.about h2, 
+.about h2,
 .security h2 {
   color: #cc0000;
   font-size: 28px;
@@ -359,14 +359,14 @@ nav .donar-btn:hover {
   font-weight: 700;
 }
 
-.about-icon, 
+.about-icon,
 .security-icon {
   font-size: 80px;
   margin-bottom: 20px;
   color: #cc0000;
 }
 
-.about-text p, 
+.about-text p,
 .security-text p {
   font-size: 17px;
   color: #444;
@@ -390,12 +390,12 @@ nav .donar-btn:hover {
   .hero-goza p {
     font-size: 16px;
   }
-  
+
   .stats-content,
   .stats-text {
     flex-direction: column;
   }
-  
+
   .about-content,
   .security-content {
     flex-direction: column;
@@ -486,7 +486,7 @@ nav .donar-btn:hover {
   max-width: 100%;
   height: auto;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Sección bienvenida voluntario */
