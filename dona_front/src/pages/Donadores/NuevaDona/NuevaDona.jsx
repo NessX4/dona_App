@@ -1,14 +1,16 @@
-// Luna FLores Yamileth Guadalupe
+// Luna Flores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import "./NuevaDona.css";
 import DonadoresHeader from "../../../components/DonadoresHeader";
 
 const NuevaDona = () => {
-  // Fecha  en formato YYYY-MM-DD
   const hoy = new Date().toISOString().split("T")[0];
 
   const [sucursales, setSucursales] = useState([]);
   const [zonas, setZonas] = useState([]);
+  const [estados, setEstados] = useState([]);
+  const [ubicaciones, setUbicaciones] = useState([]);
+
   const [form, setForm] = useState({
     sucursal: "",
     titulo: "",
@@ -17,65 +19,82 @@ const NuevaDona = () => {
     estado: "",
     ubicacion: "",
     zona: "",
-    fecha_caducidad: hoy,  // Fecha inicial con valor de hoy
+    fecha_caducidad: hoy,
   });
+
   const [mensaje, setMensaje] = useState("");
 
   useEffect(() => {
-    // Cargar sucursales
     fetch("http://127.0.0.1:8000/api/donaciones/sucursales/")
       .then((res) => res.json())
       .then((data) => setSucursales(data.results || data))
       .catch((err) => console.error("Error al cargar sucursales:", err));
 
-    fetch("http://localhost:8000/api/zonas/zonas/")
+    fetch("http://127.0.0.1:8000/api/zonas/zonas/")
       .then((res) => res.json())
       .then((data) => setZonas(data.results || data))
       .catch((err) => console.error("Error al cargar zonas:", err));
+
+    fetch("http://127.0.0.1:8000/api/donaciones/estados/")
+      .then((res) => res.json())
+      .then((data) => setEstados(data.results || data))
+      .catch((err) => console.error("Error al cargar estados:", err));
+
+    fetch("http://127.0.0.1:8000/api/zonas/ubicaciones/")
+      .then((res) => res.json())
+      .then((data) => setUbicaciones(data.results || data))
+      .catch((err) => console.error("Error al cargar ubicaciones:", err));
   }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const nuevaPublicacion = {
+  titulo: form.titulo,
+  descripcion: form.descripcion,
+  cantidad: parseInt(form.cantidad),
+  fecha_caducidad: form.fecha_caducidad,
+  estado: parseInt(form.estado),       // sin _id
+  ubicacion: parseInt(form.ubicacion), // sin _id
+  zona: parseInt(form.zona),           // sin _id
+  sucursal: parseInt(form.sucursal),   // sin _id
+};
 
-    const nuevaPublicacion = {
-      sucursal: parseInt(form.sucursal),
-      titulo: form.titulo,
-      descripcion: form.descripcion,
-      cantidad: parseInt(form.cantidad),
-      estado: form.estado,
-      ubicacion: form.ubicacion,
-      zona: parseInt(form.zona),
-      fecha_caducidad: form.fecha_caducidad,
-    };
 
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevaPublicacion),
-      });
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nuevaPublicacion),
+    });
 
-      if (!response.ok) throw new Error("Error al registrar publicación");
-
-      setMensaje(" ¡Publicación registrada exitosamente!");
-      setForm({
-        sucursal: "",
-        titulo: "",
-        descripcion: "",
-        cantidad: "",
-        estado: "",
-        ubicacion: "",
-        zona: "",
-        fecha_caducidad: hoy,  
-      });
-    } catch (err) {
-      setMensaje(" Hubo un problema al registrar la publicación.");
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error al registrar publicación:", errorData);
+      setMensaje("Error: " + JSON.stringify(errorData));
+      return;
     }
-  };
+
+    setMensaje("¡Publicación registrada exitosamente!");
+    setForm({
+      sucursal: "",
+      titulo: "",
+      descripcion: "",
+      cantidad: "",
+      estado: "",
+      ubicacion: "",
+      zona: "",
+      fecha_caducidad: hoy,
+    });
+  } catch (err) {
+    console.error("Error en catch:", err);
+    setMensaje("Hubo un problema al registrar la publicación.");
+  }
+};
+
 
   return (
     <>
@@ -85,7 +104,12 @@ const NuevaDona = () => {
         <h2>Agregar Publicación</h2>
         <form onSubmit={handleSubmit}>
           <label>Sucursal:</label>
-          <select name="sucursal" value={form.sucursal} onChange={handleChange} required>
+          <select
+            name="sucursal"
+            value={form.sucursal}
+            onChange={handleChange}
+            required
+          >
             <option value="">Seleccione una sucursal</option>
             {sucursales.map((s) => (
               <option key={s.id} value={s.id}>
@@ -122,24 +146,42 @@ const NuevaDona = () => {
           />
 
           <label>Estado:</label>
-          <select name="estado" value={form.estado} onChange={handleChange} required>
+          <select
+            name="estado"
+            value={form.estado}
+            onChange={handleChange}
+            required
+          >
             <option value="">Seleccione estado</option>
-            <option value="Nuevo">Nuevo</option>
-            <option value="Usado">Usado</option>
-            <option value="Deteriorado">Deteriorado</option>
+            {estados.map((e) => (
+              <option key={e.id} value={e.id}>
+                {e.nombre}
+              </option>
+            ))}
           </select>
 
           <label>Ubicación:</label>
-          <input
-            type="text"
+          <select
             name="ubicacion"
             value={form.ubicacion}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Seleccione ubicación</option>
+            {ubicaciones.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.direccion}
+              </option>
+            ))}
+          </select>
 
           <label>Zona:</label>
-          <select name="zona" value={form.zona} onChange={handleChange} required>
+          <select
+            name="zona"
+            value={form.zona}
+            onChange={handleChange}
+            required
+          >
             <option value="">Seleccione zona</option>
             {zonas.map((z) => (
               <option key={z.id} value={z.id}>
