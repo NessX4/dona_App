@@ -1,146 +1,157 @@
-/* luna Flores Yamileth Guadalupe */
+/* Perfil Donador - ajustado a medidas y estilo de perfil refugio */
 .perfil-donador-container {
-  max-width: 450px;
-  margin: 40px auto;
-  background: #fff7f0; 
-  border-radius: 14px;
-  padding: 30px 25px;
-  box-shadow: 0 8px 20px rgba(255, 140, 0, 0.2); 
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg) var(--spacing-md);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  box-shadow: var(--shadow-lg);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #4a2c0a; 
+  color: var(--gray-800);
 }
 
 .perfil-donador-title {
   text-align: center;
-  font-size: 2rem;
-  color: #ff6600; 
-  margin-bottom: 25px;
+  font-size: var(--font-size-title);
+  color: var(--primary);
+  margin-bottom: var(--spacing-xl);
   font-weight: 700;
 }
 
 .loading {
   font-style: italic;
   text-align: center;
-  color: #cc6600; 
+  color: var(--primary);
 }
 
 .perfil-card {
-  background-color: #ffe6cc; 
-  border-radius: 14px;
-  padding: 20px 25px;
-  box-shadow: 0 2px 6px rgba(255, 102, 0, 0.3);
+  background-color: var(--gray-50);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .campo-perfil {
-  margin-bottom: 18px;
+  margin-bottom: var(--spacing-lg);
 }
 
 .campo-perfil label {
   display: block;
   font-weight: 600;
-  font-size: 1rem;
-  color: #4a2c0a;
-  margin-bottom: 6px;
+  font-size: var(--font-size-base);
+  color: var(--gray-700);
+  margin-bottom: var(--spacing-sm);
 }
 
 .valor-perfil {
-  font-size: 1.1rem;
-  color: #4a2c0a;
-  padding: 10px 14px;
-  background-color: #fff7f0;
-  border: 2px solid #ff6600;
-  border-radius: 8px;
+  font-size: var(--font-size-base);
+  color: var(--gray-800);
+  padding: var(--spacing-md);
+  background-color: var(--white);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-md);
   user-select: none;
 }
 
-.foto-voluntario {
-  display: block;
-  margin: 0 auto 25px auto;
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid #ff6600;
-  box-shadow: 0 4px 10px rgba(255, 102, 0, 0.4);
+.contenedor-ediciondonador {
+  background-color: #ffffff;
+  padding: 24px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
+.formulario-perfildona {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.seccion-titulodonador {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--font-size-subtitle);
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: var(--spacing-lg);
+}
 
 .btn-editar {
   display: block;
-  margin: 20px auto 0;
+  margin: var(--spacing-lg) auto 0;
   padding: 12px 28px;
-  background-color: #ff660086; 
-  color: white;
+  background-color: var(--primary);
+  color: var(--white);
   font-weight: 700;
   font-size: 1.1rem;
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  box-shadow: 0 6px 12px rgba(255, 102, 0, 0.5);
+  box-shadow: 0 6px 12px rgba(231, 76, 60, 0.5);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn-editar:hover {
-  background-color: #e65c00; 
+  background-color: #e65c00;
   box-shadow: 0 8px 16px rgba(230, 92, 0, 0.7);
 }
 
+/* Modal overlay y contenido */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 102, 0, 0.315); 
+  background-color: rgba(231, 76, 60, 0.315);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999;
-  padding: 20px;
-  overflow-y: auto; 
+  padding: var(--spacing-md);
+  overflow-y: auto;
 }
 
-
 .modal-content {
-  background: #fff7f0;
-  padding: 25px 30px;
-  border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(255, 102, 0, 0.3);
+  background: var(--white);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   width: 100%;
-  max-width: 420px; 
-  max-height: 90vh;  
-  overflow-y: auto; 
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #4a2c0a;
+  color: var(--gray-800);
 }
 
 .modal-content h2 {
   margin-top: 0;
-  color: #ff6600;
-  margin-bottom: 20px;
+  color: var(--primary);
+  margin-bottom: var(--spacing-xl);
   font-weight: 700;
   text-align: center;
 }
 
-
+/* Formulario de edición */
 .form-editar label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: var(--spacing-sm);
   font-weight: 600;
-  font-size: 1rem;
-  color: #4a2c0a;
+  font-size: var(--font-size-base);
+  color: var(--gray-700);
 }
 
 .form-editar input,
 .form-editar textarea {
   display: block;
   width: 100%;
-  padding: 10px 14px;
-  margin-bottom: 18px;
-  border: 2px solid #ff6600;
-  border-radius: 8px;
-  font-size: 1rem;
-  color: #4a2c0a;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  color: var(--gray-800);
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -151,43 +162,64 @@
   box-shadow: 0 0 6px 2px rgba(230, 92, 0, 0.5);
 }
 
+/* Botones guardar y cancelar dentro del modal */
 .modal-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 25px;
+  margin-top: var(--spacing-xl);
 }
 
-.btn-guardar,
-.btn-cancelar {
-  flex: 1;
-  padding: 12px 0;
+.btn-guardarCD {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 12px 28px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 30px;
   font-weight: 700;
   font-size: 1.1rem;
-  border-radius: 30px;
   cursor: pointer;
-  border: none;
+  box-shadow: 0 6px 12px rgba(39, 174, 96, 0.5);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-guardar {
-  background-color: #ff6600;
-  color: white;
-  margin-right: 15px;
-  box-shadow: 0 6px 12px rgba(255, 102, 0, 0.5);
+.btn-guardarCD:hover {
+  background-color: #219150;
+  box-shadow: 0 8px 16px rgba(33, 145, 80, 0.7);
 }
 
-.btn-guardar:hover {
-  background-color: #e65c00;
-  box-shadow: 0 8px 16px rgba(230, 92, 0, 0.7);
+.btn-cancelar-CD {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 16px;
+  background-color: var(--gray-200);
+  color: var(--gray-700);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: auto;
+  min-width: 100px;
 }
 
-.btn-cancelar {
-  background-color: #ffd1a3;
-  color: #4a2c0a;
-  box-shadow: 0 6px 12px rgba(255, 166, 77, 0.5);
+.btn-cancelar-CD:hover {
+  background-color: #e5e7eb;
 }
 
-.btn-cancelar:hover {
-  background-color: #ffc17a;
-  box-shadow: 0 8px 16px rgba(255, 193, 122, 0.7);
+/* Perfil-card en columnas (flex) */
+.perfil-card.columnas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-lg);
+  justify-content: space-between;
+}
+
+.columna {
+  flex: 1;
+  min-width: 200px;
 }

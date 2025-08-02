@@ -279,5 +279,3 @@ Agregar Publicación
 };
 
 export default FormNuevaDonacion;
-
-
