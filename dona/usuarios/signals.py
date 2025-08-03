@@ -1,7 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import User
-from usuarios.models import Administrador, Donador, Voluntario, Receptor
+from usuarios.models import Administrador, Donador, Voluntario, Receptor, Usuario
 
 from donaciones.models import Publicacion, Sucursal
 from solicitudes.models import Solicitud
@@ -15,15 +14,16 @@ from usuarios.logs import registrar_log
 
 
 
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=Usuario)
 def crear_administrador_si_superusuario(sender, instance, created, **kwargs):
-    if created and instance.is_superuser:
-        if not Administrador.objects.filter(correo=instance.email).exists():
+    if created and instance.is_superuser and instance.rol.nombre == 'Administrador':
+        if not Administrador.objects.filter(correo=instance.correo).exists():
             Administrador.objects.create(
-                nombre=instance.username,
-                correo=instance.email,
-                contraseña='importado',
-                activo=True
+                nombre=instance.nombre,
+                correo=instance.correo,
+                password=instance.password,  # Copia hash, no texto plano
+                fecha_registro=instance.fecha_registro,
+                activo=instance.is_active
             )
             print(f"----------------------------------------------------------------")
 

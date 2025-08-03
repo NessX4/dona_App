@@ -59,7 +59,7 @@ const CreateUser = () => {
     const usuarioBase = {
       nombre: formData.nombre,
       correo: formData.correo,
-      contraseña: formData.password,
+      password: formData.password, 
       rol: parseInt(formData.rol)
     };
 

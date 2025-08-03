@@ -100,9 +100,9 @@ WSGI_APPLICATION = 'dona.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dona_app_django',  # Updated to match the new database name
+        'NAME': 'dona_app_djangoV3',  # Updated to match the new database name
         "USER": "postgres",
-        "PASSWORD": "2305",
+        "PASSWORD": "1234",
         "HOST": "localhost",
         "PORT": "5432",
     }
