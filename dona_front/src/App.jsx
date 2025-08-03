@@ -30,7 +30,6 @@ import PerfilDonador from "./pages/Donadores/PerfilDonador/PerfilDonador.jsx";
 import NotificacionesDonador from "./pages/Donadores/NotificacionesDonador/NotificacionesDonador.jsx";
 import SolicitudesDonador from "./pages/Donadores/SolicitudesDonador/SolicitudesDonador.jsx";
 import DonacionesRest from "./pages/Donadores/DonacionesRest/DonacionesRest.jsx";
-import NuevaDona from "./pages/Donadores/NuevaDona/NuevaDona.jsx";
 
 // Componente de protección
 import PrivateRoute from "./components/PrivateRoute.jsx";
@@ -216,14 +215,7 @@ function App() {
           </PrivateRoute>
         }
       />
-      <Route
-        path="/donadores/nueva-donacion"
-        element={
-          <PrivateRoute allowedRoles={["Donador"]}>
-            <NuevaDona />
-          </PrivateRoute>
-        }
-      />
+     
     </Routes>
   );
 }
