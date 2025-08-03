@@ -1,70 +1,410 @@
-/*  Luna FLores Yamileth Guadalupe */
-
 .container.historialDonador {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 2rem auto;
-  padding: 2rem;
-  background-color: #fff5f5;
-  border-radius: 16px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 0 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.historialDonador h1 {
+.header-publicaciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.header-publicaciones h1 {
   font-size: 2rem;
-  color: #cc0000;
-  margin-bottom: 1.5rem;
-  text-align: center;
+  color: var(--color-principal-hover);
+  margin-top: 2rem;
 }
 
-.historial-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
+/* Botón Agregar Publicación */
+.boton-agregar-donacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 16px;
+  background-color: #27ae60;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  width: auto !important;
+  min-width: auto;
+  box-shadow: 0 3px 6px rgba(39, 174, 96, 0.5) !important;
 }
 
-.historial-table th,
-.historial-table td {
-  padding: 0.9rem 1.2rem;
-  border: 1px solid #ddd;
-  text-align: left;
+.boton-agregar-donacion:hover {
+  background-color: #27ae60;
+}
+
+.icono-plus {
   font-size: 1rem;
 }
 
-.historial-table th {
-  background-color: #cc0000;
+.publicaciones-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.publicacion-card {
+  width: calc(33.33% - 0.67rem);
+  background-color: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.publicacion-card:hover {
+  transform: scale(1.02);
+}
+
+.publicacion-editando {
+  border: 3px solid var(--color-principal);
+  background-color: rgba(231, 76, 60, 0.1);
+  box-shadow: 0 0 10px rgba(231, 76, 60, 0.7);
+  transition: all 0.3s ease;
+}
+
+.ImagenDonacion {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid var(--color-borde);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.contenido-publicacion {
+  padding: 20px;
+  flex-grow: 1;
+  padding-bottom: 10px;
+}
+
+.contenido-publicacion h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+  color: var(--color-texto);
+}
+
+.contenido-publicacion p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Pie de tarjeta de colores */
+.tarjeta-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 12px;
   color: white;
-}
-
-.historial-table tr:nth-child(even) {
-  background-color: #fdf0f0;
-}
-
-.status {
-  padding: 0.4rem 0.8rem;
-  border-radius: 12px;
   font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.footer-pink {
+  background-color: var(--color-principal);
+}
+
+.footer-orange {
+  background-color: var(--color-principal-hover);
+}
+
+.footer-green {
+  background-color: var(--color-exito);
+}
+
+/* Botones en esquina inferior derecha */
+.acciones-publicacion {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px;
+  background-color: var(--color-fondo);
+  border-top: 1px solid var(--color-borde);
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+/* BOTONES - tamaño y estilo circulares 38x38 px con icono centrado */
+.boton-editardonacion {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  color: white;
+  box-shadow: 0 4px 6px rgba(39, 174, 96, 0.5);
+  background-color: var(--color-exito);
+  margin-right: 1rem;
+}
+
+.boton-editardonacion:hover {
+  background-color: #219150;
+  box-shadow: 0 4px 8px rgba(33, 145, 80, 0.7);
+}
+
+.boton-eliminardonacion {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  color: white;
+  box-shadow: 0 4px 6px rgba(231, 76, 60, 0.5);
+  background-color: var(--color-principal);
+}
+
+.boton-eliminardonacion:hover {
+  background-color: var(--color-principal-hover);
+}
+
+/* Inputs y textarea para edición inline */
+.publicacion-editando input[type="text"],
+.publicacion-editando input[type="number"],
+.publicacion-editando input[type="date"],
+.publicacion-editando textarea {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1.5px solid var(--color-borde);
+  border-radius: 6px;
+  margin-bottom: 0.4rem;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.publicacion-editando input[type="text"]:focus,
+.publicacion-editando input[type="number"]:focus,
+.publicacion-editando input[type="date"]:focus,
+.publicacion-editando textarea:focus {
+  outline: none;
+  background-color: var(--color-fondo);
+}
+
+.publicacion-editando textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Etiquetas para inputs tipo fecha */
+.publicacion-editando label {
+  display: block;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.2rem;
   font-size: 0.9rem;
-  text-transform: capitalize;
+  color: #555;
 }
 
-.status.pendiente {
-  background-color: #ffe066;
-  color: #856404;
-}
-
-.status.en_proceso {
-  background-color: #d1ecf1;
-  color: #0c5460;
-}
-
-.status.completada {
-  background-color: #c3e6cb;
-  color: #155724;
+/* Loading y error */
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  color: #777;
 }
 
 .error {
-  color: red;
+  color: var(--color-error);
+}
+
+/* Modal Confirmación - ESTILOS MODIFICADOS */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-modal-fondo);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1500;
+}
+
+.modal-contenido {
+  background-color: white;
+  padding: 1.8rem 2.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgb(0 0 0 / 0.25);
+  max-width: 380px;
   text-align: center;
-  font-weight: bold;
-  margin-top: 1rem;
+}
+
+.modal-mensaje {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-texto);
+}
+
+.modal-botones {
+  display: flex;
+  justify-content: space-between; /* Botones separados a los extremos */
+  gap: 1.5rem; /* Espacio adicional entre botones */
+  padding: 0 0.5rem; /* Pequeño padding para que no toquen los bordes */
+}
+
+.btn-cancelarED,
+.btn-eliminarED {
+  border: none;
+  padding: 0.5rem 1.5rem; /* Aumentado el padding horizontal */
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1; /* Hace que ambos botones ocupen el mismo espacio */
+  max-width: 140px; /* Limita el ancho máximo */
+}
+
+.btn-cancelarED {
+  background-color: #f5f5f5;
+  color: var(--color-texto);
+  border: 1.5px solid var(--color-borde);
+}
+
+.btn-cancelarED:hover {
+  background-color: #ddd;
+  transform: translateY(-1px); /* Efecto sutil al hover */
+}
+
+.btn-eliminarED {
+  background-color: var(--color-principal);
+  color: white;
+}
+
+.btn-eliminarED:hover {
+  background-color: var(--color-principal-hover);
+  transform: translateY(-1px); /* Efecto sutil al hover */
+}
+
+/* Imagen adjunta dentro de edición */
+.imagen-archivo {
+  max-width: 150px;
+  max-height: 150px;
+  margin: 10px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* CONTENEDOR para botones guardar/cancelar juntos */
+.botones-edicion-donacion {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Botón guardar edición donación */
+.btn-guardarEdDona {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 16px;
+  background-color: var(--color-exito);
+  color: var(--color-fondo);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: auto;
+  min-width: 100px;
+  box-shadow: 0 4px 6px rgba(39, 174, 96, 0.5);
+}
+
+.btn-guardarEdDona:hover {
+  background-color: #219150;
+  box-shadow: 0 4px 8px rgba(33, 145, 80, 0.7);
+}
+
+/* Botón cancelar edición donación */
+.btn-cancelarEdDona {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 16px;
+  background-color: #e0e0e0;
+  color: var(--color-texto);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: auto;
+  min-width: 100px;
+}
+
+.btn-cancelarEdDona:hover {
+  background-color: #ccc;
+}
+
+/* Media Queries para responsive */
+@media (max-width: 992px) {
+  .publicacion-card {
+    width: calc(50% - 0.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .publicacion-card {
+    width: 100%;
+  }
+
+  .container.historialDonador {
+    padding: 0 0.5rem;
+  }
+
+  .contenido-publicacion {
+    padding: 15px;
+    padding-bottom: 10px;
+  }
+
+  /* Ajustes para el modal en móviles */
+  .modal-contenido {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+
+  .modal-botones {
+    flex-direction: column; /* Apila los botones en móviles */
+    gap: 0.8rem;
+  }
+
+  .btn-cancelarED,
+  .btn-eliminarED {
+    max-width: 100%; /* Ocupa todo el ancho */
+  }
 }

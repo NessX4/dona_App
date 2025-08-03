@@ -1,134 +1,94 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import logoDona from "../assets/Logotipo.png";
-import { FiLogOut, FiX, FiAlertTriangle } from "react-icons/fi";
+import { FiLogOut, FiAlertTriangle } from "react-icons/fi";
 import "./RefugioHeader.css";
 
 const RefugioHeader = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const handleLogout = () => {
-    setShowLogoutModal(true);
-  };
-
+  const handleLogout = () => setShowLogoutModal(true);
   const confirmLogout = () => {
-    setShowLogoutModal(false);
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("usuarioId");
-    localStorage.removeItem("rol");
-
-    navigate("/login"); // Mejor redirigir al login
-};
-
-
-  const cancelLogout = () => {
+    navigate("/");
     setShowLogoutModal(false);
   };
+  const cancelLogout = () => setShowLogoutModal(false);
 
   return (
     <>
-      <header className="refugio-header">
-        <div className="header-top">
-          <p>Bienvenido, Refugio - ¡Gracias por tu labor!</p>
-        </div>
+      <div className="topbar">
+        <p>Bienvenido, Refugio - ¡Gracias por tu labor!</p>
+      </div>
 
-        <div className="header-main">
-          <div className="header-container">
-            <div className="header-logo">
-              <img src={logoDona} alt="Logo Dona" />
-              <NavLink to="/refugio" className="logo-text">
-                DonaApp Refugios
-              </NavLink>
-            </div>
-
-            <nav className="header-nav">
-              <div className="nav-links">
-                <NavLink
-                  to="/refugio/dashboard"
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                >
-                  Dashboard
-                </NavLink>
-                <NavLink
-                  to="/refugio/donaciones-disponibles"
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                >
-                  Donaciones
-                </NavLink>
-                <NavLink
-                  to="/refugio/zonas-refugios"
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                >
-                  Zonas
-                </NavLink>
-                <NavLink
-                  to="/refugio/historial-donaciones"
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                >
-                  Historial
-                </NavLink>
-                <NavLink
-                  to="/refugio/notificaciones"
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                >
-                  Notificaciones
-                </NavLink>
-                <NavLink
-                  to="/refugio/perfil"
-                  className={({ isActive }) =>
-                    isActive ? "nav-link active" : "nav-link"
-                  }
-                >
-                  Perfil
-                </NavLink>
-              </div>
-
-              <button onClick={handleLogout} className="logout-btn">
-                <FiLogOut className="logout-icon" />
-                Cerrar Sesión
-              </button>
-            </nav>
+      <header>
+        <div className="container">
+          <div className="logo">
+            <img src={logoDona} alt="Logo Dona" />
+            <NavLink to="/refugio" className="dona-text">
+              DonaApp Refugios
+            </NavLink>
           </div>
+          <nav>
+            <NavLink
+              to="/refugio/dashboard"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Dashboard
+            </NavLink>
+            <NavLink
+              to="/refugio/donaciones-disponibles"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Donaciones
+            </NavLink>
+            <NavLink
+              to="/refugio/zonas-refugios"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Zonas
+            </NavLink>
+            <NavLink
+              to="/refugio/historial-donaciones"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Historial
+            </NavLink>
+            <NavLink
+              to="/refugio/notificaciones"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Notificaciones
+            </NavLink>
+            <NavLink
+              to="/refugio/perfil"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Perfil
+            </NavLink>
+            <button onClick={handleLogout} className="donar-btn">
+              <FiLogOut style={{ marginRight: "5px" }} />
+              Cerrar Sesión
+            </button>
+          </nav>
         </div>
       </header>
 
-      {/* Modal de confirmación */}
       {showLogoutModal && (
-        <div className="logout-modal-overlay">
-          <div className="logout-modal">
-            <div className="modal-header">
-              <FiAlertTriangle className="modal-icon" />
-              <h3>Confirmar cierre de sesión</h3>
-            </div>
-            <div className="modal-body">
-              <p>¿Estás seguro que deseas cerrar la sesión?</p>
-            </div>
-            <div className="modal-footer">
-              <button onClick={cancelLogout} className="modal-btn cancel-btn">
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>¿Deseas cerrar sesión?</h3>
+            <div className="modal-buttons">
+              <button onClick={cancelLogout} className="btn-cancel">
                 Cancelar
               </button>
-              <button onClick={confirmLogout} className="modal-btn confirm-btn">
+              <button onClick={confirmLogout} className="btn-confirm">
                 Sí, cerrar sesión
               </button>
             </div>
           </div>
         </div>
       )}
-
-      {/* Espacio para separar el header del contenido */}
-      <div className="header-spacer"></div>
     </>
   );
 };
