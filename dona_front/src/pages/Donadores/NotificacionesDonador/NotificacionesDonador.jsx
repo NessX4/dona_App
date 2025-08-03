@@ -1,41 +1,54 @@
-// Luna FLores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import VoluntarioHeader from "../../../components/DonadoresHeader";
+import { FiTrash2 } from "react-icons/fi";
 import "./NotificacionesDonador.css";
 
 const NotificacionesDonador = () => {
   const [notificaciones, setNotificaciones] = useState([]);
   const [editarVisible, setEditarVisible] = useState(false);
   const [notificacionActiva, setNotificacionActiva] = useState(null);
+  const [notificacionEliminar, setNotificacionEliminar] = useState(null);
+  const [eliminando, setEliminando] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
-      const datosMock = [
-        {
-          id: 1,
-          titulo: "Nueva solicitud de donación",
-          mensaje: "Un refugio cercano necesita alimentos frescos.",
-          fecha: "2025-07-28T09:30:00Z",
-          leida: false,
-        },
-        {
-          id: 2,
-          titulo: "Recordatorio de donación",
-          mensaje: "Tu próxima donación está programada para el 30 de julio.",
-          fecha: "2025-07-27T16:00:00Z",
-          leida: true,
-        },
-      ];
-      setNotificaciones(datosMock);
-    }, 1000);
+    const usuarioId = localStorage.getItem("usuarioId");
+
+    if (!usuarioId) return;
+
+    fetch("http://127.0.0.1:8000/api/notificaciones/notifiaciones/")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Error al cargar notificaciones");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        const adaptadas = data
+          .filter((n) => n.usuario === parseInt(usuarioId))
+          .map((n) => ({
+            ...n,
+            titulo: "Notificación",
+            leida: n.leido,
+          }));
+        setNotificaciones(adaptadas);
+      })
+      .catch((error) => {
+        console.error("Error al cargar notificaciones:", error);
+      });
   }, []);
 
   const abrirNotificacion = (notificacion) => {
     setNotificacionActiva(notificacion);
     setEditarVisible(true);
-    setNotificaciones((prev) =>
-      prev.map((n) => (n.id === notificacion.id ? { ...n, leida: true } : n))
-    );
+
+    // Marcar como leída solo si no está leída
+    if (!notificacion.leida) {
+      setNotificaciones((prev) =>
+        prev.map((n) =>
+          n.id === notificacion.id ? { ...n, leida: true } : n
+        )
+      );
+    }
   };
 
   const cerrarModal = () => {
@@ -43,7 +56,45 @@ const NotificacionesDonador = () => {
     setNotificacionActiva(null);
   };
 
-  // Función para formatear fecha en español
+  const confirmarEliminar = (notificacion) => {
+    setNotificacionEliminar(notificacion);
+  };
+
+  const cancelarEliminar = () => {
+    setNotificacionEliminar(null);
+  };
+
+  const eliminarNotificacion = async () => {
+    if (!notificacionEliminar) return;
+    
+    const id = notificacionEliminar.id;
+    setEliminando(true);
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/notificaciones/notifiaciones/${id}/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Error HTTP! estado: ${response.status}`);
+      }
+
+      setNotificaciones((prev) => prev.filter((n) => n.id !== id));
+      setNotificacionEliminar(null);
+    } catch (error) {
+      console.error("Error al eliminar notificación:", error);
+      alert("No se pudo eliminar la notificación. Por favor intenta nuevamente.");
+    } finally {
+      setEliminando(false);
+    }
+  };
+
   const formatoFecha = (fecha) => {
     return new Date(fecha).toLocaleString("es-MX", {
       day: "2-digit",
@@ -57,13 +108,14 @@ const NotificacionesDonador = () => {
   return (
     <>
       <VoluntarioHeader />
-      <main className="donaciones-container">
-        <h1 className="donaciones-title">Notificaciones</h1>
+
+      <main className="nd-container">
+        <h1 className="nd-title">Notificaciones</h1>
 
         {notificaciones.length === 0 ? (
-          <p className="loading">No hay notificaciones.</p>
+          <p className="nd-loading">No hay notificaciones.</p>
         ) : (
-          <table className="tabla-notificaciones">
+          <table className="nd-tabla">
             <thead>
               <tr>
                 <th>ID</th>
@@ -71,26 +123,46 @@ const NotificacionesDonador = () => {
                 <th>Mensaje</th>
                 <th>Fecha</th>
                 <th>Estado</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {notificaciones.map(({ id, titulo, mensaje, fecha, leida }) => (
+              {notificaciones.map((notificacion) => (
                 <tr
-                  key={id}
-                  className={leida ? "leida" : "no-leida"}
-                  onClick={() =>
-                    abrirNotificacion({ id, titulo, mensaje, fecha, leida })
+                  key={notificacion.id}
+                  className={
+                    notificacion.leida
+                      ? "nd-fila-leida"
+                      : "nd-fila-no-leida"
                   }
-                  style={{ cursor: "pointer" }}
+                  onClick={() => abrirNotificacion(notificacion)}
                 >
-                  <td>{id}</td>
-                  <td>{titulo}</td>
-                  <td>{mensaje}</td>
-                  <td>{formatoFecha(fecha)}</td>
+                  <td>{notificacion.id}</td>
+                  <td>{notificacion.titulo}</td>
+                  <td>{notificacion.mensaje.substring(0, 50)}...</td>
+                  <td>{formatoFecha(notificacion.fecha)}</td>
                   <td>
-                    <span className={`status ${leida ? "leido" : "no-leido"}`}>
-                      {leida ? "Leído" : "No leído"}
+                    <span
+                      className={`nd-status ${
+                        notificacion.leida ? "nd-leido" : "nd-no-leido"
+                      }`}
+                    >
+                      {notificacion.leida ? "Leído" : "No leído"}
                     </span>
+                  </td>
+                  <td onClick={(e) => e.stopPropagation()}>
+                    <button
+                      className="nd-btn-eliminar"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        confirmarEliminar(notificacion);
+                      }}
+                      title="Eliminar notificación"
+                      aria-label="Eliminar notificación"
+                      disabled={eliminando}
+                    >
+                      <FiTrash2 size={18} />
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -98,16 +170,55 @@ const NotificacionesDonador = () => {
           </table>
         )}
 
-        {/* Modal detalle */}
+        {/* Modal para ver notificación */}
         {editarVisible && notificacionActiva && (
-          <div className="modal-overlay" onClick={cerrarModal}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="nd-modal-overlay" onClick={cerrarModal}>
+            <div
+              className="nd-modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
               <h2>{notificacionActiva.titulo}</h2>
-              <p>{notificacionActiva.mensaje}</p>
-              <small>{formatoFecha(notificacionActiva.fecha)}</small>
-              <div className="modal-buttons">
-                <button className="btn-guardar" onClick={cerrarModal}>
+              <p className="nd-modal-mensaje">{notificacionActiva.mensaje}</p>
+              <small className="nd-modal-fecha">
+                {formatoFecha(notificacionActiva.fecha)}
+              </small>
+              <div className="nd-modal-btns">
+                <button
+                  className="nd-modal-btn-cerrar"
+                  onClick={cerrarModal}
+                >
                   Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal de confirmación para eliminar */}
+        {notificacionEliminar && (
+          <div className="nd-modal-overlay" onClick={cancelarEliminar}>
+            <div
+              className="nd-modal-content nd-modal-confirmacion"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p>¿Estás seguro de eliminar esta notificación?</p>
+              <p className="nd-notificacion-titulo">
+                {notificacionEliminar.titulo}
+              </p>
+              <div className="nd-modal-btns">
+                <button
+                  className="nd-modal-btn-cancelar"
+                  onClick={cancelarEliminar}
+                  disabled={eliminando}
+                >
+                  Cancelar
+                </button>
+                <button
+                  className="nd-modal-btn-confirmar"
+                  onClick={eliminarNotificacion}
+                  disabled={eliminando}
+                >
+                  {eliminando ? "Eliminando..." : "Eliminar"}
                 </button>
               </div>
             </div>
