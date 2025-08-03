@@ -18,7 +18,7 @@ body {
 }
 
 .sidebar {
-  width: 220px;
+  width: 260px !important;
   background-color: #111; /* negro profundo */
   color: white;
   height: 100vh;
@@ -52,7 +52,7 @@ body {
    Topbar
    =============================== */
 .topbar {
-  height: 85px;
+  height: 75px !important;
   background-color: #1e4720; /* verde DONA */
   color: white;
   display: flex;
