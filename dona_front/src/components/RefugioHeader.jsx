@@ -10,17 +10,10 @@ const RefugioHeader = () => {
 
   const handleLogout = () => setShowLogoutModal(true);
   const confirmLogout = () => {
-    setShowLogoutModal(false);
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("usuarioId");
-    localStorage.removeItem("rol");
-    navigate("/login"); // Mejor redirigir al login
-  };
-
-  const cancelLogout = () => {
+    navigate("/");
     setShowLogoutModal(false);
   };
+  const cancelLogout = () => setShowLogoutModal(false);
 
   return (
     <>
@@ -33,10 +26,16 @@ const RefugioHeader = () => {
           <div className="logo">
             <img src={logoDona} alt="Logo Dona" />
             <NavLink to="/refugio" className="dona-text">
-              DonaApp
+              DonaApp Refugios
             </NavLink>
           </div>
           <nav>
+            <NavLink
+              to="/refugio/dashboard"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Dashboard
+            </NavLink>
             <NavLink
               to="/refugio/donaciones-disponibles"
               className={({ isActive }) => (isActive ? "active-link" : "")}

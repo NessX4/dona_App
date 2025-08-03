@@ -1,10 +1,9 @@
-// Luna FLores Yamileth Guadalupe
+// Luna Flores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import "./NuevaDona.css";
 import DonadoresHeader from "../../../components/DonadoresHeader";
 
 const NuevaDona = () => {
-  // Fecha  en formato YYYY-MM-DD
   const hoy = new Date().toISOString().split("T")[0];
 
   const [sucursales, setSucursales] = useState([]);
@@ -24,7 +23,6 @@ const NuevaDona = () => {
   });
 
   const [mensaje, setMensaje] = useState("");
-  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/donaciones/sucursales/")
@@ -32,7 +30,7 @@ const NuevaDona = () => {
       .then((data) => setSucursales(data.results || data))
       .catch((err) => console.error("Error al cargar sucursales:", err));
 
-    fetch("http://localhost:8000/api/zonas/zonas/")
+    fetch("http://127.0.0.1:8000/api/zonas/zonas/")
       .then((res) => res.json())
       .then((data) => setZonas(data.results || data))
       .catch((err) => console.error("Error al cargar zonas:", err));
@@ -51,60 +49,52 @@ const NuevaDona = () => {
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const nuevaPublicacion = {
+  titulo: form.titulo,
+  descripcion: form.descripcion,
+  cantidad: parseInt(form.cantidad),
+  fecha_caducidad: form.fecha_caducidad,
+  estado: parseInt(form.estado),       // sin _id
+  ubicacion: parseInt(form.ubicacion), // sin _id
+  zona: parseInt(form.zona),           // sin _id
+  sucursal: parseInt(form.sucursal),   // sin _id
+};
 
-    const nuevaPublicacion = {
-      titulo: form.titulo,
-      descripcion: form.descripcion,
-      cantidad: parseInt(form.cantidad),
-      estado: form.estado,
-      ubicacion: form.ubicacion,
-      zona: parseInt(form.zona),
-      fecha_caducidad: form.fecha_caducidad,
-      estado: parseInt(form.estado),
-      ubicacion: parseInt(form.ubicacion),
-      zona: parseInt(form.zona),
-      sucursal: parseInt(form.sucursal),
-    };
 
-    try {
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(nuevaPublicacion),
+    });
 
-      const response = await fetch("http://127.0.0.1:8000/api/donaciones/publicaciones/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(nuevaPublicacion),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Error al registrar publicación:", errorData);
-        setMensaje("Error: " + JSON.stringify(errorData));
-        setShowModal(true);
-        return;
-      }
-
-      setMensaje("¡Publicación registrada exitosamente!");
-      setShowModal(true);
-      setForm({
-        sucursal: "",
-        titulo: "",
-        descripcion: "",
-        cantidad: "",
-        estado: "",
-        ubicacion: "",
-        zona: "",
-        fecha_caducidad: hoy,
-      });
-    } catch (err) {
-      console.error("Error en catch:", err);
-      setMensaje("Hubo un problema al registrar la publicación.");
-      setShowModal(true);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Error al registrar publicación:", errorData);
+      setMensaje("Error: " + JSON.stringify(errorData));
+      return;
     }
-  };
 
-  const closeModal = () => setShowModal(false);
+    setMensaje("¡Publicación registrada exitosamente!");
+    setForm({
+      sucursal: "",
+      titulo: "",
+      descripcion: "",
+      cantidad: "",
+      estado: "",
+      ubicacion: "",
+      zona: "",
+      fecha_caducidad: hoy,
+    });
+  } catch (err) {
+    console.error("Error en catch:", err);
+    setMensaje("Hubo un problema al registrar la publicación.");
+  }
+};
+
 
   return (
     <>
@@ -211,20 +201,9 @@ const NuevaDona = () => {
 
           <button type="submit">Agregar Publicación</button>
         </form>
-      </div>
 
-      {/* Modal */}
-      {showModal && (
-        <div className="modal-backdrop" onClick={closeModal}>
-          <div
-            className="modal-content"
-            onClick={(e) => e.stopPropagation()} // evita cerrar modal al click dentro
-          >
-            <p>{mensaje}</p>
-            <button onClick={closeModal}>Cerrar</button>
-          </div>
-        </div>
-      )}
+        {mensaje && <p className="mensaje">{mensaje}</p>}
+      </div>
     </>
   );
 };

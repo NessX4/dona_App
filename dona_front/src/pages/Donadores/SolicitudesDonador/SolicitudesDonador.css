@@ -1,82 +1,292 @@
-/* luna Flores Yamileth Guadalupe */
-.solicitudesDonador {
+/* Contenedor principal */
+.sd-container {
   max-width: 1300px;
   margin: 40px auto;
   padding: 0 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  color: #4a2c0a;
+  background-color: #fff;
 }
 
-.solicitudesDonador h1 {
+/* Título */
+.sd-title {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 30px;
-  color: #ff6600;
+  color: #e74c3c;
+  font-weight: 700;
 }
 
-.solicitudesDonador .error {
-  color: red;
+/* Estados de carga */
+.sd-loading,
+.sd-no-data {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 20px 0;
+}
+
+.sd-error {
+  color: #e74c3c;
   font-weight: bold;
   text-align: center;
   margin-bottom: 20px;
 }
 
-.solicitudesDonador .solicitudes-table {
+/* Tabla */
+.sd-table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 8px 20px rgba(255, 102, 0, 0.15);
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.15);
   border-radius: 10px;
   overflow: hidden;
-  background-color: #fff7f0;
+  background-color: #fff;
 }
 
-.solicitudesDonador .solicitudes-table thead {
-  background-color: #ff914d92;
-  color: white;
+.sd-table thead {
+  background-color: #c0392b;
+  color: #fff;
   font-weight: 700;
   font-size: 1.1rem;
 }
 
-.solicitudesDonador .solicitudes-table th,
-.solicitudesDonador .solicitudes-table td {
+.sd-table th,
+.sd-table td {
   padding: 14px 18px;
-  border-bottom: 1px solid #ffe6cc;
+  border-bottom: 1px solid #ddd;
   text-align: left;
+  vertical-align: middle;
 }
 
-.solicitudesDonador .solicitudes-table tbody tr:nth-child(even) {
-  background-color: #fff0db;
-}
-
-.solicitudesDonador .solicitudes-table tbody tr:hover {
-  background-color: #ffd8b3;
+.sd-table-row:hover {
+  background-color: #fce1e1;
   transition: background-color 0.3s ease;
 }
 
-.solicitudesDonador .status {
+/* Celdas */
+.sd-table-cell {
+  padding: 12px 15px;
+}
+
+/* Status */
+.sd-status {
   padding: 6px 14px;
   border-radius: 20px;
   font-weight: 700;
   font-size: 0.9rem;
-  color: white;
   display: inline-block;
   text-align: center;
   min-width: 90px;
   text-transform: capitalize;
 }
 
-.solicitudesDonador .status.pendiente {
-  background-color: #ff660088;
+.sd-status-pendiente {
+  background-color: #e74c3c;
+  color: white;
 }
 
-.solicitudesDonador .status.enproceso {
-  background-color: #ffa60095;
+.sd-status-enproceso {
+  background-color: rgba(231, 148, 60, 0.8);
+  color: white;
 }
 
-.solicitudesDonador .status.completada {
-  background-color: #28a745;
+.sd-status-completada {
+  background-color: #27ae60;
+  color: white;
 }
 
-.solicitudesDonador .status.cancelada {
-  background-color: #dc3545;
+.sd-status-cancelada {
+  background-color: #7f8c8d;
+  color: white;
+}
+
+/* Botones de acción */
+.sd-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.sd-btn-aceptar,
+.sd-btn-eliminar {
+  background: transparent;
+  border: none;
+  padding: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.sd-btn-aceptar {
+  color: #4caf50;
+}
+
+.sd-btn-aceptar:hover {
+  background-color: #e6f4ea;
+}
+
+.sd-btn-eliminar {
+  color: #f44336;
+}
+
+.sd-btn-eliminar:hover {
+  background-color: #fbeaea;
+}
+
+/* Modal */
+.sd-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(231, 76, 60, 0.28);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.sd-modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.sd-modal-title {
+  color: #e74c3c;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.sd-modal-message {
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.sd-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+/* Modal de aceptación */
+.sd-modal-overlay-aceptar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(46, 204, 113, 0.2); /* Fondo verde claro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.sd-modal-content-aceptar {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); /* Sombra verde más intensa */
+  text-align: center;
+  border-top: 4px solid #2ecc71; /* Borde superior verde */
+  animation: sd-scaleIn 0.3s ease-out;
+}
+
+/* Modal de eliminación */
+.sd-modal-overlay-eliminar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(231, 76, 60, 0.2); /* Fondo rojo claro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.sd-modal-content-eliminar {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4); /* Sombra roja */
+  text-align: center;
+  border-top: 4px solid #e74c3c; /* Borde superior rojo */
+  animation: sd-scaleIn 0.3s ease-out;
+}
+
+/* Botones del modal */
+.sd-btn-cancelar,
+.sd-btn-confirmar-aceptar,
+.sd-btn-confirmar-eliminar {
+  padding: 12px 28px; /* Más espacio */
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+  border: none;
+  min-width: 120px; /* Más anchura */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra sutil */
+}
+
+.sd-btn-cancelar {
+  background-color: #f8f9fa;
+  color: #495057;
+  border: 1px solid #ced4da;
+}
+
+.sd-btn-cancelar:hover {
+  background-color: #e2e6ea;
+  border-color: #adb5bd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px #e74c3c(0,0,0,0.15);
+}
+
+.sd-btn-confirmar-aceptar {
+  background-color: #27ae60; /* Verde más vibrante */
+  color: white;
+  box-shadow: 0 2px 5px rgba(46, 204, 113, 0.3); /* Sombra verde */
+}
+
+.sd-btn-confirmar-aceptar:hover {
+  background-color: #27ae60;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.4); /* Sombra verde más intensa al hover */
+}
+
+.sd-btn-confirmar-eliminar {
+  background-color: #e74c3c;
+  color: white;
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3); /* Sombra roja */
+}
+
+.sd-btn-confirmar-eliminar:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.4); /* Sombra roja más intensa al hover */
+}
+
+/* Animación */
+@keyframes sd-scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
