@@ -12,19 +12,13 @@ const Topbar = () => {
     if (usuarioId) {
       fetch(`http://localhost:8000/api/usuarios/usuarios/${usuarioId}/`)
         .then((res) => {
-          if (!res.ok) {
-            throw new Error("Error al obtener los datos del administrador");
-          }
+          if (!res.ok) throw new Error("Error al obtener los datos del administrador");
           return res.json();
         })
         .then((data) => {
-          if (data.nombre) {
-            setNombreCompleto(data.nombre);
-          }
+          if (data.nombre) setNombreCompleto(data.nombre);
         })
-        .catch((error) => {
-          console.error("Error al cargar el nombre:", error);
-        });
+        .catch((error) => console.error("Error al cargar el nombre:", error));
     }
   }, []);
 
@@ -43,33 +37,28 @@ const Topbar = () => {
             👋 Bienvenid@ Administrador: {nombreCompleto}
           </span>
 
-         <NavLink to="/configuracion" className="topbar-button config-btn">
-  <i className="fas fa-cog"></i> Configuración
-</NavLink>
+          <NavLink to="/configuracion" className="topbar-button config-btn">
+            <i className="fas fa-cog"></i> Configuración
+          </NavLink>
 
-<NavLink
-  to="/admin/#/login"
-  className="topbar-button logout-btn"
-  onClick={(e) => {
-    e.preventDefault(); // Evita que se dispare antes de limpiar
-    localStorage.clear();
-    window.location.href = "/admin/#/login";
-  }}
->
-  <i className="fas fa-sign-out-alt"></i> Cerrar sesión
-</NavLink>
-
-
-
-
+          <NavLink
+            to="#"
+            className="topbar-button logout-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowModal(true);
+            }}
+          >
+            <i className="fas fa-sign-out-alt"></i> Cerrar sesión
+          </NavLink>
         </div>
       </div>
 
       {showModal && (
-        <div className="logout-modal-overlay">
-          <div className="logout-modal">
-            <h3>¿Estás segur@ que deseas cerrar sesión?</h3>
-            <div className="modal-buttons">
+        <div className="modal-overlay">
+          <div className="modal-card">
+            <h3 className="modal-title">¿Estás segur@ que deseas cerrar sesión?</h3>
+            <div className="modal-actions">
               <button className="confirm-btn" onClick={handleLogout}>
                 Sí, cerrar sesión
               </button>

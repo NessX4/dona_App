@@ -8,21 +8,26 @@ import AdminLogin from './components/admin/AdminLogin';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const rol = localStorage.getItem("rol");
-const isAdmin = rol === "Administrador";
+const ProtectedRoute = ({ children }) => {
+  const rol = localStorage.getItem("rol");
+  const isAdmin = rol === "Administrador";
+  return isAdmin ? children : <Navigate to="/login" replace />;
+};
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HashRouter>
       <Routes>
-        {/* Login de admin: SEPARADO del panel */}
+        {/* Ruta al login */}
         <Route path="/login" element={<AdminLogin />} />
 
-        {/* Panel administrativo completo */}
+        {/* Resto del panel protegido */}
         <Route
           path="/*"
           element={
-            isAdmin ? <AdminPanel /> : <Navigate to="/login" replace />
+            <ProtectedRoute>
+              <AdminPanel />
+            </ProtectedRoute>
           }
         />
       </Routes>

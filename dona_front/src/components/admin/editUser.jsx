@@ -50,12 +50,30 @@ const EditUser = () => {
         };
 
         const endpoint = endpointMap[data.rol];
-        const resRol = await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/?usuario=${id}`);
+        const resRol = await fetch(`http://127.0.0.1:8000/api/usuarios/${endpoint}/`);
         const dataRol = await resRol.json();
-        const entidadCorrecta = dataRol.find(item => item.usuario?.id === parseInt(id));
+
+        // 👉 Solución robusta: maneja usuario como objeto, número o null
+        const entidadCorrecta = dataRol.find(item => {
+          if (typeof item.usuario === 'object' && item.usuario !== null && 'id' in item.usuario) {
+            return parseInt(item.usuario.id) === parseInt(id);
+          }
+          if (typeof item.usuario === 'number') {
+            return parseInt(item.usuario) === parseInt(id);
+          }
+          return false;
+        });
+
+        if (!entidadCorrecta) {
+          alert('⚠️ Este usuario no tiene entidad activa o válida.');
+          window.location.href = '/admin/#/usuarios';
+          return;
+        }
+
         setDatosRol(entidadCorrecta);
       } catch (err) {
         console.error('❌ Error al obtener datos del usuario:', err);
+        alert('❌ Ocurrió un error al cargar el usuario.');
       }
     };
 
