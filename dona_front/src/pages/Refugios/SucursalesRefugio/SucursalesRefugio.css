@@ -1,4 +1,4 @@
-/* Variables de color (consistentes con el dashboard) */
+/* Variables de color */
 :root {
   --primary-color: #e74c3c;
   --primary-dark: #c0392b;
@@ -15,8 +15,8 @@
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos base */
-.historial-container {
+/* Contenedor principal */
+.donaciones-container {
   padding: 30px 20px;
   max-width: 1400px;
   margin: 0 auto;
@@ -24,11 +24,17 @@
   min-height: calc(100vh - 120px);
 }
 
-.historial-header {
+/* Header */
+.donaciones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.historial-header h1 {
+.donaciones-header h1 {
   color: var(--text-dark);
   font-size: 2.2rem;
   font-weight: 700;
@@ -37,7 +43,7 @@
   padding-bottom: 10px;
 }
 
-.historial-header h1::after {
+.donaciones-header h1::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -47,36 +53,14 @@
   background-color: var(--primary-color);
 }
 
-/* Stats container */
-.stats-container {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.stat-card {
-  padding: 12px 20px;
-  background-color: var(--white);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 500;
-}
-
-.stat-icon {
-  color: var(--success-color);
-}
-
-/* Grid de donaciones */
+/* Grid */
 .donaciones-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 25px;
 }
 
-/* Tarjeta de donación */
+/* Tarjetas */
 .donacion-card {
   background-color: var(--white);
   border-radius: 12px;
@@ -92,6 +76,7 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Cabecera de tarjeta */
 .donacion-header {
   padding: 15px 20px;
   border-bottom: 1px solid var(--medium-gray);
@@ -104,7 +89,6 @@
   margin: 0;
   color: var(--text-dark);
   font-size: 1.2rem;
-  flex-grow: 1;
 }
 
 .estado-badge {
@@ -117,11 +101,12 @@
   gap: 5px;
 }
 
-.estado-badge.completada {
+.estado-badge.disponible {
   background-color: var(--success-color);
   color: var(--white);
 }
 
+/* Cuerpo de la tarjeta */
 .donacion-body {
   padding: 20px;
   flex-grow: 1;
@@ -131,11 +116,12 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-bottom: 20px;
 }
 
 .info-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   color: var(--text-dark);
 }
@@ -143,13 +129,12 @@
 .info-icon {
   color: var(--primary-color);
   min-width: 20px;
-  margin-top: 2px;
+  font-size: 1.1rem;
 }
 
-/* Estados vacío y loading */
+/* Estado vacío */
 .no-donaciones,
-.loading,
-.error {
+.loading {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -160,26 +145,22 @@
   box-shadow: var(--shadow);
   color: var(--dark-gray);
   text-align: center;
-  gap: 15px;
 }
 
-.error {
-  color: var(--danger-color);
-}
-
-.loading svg,
 .no-donaciones svg {
+  margin-bottom: 20px;
   color: var(--medium-gray);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .historial-container {
+  .donaciones-container {
     padding: 20px 15px;
   }
 
-  .stats-container {
+  .donaciones-header {
     flex-direction: column;
+    align-items: flex-start;
   }
 
   .donaciones-grid {

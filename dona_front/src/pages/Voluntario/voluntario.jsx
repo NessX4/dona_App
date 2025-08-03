@@ -43,7 +43,7 @@ const BienvenidaVoluntario = () => {
             <NavLink to="/donaciones/publicaciones">Donaciones</NavLink>
             <NavLink to="/solicitudes">Solicitudes</NavLink>
             <NavLink to="/donaciones/sucursales">Centros de Donación</NavLink>
-            <NavLink to="/notificaciones">Historial de Donaciones</NavLink>
+            <NavLink to="/historial">Historial de Donaciones</NavLink>
             <NavLink to="/zonas/zonas">Zonas</NavLink>
             <NavLink to="/notificaciones">Alertas</NavLink>
             <NavLink to="/perfil">Mi Perfil</NavLink>

@@ -1,68 +1,151 @@
-/* luna Flores Yamileth Guadalupe */
-.container {
-  max-width: 1200px;
+/* Variables de color (consistentes con el dashboard) */
+:root {
+  --primary-color: #e74c3c;
+  --primary-dark: #c0392b;
+  --primary-light: #ff6b5b;
+  --secondary-color: #3498db;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --white: #ffffff;
+  --light-gray: #f9f9f9;
+  --medium-gray: #ecf0f1;
+  --dark-gray: #7f8c8d;
+  --text-dark: #2c3e50;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --orange-accent: #ff7a00;
+}
+
+/* Estilos base */
+.sucursales-container {
+  padding: 30px 20px;
+  max-width: 1400px;
   margin: 0 auto;
+  background-color: var(--light-gray);
+  min-height: calc(100vh - 120px);
+}
+
+.sucursales-header {
+  margin-bottom: 30px;
+}
+
+.sucursales-header h1 {
+  color: var(--text-dark);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.sucursales-header h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+/* Mensaje motivacional */
+.motivational-message {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: var(--white);
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  margin-top: 20px;
+  color: var(--text-dark);
+}
+
+.motivational-message svg {
+  flex-shrink: 0;
+}
+
+.motivational-message p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Grid de sucursales */
+.sucursales-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+}
+
+/* Tarjeta de sucursal */
+.sucursal-card {
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding: 20px;
 }
 
-.container h1 {
-  text-align: center;
-  color: #ff7a00;
-  margin-bottom: 30px;
-  font-size: 2rem;
-  font-weight: bold;
+.sucursal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-.zonas-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 40px;
+.sucursal-card h2 {
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  border-bottom: 2px solid var(--medium-gray);
+  padding-bottom: 10px;
 }
 
-.zona-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 25px;
-  box-sizing: border-box;
-  min-height: 200px;
+.sucursal-info {
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
-.zona-card h2 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  color: #2c3e50;
-  border-bottom: 2px solid #ff6f61;
-  padding-bottom: 8px;
+.info-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  color: var(--text-dark);
+  line-height: 1.5;
 }
 
-.zona-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-grow: 1;
-  overflow-y: auto;
+.info-item strong {
+  color: var(--dark-gray);
 }
 
-.zona-card ul li {
-  background: #f9f9f9;
-  margin-bottom: 8px;
-  padding: 10px 15px;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  color: #34495e;
-  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.05);
-}
-.motivational-message {
-  background-color: #fefaf5;
-  color: #2c3e50;
-  text-align: center;
-  padding: 18px 24px;
-  margin-bottom: 30px;
+/* Estados vacío y loading */
+.no-sucursales,
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  background-color: var(--white);
   border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-  font-size: 1.1rem;
-  font-weight: 600;
+  box-shadow: var(--shadow);
+  color: var(--dark-gray);
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sucursales-container {
+    padding: 20px 15px;
+  }
+
+  .motivational-message {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .sucursales-grid {
+    grid-template-columns: 1fr;
+  }
 }

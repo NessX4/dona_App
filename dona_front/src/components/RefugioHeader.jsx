@@ -44,6 +44,12 @@ const RefugioHeader = () => {
               Donaciones
             </NavLink>
             <NavLink
+              to="/refugio/sucursales"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              Sucursal
+            </NavLink>
+            <NavLink
               to="/refugio/zonas-refugios"
               className={({ isActive }) => (isActive ? "active-link" : "")}
             >

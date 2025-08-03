@@ -1,59 +1,202 @@
-/* luna Flores Yamileth Guadalupe */
-h1 {
-  text-align: center;
-  color: #333;
+/* Variables de color (consistentes con el dashboard) */
+:root {
+  --primary-color: #e74c3c;
+  --primary-dark: #c0392b;
+  --primary-light: #ff6b5b;
+  --secondary-color: #3498db;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --white: #ffffff;
+  --light-gray: #f9f9f9;
+  --medium-gray: #ecf0f1;
+  --dark-gray: #7f8c8d;
+  --text-dark: #2c3e50;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos base */
+.notificaciones-container {
+  padding: 30px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: var(--light-gray);
+  min-height: calc(100vh - 120px);
+}
+
+.notificaciones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
-  font-size: 32px;
-  font-weight: bold;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #ffffff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+.notificaciones-header h1 {
+  color: var(--text-dark);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  padding-bottom: 10px;
 }
 
-thead {
-  background-color: #ff914da6;
-  color: white;
-  font-size: 16px;
+.notificaciones-header h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background-color: var(--primary-color);
 }
 
-th, td {
-  padding: 14px 18px;
-  text-align: left;
-  font-size: 15px;
-  border-bottom: 1px solid #f0f0f0;
+/* Filtros */
+.filtros {
+  display: flex;
+  gap: 10px;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #fff5ec;
-}
-
-tbody tr:hover {
-  background-color: #ffe1c5;
-  transition: background-color 0.3s ease;
-}
-
-.status {
-  padding: 6px 12px;
+.filtro-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--medium-gray);
+  background-color: var(--white);
+  color: var(--dark-gray);
   border-radius: 20px;
-  font-weight: bold;
-  font-size: 13px;
-  display: inline-block;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filtro-btn:hover {
+  background-color: var(--medium-gray);
+}
+
+.filtro-btn.active {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+/* Lista de notificaciones */
+.notificaciones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.notificacion-card {
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 15px;
+}
+
+.notificacion-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.notificacion-card.no-leida {
+  border-left: 4px solid var(--warning-color);
+}
+
+.notificacion-card.leida {
+  border-left: 4px solid var(--success-color);
+  opacity: 0.8;
+}
+
+.notificacion-content {
+  display: flex;
+  gap: 15px;
+}
+
+.notificacion-icon {
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.notificacion-details {
+  flex-grow: 1;
+}
+
+.notificacion-mensaje {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.notificacion-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--dark-gray);
+}
+
+.notificacion-status {
+  font-weight: 500;
+}
+
+.notificacion-card.no-leida .notificacion-status {
+  color: var(--warning-color);
+}
+
+.notificacion-card.leida .notificacion-status {
+  color: var(--success-color);
+}
+
+/* Estados vacío y loading */
+.no-notificaciones,
+.loading,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  color: var(--dark-gray);
   text-align: center;
+  gap: 15px;
 }
 
-.status.leido {
-  background-color: #d4edda;
-  color: #155724;
+.error {
+  color: var(--danger-color);
 }
 
-.status.no-leido {
-  background-color: #f8d7da;
-  color: #721c24;
+.loading svg,
+.no-notificaciones svg {
+  color: var(--medium-gray);
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  .notificaciones-container {
+    padding: 20px 15px;
+  }
+
+  .notificaciones-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filtros {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .notificacion-meta {
+    flex-direction: column;
+    gap: 5px;
+  }
+}

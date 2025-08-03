@@ -63,7 +63,7 @@ const Donaciones = () => {
         setComidas(comidasData);
         setCategorias(categoriasData);
         setArchivosAdjuntos(archivosData);
-        setDonaciones(publicacionesData); // usando publicaciones como donaciones base
+        setDonaciones(publicacionesData);
         setLoading(false);
       } catch (error) {
         console.error("Error cargando datos:", error);
@@ -174,42 +174,50 @@ const Donaciones = () => {
                     </div>
                   )}
 
-                  <div className="donacion-info">
-                    <div className="info-item">
-                      <FiPackage className="info-icon" />
-                      <span>{pub.cantidad} unidades</span>
-                    </div>
-                    <div className="info-item">
-                      <FiCalendar className="info-icon" />
-                      <span>
-                        Expira el:{" "}
-                        {new Date(pub.fecha_caducidad).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <div className="info-item">
-                      <FiTruck className="info-icon" />
-                      <span>Ubicación: {getSucursalNombre(pub.sucursal)}</span>
-                    </div>
-                  </div>
-
-                  <div className="donacion-descripcion">
-                    <p>{pub.descripcion}</p>
-                  </div>
-
-                  {comidasAsociadas.length > 0 && (
-                    <div className="donacion-comidas">
-                      <p>
-                        <strong>Comidas:</strong>
-                      </p>
-                      <div className="comidas-lista">
-                        {comidasAsociadas.map((c) => (
-                          <span key={c.id} className="comida-badge">
-                            {c.nombre} ({getCategoriaNombre(c.categoria)})
-                          </span>
-                        ))}
+                  <div className="donacion-body">
+                    <div className="donacion-info">
+                      <div className="info-item">
+                        <FiPackage className="info-icon" />
+                        <span>{pub.cantidad} unidades</span>
+                      </div>
+                      <div className="info-item">
+                        <FiCalendar className="info-icon" />
+                        <span>
+                          Expira el:{" "}
+                          {new Date(pub.fecha_caducidad).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="info-item">
+                        <FiTruck className="info-icon" />
+                        <span>
+                          Ubicación: {getSucursalNombre(pub.sucursal)}
+                        </span>
                       </div>
                     </div>
-                  )}
+
+                    <div className="donacion-descripcion">
+                      <p>{pub.descripcion}</p>
+                    </div>
+
+                    {comidasAsociadas.length > 0 && (
+                      <div className="donacion-comidas">
+                        <p>
+                          <strong>Comidas:</strong>
+                        </p>
+                        <div className="comidas-lista">
+                          {comidasAsociadas.map((c) => (
+                            <span key={c.id} className="comida-badge">
+                              {c.nombre} ({getCategoriaNombre(c.categoria)})
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="donacion-actions">
+                      <button className="btn-primary">Ver detalles</button>
+                    </div>
+                  </div>
                 </div>
               );
             })}
