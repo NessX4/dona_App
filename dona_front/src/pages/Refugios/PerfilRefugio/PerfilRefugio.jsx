@@ -1,3 +1,4 @@
+// Luna Flores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import RefugioHeader from "../../../components/RefugioHeader";
 import {
@@ -15,6 +16,7 @@ import "./PerfilRefugio.css";
 const PerfilRefugio = () => {
   const [state, setState] = useState({
     perfil: {
+      id: null,             
       nombreLugar: "",
       encargado: "",
       direccion: "",
@@ -28,10 +30,9 @@ const PerfilRefugio = () => {
       fotos: [],
     },
     editando: false,
-    nuevoServicio: "",
-    nuevaFoto: null,
-    previewFoto: "",
     cargando: true,
+    error: null,
+    mostrarConfirmacion: false,
   });
 
   useEffect(() => {
@@ -60,6 +61,7 @@ const PerfilRefugio = () => {
         setState((prev) => ({
           ...prev,
           perfil: {
+            id: receptor.id,  
             nombreLugar: receptor.nombre_lugar || "",
             encargado: receptor.encargado || "",
             direccion: receptor.direccion || "",
@@ -68,16 +70,17 @@ const PerfilRefugio = () => {
             capacidad: receptor.capacidad ? String(receptor.capacidad) : "",
             horarioApertura: receptor.horario_apertura || "",
             horarioCierre: receptor.horario_cierre || "",
-            servicios: [], // Sin datos por ahora
-            normas: "",
-            fotos: [],
+            servicios: receptor.servicios || [],
+            normas: receptor.normas || "",
+            fotos: receptor.fotos || [],
           },
           cargando: false,
+          error: null,
         }));
       })
       .catch((error) => {
         console.error("Error al cargar perfil receptor:", error);
-        setState((prev) => ({ ...prev, cargando: false }));
+        setState((prev) => ({ ...prev, cargando: false, error: error.message }));
       });
   }, []);
 
@@ -92,10 +95,77 @@ const PerfilRefugio = () => {
     }));
   };
 
-  const handleGuardar = (e) => {
+  const handleGuardarClick = (e) => {
     e.preventDefault();
-    setState((prev) => ({ ...prev, editando: false }));
-    console.log("Perfil guardado:", state.perfil);
+    setState((prev) => ({ ...prev, mostrarConfirmacion: true }));
+  };
+
+  const confirmarActualizacion = async () => {
+    setState((prev) => ({ ...prev, error: null, mostrarConfirmacion: false }));
+
+    const { perfil } = state;
+
+    const payload = {
+      nombre_lugar: perfil.nombreLugar,
+      encargado: perfil.encargado,
+      direccion: perfil.direccion,
+      telefono: perfil.telefono,
+      capacidad: Number(perfil.capacidad),
+      horario_apertura: perfil.horarioApertura,
+      horario_cierre: perfil.horarioCierre,
+    };
+
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/usuarios/receptores/${perfil.id}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.detail || "Error al actualizar el perfil del refugio"
+        );
+      }
+
+      const updated = await response.json();
+
+      setState((prev) => ({
+        ...prev,
+        perfil: {
+          ...prev.perfil,
+          nombreLugar: updated.nombre_lugar || prev.perfil.nombreLugar,
+          encargado: updated.encargado || prev.perfil.encargado,
+          direccion: updated.direccion || prev.perfil.direccion,
+          telefono: updated.telefono || prev.perfil.telefono,
+          capacidad: updated.capacidad ? String(updated.capacidad) : prev.perfil.capacidad,
+          horarioApertura: updated.horario_apertura || prev.perfil.horarioApertura,
+          horarioCierre: updated.horario_cierre || prev.perfil.horarioCierre,
+          servicios: updated.servicios || prev.perfil.servicios,
+          normas: updated.normas || prev.perfil.normas,
+          fotos: updated.fotos || prev.perfil.fotos,
+          id: updated.id || prev.perfil.id,
+          correo: prev.perfil.correo,
+        },
+        editando: false,
+        error: null,
+      }));
+
+    } catch (error) {
+      console.error("Error al guardar perfil refugio:", error);
+      setState((prev) => ({ ...prev, error: error.message }));
+      alert(`Error al actualizar el perfil: ${error.message}`);
+    }
+  };
+
+  const cancelarActualizacion = () => {
+    setState((prev) => ({ ...prev, mostrarConfirmacion: false }));
   };
 
   if (state.cargando) {
@@ -131,7 +201,7 @@ const PerfilRefugio = () => {
               >
                 <FiX /> Cancelar
               </button>
-              <button className="btn-guardarCR" onClick={handleGuardar}>
+              <button className="btn-guardarCR" onClick={handleGuardarClick}>
                 <FiSave /> Guardar cambios
               </button>
             </div>
@@ -141,7 +211,7 @@ const PerfilRefugio = () => {
         <section className="seccion-perfil">
           <h2 className="seccion-titulo">Tus datos</h2>
           {state.editando ? (
-            <form className="formulario-perfil" onSubmit={handleGuardar}>
+            <form className="formulario-perfil" onSubmit={handleGuardarClick}>
               <div className="form-group">
                 <label>Nombre del lugar</label>
                 <input
@@ -188,8 +258,8 @@ const PerfilRefugio = () => {
                   type="email"
                   name="correo"
                   value={state.perfil.correo}
-                  onChange={handleChange}
-                  required
+                  readOnly
+                  disabled
                 />
               </div>
               <div className="form-group">
@@ -200,6 +270,7 @@ const PerfilRefugio = () => {
                   value={state.perfil.capacidad}
                   onChange={handleChange}
                   required
+                  min={0}
                 />
               </div>
               <div className="form-group">
@@ -285,7 +356,7 @@ const PerfilRefugio = () => {
           )}
         </section>
 
-        {/* Estadísticas - se mantiene igual */}
+        {/* Estadísticas */}
         <section className="seccion-estadisticas">
           <h2 className="seccion-titulo">
             <FiUsers /> Estadísticas
@@ -311,6 +382,29 @@ const PerfilRefugio = () => {
             </div>
           </div>
         </section>
+
+        {/* Modal de confirmación */}
+        {state.mostrarConfirmacion && (
+          <div className="DatosActDonador-overlay">
+            <div className="DatosActDonador-content">
+              <p>¿Estás seguro que deseas guardar los cambios realizados?</p>
+              <div className="DatosActDonador-buttons">
+                <button
+                  className="DatosActDonador-cancel"
+                  onClick={cancelarActualizacion}
+                >
+                  Cancelar
+                </button>
+                <button
+                  className="DatosActDonador-confirm"
+                  onClick={confirmarActualizacion}
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </>
   );
