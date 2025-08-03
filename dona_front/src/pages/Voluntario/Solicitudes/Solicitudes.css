@@ -1,72 +1,197 @@
-/* luna Flores Yamileth Guadalupe */
-h1 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 30px;
-  font-size: 32px;
-  font-weight: bold;
+/* Variables de color (consistentes con el dashboard) */
+:root {
+  --primary-color: #e74c3c;
+  --primary-dark: #c0392b;
+  --primary-light: #ff6b5b;
+  --secondary-color: #3498db;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --white: #ffffff;
+  --light-gray: #f9f9f9;
+  --medium-gray: #ecf0f1;
+  --dark-gray: #7f8c8d;
+  --text-dark: #2c3e50;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-table {
+/* Estilos base */
+.solicitudes-container {
+  padding: 30px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: var(--light-gray);
+  min-height: calc(100vh - 120px);
+}
+
+.solicitudes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.solicitudes-header h1 {
+  color: var(--text-dark);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.solicitudes-header h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+/* Filtros */
+.filtros {
+  display: flex;
+  gap: 10px;
+}
+
+.filtro-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--medium-gray);
+  background-color: var(--white);
+  color: var(--dark-gray);
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.filtro-btn:hover {
+  background-color: var(--medium-gray);
+}
+
+.filtro-btn.active {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+/* Tabla de solicitudes */
+.solicitudes-table-container {
+  overflow-x: auto;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+.solicitudes-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #ffffff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
 }
 
-thead {
-  background-color: #ff914d7e;
-  color: white;
-  font-size: 16px;
-}
-
-th, td {
-  padding: 14px 18px;
+.solicitudes-table th,
+.solicitudes-table td {
+  padding: 12px 15px;
   text-align: left;
+  border-bottom: 1px solid var(--medium-gray);
 }
 
-th {
+.solicitudes-table th {
+  background-color: var(--light-gray);
+  color: var(--text-dark);
   font-weight: 600;
-  border-bottom: 2px solid #ffcfac;
 }
 
-td {
-  border-bottom: 1px solid #f0f0f0;
-  color: #333;
-  font-size: 15px;
+.solicitudes-table tr:hover {
+  background-color: var(--light-gray);
 }
 
-tbody tr:nth-child(even) {
-  background-color: #fff5ec;
+/* Badges de estado */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+  min-width: 80px;
 }
 
-tbody tr:hover {
-  background-color: #ffe1c5;
+.status-badge.pendiente {
+  background-color: var(--warning-color);
+  color: var(--white);
+}
+
+.status-badge.aprobada {
+  background-color: var(--success-color);
+  color: var(--white);
+}
+
+.status-badge.rechazada {
+  background-color: var(--danger-color);
+  color: var(--white);
+}
+
+/* Botones de acción */
+.btn-action {
+  padding: 8px 16px;
+  background-color: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.status {
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 13px;
-  display: inline-block;
+.btn-action:hover {
+  background-color: #2980b9;
+}
+
+/* Estados vacío y loading */
+.no-solicitudes,
+.loading,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  color: var(--dark-gray);
   text-align: center;
 }
 
-.status.pendiente {
-  background-color: #fff3cd;
-  color: #856404;
+.error {
+  color: var(--danger-color);
 }
 
-.status.aprobado {
-  background-color: #d4edda;
-  color: #155724;
-}
+/* Responsive */
+@media (max-width: 768px) {
+  .solicitudes-container {
+    padding: 20px 15px;
+  }
 
-.status.rechazado {
-  background-color: #f8d7da;
-  color: #721c24;
+  .solicitudes-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filtros {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .solicitudes-table th,
+  .solicitudes-table td {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
 }

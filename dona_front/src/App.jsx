@@ -23,6 +23,7 @@ import HistorialDonaciones from "./pages/Refugios/HistorialDonaciones/HistorialD
 import NotificacionesRefugio from "./pages/Refugios/NotificacionesRefugio/NotificacionesRefugio.jsx";
 import PerfilRefugio from "./pages/Refugios/PerfilRefugio/PerfilRefugio.jsx";
 import ZonasRefugios from "./pages/Refugios/ZonasRefugio/ZonasRefugio.jsx";
+import SucursalesRefugio from "./pages/Refugios/SucursalesRefugio/SucursalesRefugio.jsx";
 
 // Vistas del donador
 import Donadores from "./pages/Donadores/Donadores.jsx";
@@ -99,7 +100,7 @@ function App() {
         }
       />
       <Route
-        path="/historial-voluntario"
+        path="/historial"
         element={
           <PrivateRoute allowedRoles={["Voluntario"]}>
             <HistorialVoluntario />
@@ -174,6 +175,14 @@ function App() {
         />
       </Route>
 
+      <Route
+        path="/refugio/sucursales"
+        element={
+          <PrivateRoute allowedRoles={["Refugio"]}>
+            <SucursalesRefugio />
+          </PrivateRoute>
+        }
+      />
       {/* Rutas del donador */}
       <Route
         path="/donadores"

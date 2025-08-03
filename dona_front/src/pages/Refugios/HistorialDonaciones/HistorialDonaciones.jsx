@@ -1,4 +1,4 @@
-//Angel Alejandro Chavez Castillon
+// Angel Alejandro Chavez Castillon
 
 import React, { useEffect, useState } from "react";
 import RefugioHeader from "../../../components/RefugioHeader";
@@ -204,14 +204,14 @@ const HistorialDonaciones = () => {
   return (
     <>
       <RefugioHeader />
-      <main className="historial-container">
-        <div className="historial-header">
+      <main className="donaciones-container">
+        <div className="donaciones-header">
           <h1>
-            <FiBox className="header-icon" />
+            <FiBox className="info-icon" />
             Historial de Donaciones Recibidas
           </h1>
-          <div className="header-actions">
-            <button className="export-btn">Exportar a Excel</button>
+          <div className="filtros">
+            <button className="filtro-btn">Exportar a Excel</button>
           </div>
         </div>
 
@@ -239,6 +239,7 @@ const HistorialDonaciones = () => {
                 value={filtros.fechaInicio}
                 onChange={handleFiltroChange}
                 className="filtro-input"
+                placeholder="dd/mm/aaaa"
               />
             </div>
 
@@ -253,6 +254,7 @@ const HistorialDonaciones = () => {
                 value={filtros.fechaFin}
                 onChange={handleFiltroChange}
                 className="filtro-input"
+                placeholder="dd/mm/aaaa"
               />
             </div>
 
@@ -299,87 +301,89 @@ const HistorialDonaciones = () => {
         </div>
 
         {/* Resultados */}
-        <div className="resultados-section">
-          <div className="resultados-header">
-            <h2>
+        <div className="donacion-card">
+          <div className="donacion-header">
+            <h3>
               Resultados
-              <span className="resultados-count">
-                ({donacionesFiltradas.length})
+              <span className="estado-badge disponible">
+                {donacionesFiltradas.length}
               </span>
-            </h2>
+            </h3>
           </div>
 
-          {loading ? (
-            <div className="loading-state">
-              <div className="spinner"></div>
-              <p>Cargando historial de donaciones...</p>
-            </div>
-          ) : error ? (
-            <div className="empty-state error">
-              <FiXCircle size={48} className="empty-icon" />
-              <p>Error al cargar el historial: {error}</p>
-              <button className="reset-btn" onClick={cargarDatos}>
-                Reintentar
-              </button>
-            </div>
-          ) : donacionesFiltradas.length === 0 ? (
-            <div className="empty-state">
-              <FiBox size={48} className="empty-icon" />
-              <p>No se encontraron donaciones con los filtros aplicados</p>
-              <button className="reset-btn" onClick={resetFiltros}>
-                Limpiar filtros
-              </button>
-            </div>
-          ) : (
-            <div className="table-container">
-              <table className="historial-table">
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th>Donador</th>
-                    <th>Tipo</th>
-                    <th>Cantidad</th>
-                    <th>Descripción</th>
-                    <th>Estado</th>
-                    <th>Origen</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {donacionesFiltradas.map((donacion) => (
-                    <tr key={donacion.id}>
-                      <td>{new Date(donacion.fecha).toLocaleDateString()}</td>
-                      <td>
-                        <div className="donador-cell">
-                          <FiUser className="donador-icon" />
-                          {donacion.donador}
-                        </div>
-                      </td>
-                      <td>{donacion.tipo}</td>
-                      <td>{donacion.cantidad}</td>
-                      <td className="descripcion-cell">
-                        {donacion.descripcion}
-                      </td>
-                      <td>
-                        <span
-                          className={`estado-badge ${donacion.estado.toLowerCase()}`}
-                        >
-                          {getEstadoIcon(donacion.estado)}
-                          {donacion.estado}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="origen-cell">
-                          <FiTruck className="origen-icon" />
-                          {donacion.publicacionDetalle?.sucursal_nombre ||
-                            "Desconocido"}
-                        </div>
-                      </td>
+          <div className="donacion-body">
+            {loading ? (
+              <div className="loading">
+                <div className="spinner"></div>
+                <p>Cargando historial de donaciones...</p>
+              </div>
+            ) : error ? (
+              <div className="no-donaciones">
+                <FiXCircle size={48} className="info-icon" />
+                <p>Error al cargar el historial: {error}</p>
+                <button className="btn-primary" onClick={cargarDatos}>
+                  Reintentar
+                </button>
+              </div>
+            ) : donacionesFiltradas.length === 0 ? (
+              <div className="no-donaciones">
+                <FiBox size={48} className="info-icon" />
+                <p>No se encontraron donaciones con los filtros aplicados</p>
+                <button className="btn-primary" onClick={resetFiltros}>
+                  Limpiar filtros
+                </button>
+              </div>
+            ) : (
+              <div className="table-container">
+                <table className="historial-table">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Donador</th>
+                      <th>Tipo</th>
+                      <th>Cantidad</th>
+                      <th>Descripción</th>
+                      <th>Estado</th>
+                      <th>Origen</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+                  <tbody>
+                    {donacionesFiltradas.map((donacion) => (
+                      <tr key={donacion.id}>
+                        <td>{new Date(donacion.fecha).toLocaleDateString()}</td>
+                        <td>
+                          <div className="info-item">
+                            <FiUser className="info-icon" />
+                            {donacion.donador}
+                          </div>
+                        </td>
+                        <td>{donacion.tipo}</td>
+                        <td>{donacion.cantidad}</td>
+                        <td className="descripcion-cell">
+                          {donacion.descripcion}
+                        </td>
+                        <td>
+                          <span
+                            className={`estado-badge ${donacion.estado.toLowerCase()}`}
+                          >
+                            {getEstadoIcon(donacion.estado)}
+                            {donacion.estado}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="info-item">
+                            <FiTruck className="info-icon" />
+                            {donacion.publicacionDetalle?.sucursal_nombre ||
+                              "Desconocido"}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
       </main>
     </>

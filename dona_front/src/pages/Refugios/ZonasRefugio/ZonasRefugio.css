@@ -1,203 +1,236 @@
-/* ===== Variables ===== */
+/* Variables de color (coherentes con el dashboard) */
 :root {
   --primary-color: #e74c3c;
   --primary-dark: #c0392b;
   --primary-light: #ff6b5b;
+  --secondary-color: #3498db;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
   --white: #ffffff;
-  --light-gray: #f5f5f5;
-  --medium-gray: #e0e0e0;
-  --dark-gray: #333333;
-  --text-color: #444444;
-  --text-light: #666666;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --border-radius: 8px;
+  --light-gray: #f9f9f9;
+  --medium-gray: #ecf0f1;
+  --dark-gray: #7f8c8d;
+  --text-dark: #2c3e50;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* ===== Estilos Base ===== */
-.zonas-refugios-container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
-  color: var(--text-color);
+/* Estilos base */
+.donaciones-container {
+  padding: 30px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: var(--light-gray);
+  min-height: calc(100vh - 120px);
 }
 
-.zonas-header {
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.zonas-header h1 {
-  font-size: 2.2rem;
-  color: var(--primary-dark);
-  margin-bottom: 1rem;
-}
-
-.stats-container {
+.donaciones-header {
   display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.donaciones-header h1 {
+  color: var(--text-dark);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.donaciones-header h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+/* Filtros */
+.filtros {
+  display: flex;
+  gap: 10px;
 }
 
 .stat-card {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: var(--primary-color);
-  color: var(--white);
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--border-radius);
-  font-weight: 600;
-  box-shadow: var(--shadow-sm);
-}
-
-.stat-icon {
-  color: var(--white);
-}
-
-/* ===== Mensaje Motivacional ===== */
-.motivational-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  background-color: var(--light-gray);
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  margin-bottom: 2rem;
-  text-align: center;
-  border-left: 4px solid var(--primary-color);
-}
-
-.motivational-message .icon {
-  color: var(--primary-color);
-}
-
-.motivational-message p {
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin: 0;
+  padding: 8px 16px;
+  border: 1px solid var(--medium-gray);
+  background-color: var(--white);
   color: var(--dark-gray);
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* ===== Listado de Zonas ===== */
-.zonas-wrapper {
+.stat-card:hover {
+  background-color: var(--medium-gray);
+}
+
+/* Grid de donaciones */
+.donaciones-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
+  gap: 25px;
 }
 
-.zona-card {
+/* Tarjeta de donación */
+.donacion-card {
   background-color: var(--white);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-sm);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.zona-card:hover {
+.donacion-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-.zona-header {
-  background-color: var(--primary-dark);
-  color: var(--white);
-  padding: 1rem 1.5rem;
+.donacion-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--medium-gray);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.zona-header h2 {
+.donacion-header h3 {
   margin: 0;
-  font-size: 1.4rem;
+  color: var(--text-dark);
+  font-size: 1.2rem;
 }
 
-.refugios-count {
-  background-color: var(--white);
-  color: var(--primary-dark);
-  padding: 0.25rem 0.75rem;
+.estado-badge {
+  padding: 6px 12px;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
-/* ===== Listado de Refugios ===== */
-.refugios-list {
+.estado-badge.disponible {
+  background-color: var(--success-color);
+  color: var(--white);
+}
+
+.donacion-body {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.donacion-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--text-dark);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-icon {
+  color: var(--primary-color);
+  min-width: 20px;
+}
+
+.no-donaciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  color: var(--dark-gray);
+  text-align: center;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.no-donaciones svg {
+  color: var(--medium-gray);
+}
+
+.resources-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.refugio-item {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--medium-gray);
-  transition: background-color 0.2s ease;
+.resource-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
 }
 
-.refugio-item:last-child {
-  border-bottom: none;
-}
-
-.refugio-item:hover {
-  background-color: var(--light-gray);
-}
-
-.refugio-info h3 {
-  margin: 0 0 0.5rem 0;
-  color: var(--primary-dark);
-  font-size: 1.1rem;
-}
-
-.refugio-info p {
-  margin: 0 0 0.75rem 0;
-  color: var(--text-light);
-  font-size: 0.95rem;
-}
-
-.refugio-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  color: var(--text-light);
-}
-
-.no-refugios {
-  padding: 1.5rem;
+.no-resources {
+  padding: 10px;
   text-align: center;
-  color: var(--text-light);
+  color: var(--dark-gray);
   font-style: italic;
+  background-color: var(--light-gray);
+  border-radius: 6px;
 }
 
-.loading-message {
+.resource-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--dark-gray);
+}
+
+.loading {
+  grid-column: 1 / -1;
   text-align: center;
   padding: 2rem;
-  font-size: 1.1rem;
-  color: var(--text-light);
-  grid-column: 1 / -1;
+  color: var(--dark-gray);
 }
 
-/* ===== Responsive ===== */
+/* Responsive */
 @media (max-width: 768px) {
-  .zonas-header h1 {
-    font-size: 1.8rem;
+  .donaciones-container {
+    padding: 20px 15px;
   }
 
-  .stats-container {
+  .donaciones-header {
     flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    align-items: flex-start;
   }
 
-  .zonas-wrapper {
+  .filtros {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .donaciones-grid {
     grid-template-columns: 1fr;
-  }
-
-  .motivational-message {
-    flex-direction: column;
-    text-align: center;
   }
 }

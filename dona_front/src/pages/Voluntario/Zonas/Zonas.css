@@ -1,83 +1,248 @@
-/* luna Flores Yamileth Guadalupe */
-.container {
-  max-width: 1200px;
+/* Variables de color (coherentes con el dashboard) */
+:root {
+  --primary-color: #e74c3c;
+  --primary-dark: #c0392b;
+  --primary-light: #ff6b5b;
+  --secondary-color: #3498db;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --white: #ffffff;
+  --light-gray: #f9f9f9;
+  --medium-gray: #ecf0f1;
+  --dark-gray: #7f8c8d;
+  --text-dark: #2c3e50;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos base */
+.donaciones-container {
+  padding: 30px 20px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  background-color: var(--light-gray);
+  min-height: calc(100vh - 120px);
 }
 
-.container h1 {
-  text-align: center;
-  color: #ff7a00;
+.donaciones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 30px;
-  font-size: 2rem;
-  font-weight: bold;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-.zonas-wrapper {
+.donaciones-header h1 {
+  color: var(--text-dark);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.donaciones-header h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+/* Filtros */
+.filtros {
+  display: flex;
+  gap: 10px;
+}
+
+.stat-card {
+  padding: 8px 16px;
+  border: 1px solid var(--medium-gray);
+  background-color: var(--white);
+  color: var(--dark-gray);
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-card:hover {
+  background-color: var(--medium-gray);
+}
+
+/* Grid de donaciones */
+.donaciones-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
 }
 
-.zona-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 25px;
-  box-sizing: border-box;
-  min-height: 200px;
+/* Tarjeta de donación */
+.donacion-card {
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
 }
 
-.zona-card h2 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  color: #2c3e50;
-  border-bottom: 2px solid #ff6f61;
-  padding-bottom: 8px;
+.donacion-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-.zona-card ul {
+.donacion-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--medium-gray);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.donacion-header h3 {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 1.2rem;
+}
+
+.estado-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.estado-badge.disponible {
+  background-color: var(--success-color);
+  color: var(--white);
+}
+
+.donacion-body {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.donacion-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.donacion-info h4 {
+  margin: 0 0 10px 0;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--text-dark);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-item h5 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+.info-icon {
+  color: var(--primary-color);
+  min-width: 20px;
+}
+
+.no-donaciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  color: var(--dark-gray);
+  text-align: center;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.no-donaciones svg {
+  color: var(--medium-gray);
+}
+
+.resources-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1;
-  overflow-y: auto;
 }
 
-.zona-card ul li {
-  background: #f9f9f9;
-  margin-bottom: 8px;
-  padding: 10px 15px;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  color: #34495e;
-  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.05);
+.resource-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
 }
 
-.zona-card ul li:first-child:empty {
+.no-resources {
+  padding: 10px;
+  text-align: center;
+  color: var(--dark-gray);
   font-style: italic;
-  color: #999;
-  text-align: center;
-}
-.motivational-message {
-  background-color: #fefaf5;
-  color: #2c3e50;
-  text-align: center;
-  padding: 18px 24px;
-  margin-bottom: 40px;
-  border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  background-color: var(--light-gray);
+  border-radius: 6px;
 }
 
-.motivational-message .icon {
-  color: #ff7a00;
-  margin-bottom: 10px;
+.resource-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--dark-gray);
 }
 
-.motivational-message p {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 500;
+.loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: var(--dark-gray);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .donaciones-container {
+    padding: 20px 15px;
+  }
+
+  .donaciones-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filtros {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+
+  .donaciones-grid {
+    grid-template-columns: 1fr;
+  }
 }
