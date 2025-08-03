@@ -8,6 +8,9 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('donaciones', '0002_initial'),
+        ('usuarios', '0001_initial'),
+
     ]
 
     operations = [
