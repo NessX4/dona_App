@@ -47,12 +47,6 @@ const DonadoresHeader = () => {
               Mis Donaciones
             </NavLink>
             <NavLink
-              to="/donadores/nueva-donacion"
-              className={({ isActive }) => (isActive ? "active-link" : "")}
-            >
-              Nueva Donación
-            </NavLink>
-            <NavLink
               to="/donadores/solicitudes"
               className={({ isActive }) => (isActive ? "active-link" : "")}
             >

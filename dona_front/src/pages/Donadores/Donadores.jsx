@@ -43,7 +43,6 @@ const Donadores = () => {
                     </div>
                     <nav>
                         <NavLink to="/donadores/donaciones">Mis Donaciones</NavLink>
-                        <NavLink to="/donadores/nueva-donacion">Nueva Donación</NavLink>
                         <NavLink to="/donadores/solicitudes">Solicitudes</NavLink>
                         <NavLink to="/donadores/notificaciones">Notificaciones</NavLink>                         
                        <NavLink to="/donadores/perfil">Mi Perfil</NavLink>
@@ -60,6 +59,7 @@ const Donadores = () => {
                     <div className="modal">
                         <h3>¿Estás seguro que deseas salir?</h3>
                         <div className="modal-buttons">
+                              
                             <button className="btn-confirm" onClick={confirmLogout}>
                                 Sí, salir
                             </button>
