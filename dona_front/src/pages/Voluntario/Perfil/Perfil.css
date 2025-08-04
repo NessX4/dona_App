@@ -27,21 +27,28 @@
 }
 
 /* Variables específicas para botones (ubicadas con estilos de botones) */
-.btn-editar-pr {
+.btn-editarVoluntario-pr {
+  width: 160px;                /* Mismo ancho fijo */
+  height: 36px;                /* Misma altura */
+  padding: 6px 12px;
+  background-color: #c0392b;   /* Rojo DONA */
+  color: #ffffff;
   font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 6px rgba(231, 76, 60, 0.25);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background-color: var(--primary);
-  color: var(--white);
-  border: none;
-  border-radius: var(--radius-md);
+  justify-content: center;
+  gap: 6px;
 }
-.btn-editar-pr:hover {
-  background-color: var(--primary-dark);
+
+.btn-editarVoluntario-pr:hover {
+  background-color: #e74c3c;
+  box-shadow: 0 8px 16px rgba(231, 76, 60, 0.7);
 }
 
 /* Contenedor principal */

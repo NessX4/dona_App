@@ -1,0 +1,304 @@
+/*Luna Flores Yamileth Guadalupe*/
+:root {
+  --color-principal: #e74c3c;
+  --color-exito: #2ecc71;
+  --color-exito-hover: #27ae60;
+  --color-texto: #2c3e50;
+  --color-borde: #e0e0e0;
+}
+
+.SucursalesDonadores-container {
+  max-width: 1300px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #4a2c0a;
+  background-color: #fff;
+}
+
+.SucursalesDonadores-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.SucursalesDonadores-title {
+  font-size: 2.5rem;
+  color: #e74c3c;
+  font-weight: 700;
+  margin: 0;
+}
+
+.SucursalesDonadores-btn-agregar {
+  width: 160px;
+  height: 36px;
+  padding: 6px 12px;
+  background-color: #27ae60;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(39, 174, 96, 0.3);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.SucursalesDonadores-btn-agregar:hover {
+  background-color: #219150;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(39, 174, 96, 0.4);
+}
+
+.SucursalesDonadores-loading,
+.SucursalesDonadores-no-data {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 20px 0;
+}
+
+.SucursalesDonadores-error {
+  color: #e74c3c;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.SucursalesDonadores-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 8px 20px rgba(231, 76, 60, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.SucursalesDonadores-table thead {
+  background-color: #c0392b;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.SucursalesDonadores-table th,
+.SucursalesDonadores-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.SucursalesDonadores-table tr:hover {
+  background-color: #fce1e1;
+  transition: background-color 0.3s ease;
+}
+
+.SucursalesDonadores-table-cell {
+  padding: 12px 15px;
+}
+
+.SucursalesDonadores-status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-block;
+  text-align: center;
+  min-width: 90px;
+  text-transform: capitalize;
+}
+
+.SucursalesDonadores-status-pendiente {
+  background-color: #e74c3c;
+  color: white;
+}
+.SucursalesDonadores-status-enproceso {
+  background-color: rgba(231, 148, 60, 0.8);
+  color: white;
+}
+.SucursalesDonadores-status-completada {
+  background-color: #27ae60;
+  color: white;
+}
+.SucursalesDonadores-status-cancelada {
+  background-color: #7f8c8d;
+  color: white;
+}
+
+.SucursalesDonadores-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-edit-sucursalDonadores,
+.btn-delete-sucursalDonadores,
+.btn-view-sucursalDonadores,
+.btn-guardar-sucursalDonadores,
+.btn-cancelar-sucursalDonadores {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 18px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  transition: all 0.3s ease;
+}
+
+.btn-edit-sucursalDonadores { color: #27ae60; }
+.btn-delete-sucursalDonadores { color: #e74c3c; }
+.btn-view-sucursalDonadores { color: #2980b9; }
+.btn-guardar-sucursalDonadores { color: #27ae60; }
+.btn-cancelar-sucursalDonadores { color: #e74c3c; }
+
+.btn-edit-sucursalDonadores:hover {
+  background-color: rgba(39, 174, 96, 0.15);
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+  transform: translateY(-2px);
+}
+.btn-delete-sucursalDonadores:hover {
+  background-color: rgba(231, 76, 60, 0.15);
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+  transform: translateY(-2px);
+}
+.btn-view-sucursalDonadores:hover {
+  background-color: rgba(41, 128, 185, 0.15);
+  box-shadow: 0 2px 8px rgba(41, 128, 185, 0.3);
+  transform: translateY(-2px);
+}
+
+.GuardarCSucursales {
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(39, 174, 96, 0.3);
+}
+
+.GuardarCSucursales:hover {
+  background-color: #219150;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(39, 174, 96, 0.4);
+}
+
+.CancelarCSucursales {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
+}
+
+.CancelarCSucursales:hover {
+  background-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(192, 57, 43, 0.4);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(231, 76, 60, 0.28);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: scaleIn 0.3s ease forwards;
+}
+
+.modal-title {
+  color: #e74c3c;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.modal-message {
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.modal-buttons .SucursalesDonadores-btn-confirmar-eliminar {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(231, 76, 60, 0.3);
+  transition: all 0.3s ease;
+}
+
+.modal-buttons .SucursalesDonadores-btn-confirmar-eliminar:hover {
+  background-color: #c0392b;
+  box-shadow: 0 4px 8px rgba(192, 57, 43, 0.4);
+  transform: translateY(-2px);
+}
+
+.modal-buttons .SucursalesDonadores-btn-cancelar {
+  background-color: #f8f9fa;
+  color: #444;
+  border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(153, 153, 153, 0.3);
+  transition: all 0.3s ease;
+}
+
+.modal-buttons .SucursalesDonadores-btn-cancelar:hover {
+  background-color: #f8f9fa;
+  color: rgb(0, 0, 0);
+  box-shadow: 0 4px 8px rgba(153, 153, 153, 0.4);
+  transform: translateY(-2px);
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

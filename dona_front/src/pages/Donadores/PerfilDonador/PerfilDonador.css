@@ -79,26 +79,11 @@
 .contenedor-boton-derecha {
   display: flex;
   justify-content: flex-end;
-  margin-top: var(--spacing-lg);
+  gap: 12px;            
+  margin-right: 32px;   
+  margin-top: 20px;    
 }
 
-.btn-editar-pr {
-  padding: 12px 28px;
-  background-color: var(--primary);
-  color: var(--white);
-  font-weight: 700;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 7px;
-  cursor: pointer;
-  box-shadow: 0 6px 12px rgba(231, 76, 60, 0.5);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.btn-editar-pr:hover {
-  background-color: #e74c3c;
-  box-shadow: 0 8px 16px rgba(231, 76, 60, 0.7);
-}
 
 .modal-overlay {
   position: fixed;
@@ -296,4 +281,50 @@
 
 .DatosActDonador-cancel:hover {
   background-color: #e5e7eb;
+}
+.btn-perfil-pr {
+  width: 160px;              
+  height: 36px;               
+  padding: 6px 12px;
+  background-color: #c0392b;  
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(231, 76, 60, 0.25);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-perfil-pr:hover {
+  background-color: #c0392b;
+  box-shadow: 0 5px 10px rgba(231, 76, 60, 0.4);
+}
+.btn-sucursalesDona-pr {
+  width: 160px;
+  height: 36px;
+  padding: 6px 12px;
+  background-color: #27ae60;   
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(39, 174, 96, 0.25);  
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-sucursalesDona-pr:hover {
+  background-color: #219150;  
+  box-shadow: 0 5px 10px rgba(39, 174, 96, 0.4); 
 }

@@ -1,4 +1,4 @@
-/* Contenedor principal */
+/*Luna Flores Yamileth Guadalupe*/
 .sd-container {
   max-width: 1300px;
   margin: 40px auto;
@@ -8,7 +8,6 @@
   background-color: #fff;
 }
 
-/* Título */
 .sd-title {
   text-align: center;
   font-size: 2.5rem;
@@ -17,7 +16,6 @@
   font-weight: 700;
 }
 
-/* Estados de carga */
 .sd-loading,
 .sd-no-data {
   text-align: center;
@@ -32,7 +30,6 @@
   margin-bottom: 20px;
 }
 
-/* Tabla */
 .sd-table {
   width: 100%;
   border-collapse: collapse;
@@ -62,12 +59,10 @@
   transition: background-color 0.3s ease;
 }
 
-/* Celdas */
 .sd-table-cell {
   padding: 12px 15px;
 }
 
-/* Status */
 .sd-status {
   padding: 6px 14px;
   border-radius: 20px;
@@ -81,6 +76,11 @@
 
 .sd-status-pendiente {
   background-color: #e74c3c;
+  color: white;
+}
+
+.sd-status-aceptada {
+  background-color: #27ae60;
   color: white;
 }
 
@@ -99,7 +99,6 @@
   color: white;
 }
 
-/* Botones de acción */
 .sd-actions {
   display: flex;
   gap: 8px;
@@ -116,6 +115,7 @@
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease;
+  font-size: 18px;
 }
 
 .sd-btn-aceptar {
@@ -126,6 +126,11 @@
   background-color: #e6f4ea;
 }
 
+.sd-btn-aceptar:disabled {
+  color: #cccccc;
+  cursor: not-allowed;
+}
+
 .sd-btn-eliminar {
   color: #f44336;
 }
@@ -134,18 +139,63 @@
   background-color: #fbeaea;
 }
 
-/* Modal */
+.sd-btn-eliminar:disabled {
+  color: #cccccc;
+  cursor: not-allowed;
+}
+
+.btn-edit-sucursalDonadores,
+.btn-delete-sucursalDonadores {
+  background: transparent;
+  border: none;
+  padding: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  font-size: 18px;
+}
+
+.btn-edit-sucursalDonadores {
+  color: #4caf50; 
+}
+
+.btn-edit-sucursalDonadores:hover {
+  background-color: #e6f4ea;
+}
+
+.btn-edit-sucursalDonadores:disabled {
+  color: #cccccc;
+  cursor: not-allowed;
+}
+
+.btn-delete-sucursalDonadores {
+  color: #f44336;
+}
+
+.btn-delete-sucursalDonadores:hover {
+  background-color: #fbeaea;
+}
+
+.btn-delete-sucursalDonadores:disabled {
+  color: #cccccc;
+  cursor: not-allowed;
+}
+
 .sd-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(231, 76, 60, 0.28);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1001;
+  animation: sd-fadeIn 0.3s ease-out;
 }
 
 .sd-modal-content {
@@ -154,8 +204,9 @@
   border-radius: 10px;
   width: 90%;
   max-width: 450px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
+  animation: sd-scaleIn 0.3s ease-out;
 }
 
 .sd-modal-title {
@@ -164,10 +215,28 @@
   font-size: 1.5rem;
 }
 
+.sd-modal-icon {
+  margin: 15px 0;
+}
+
 .sd-modal-message {
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   font-size: 1.1rem;
   line-height: 1.4;
+  color: #333;
+}
+
+.sd-modal-details {
+  margin-bottom: 25px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.sd-modal-warning {
+  margin-bottom: 25px;
+  font-size: 0.9rem;
+  color: #e74c3c;
+  font-weight: bold;
 }
 
 .sd-modal-buttons {
@@ -175,71 +244,19 @@
   justify-content: center;
   gap: 15px;
 }
-/* Modal de aceptación */
-.sd-modal-overlay-aceptar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(46, 204, 113, 0.2); /* Fondo verde claro */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.sd-modal-content-aceptar {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 450px;
-  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4); /* Sombra verde más intensa */
-  text-align: center;
-  border-top: 4px solid #2ecc71; /* Borde superior verde */
-  animation: sd-scaleIn 0.3s ease-out;
-}
-
-/* Modal de eliminación */
-.sd-modal-overlay-eliminar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(231, 76, 60, 0.2); /* Fondo rojo claro */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.sd-modal-content-eliminar {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 450px;
-  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4); /* Sombra roja */
-  text-align: center;
-  border-top: 4px solid #e74c3c; /* Borde superior rojo */
-  animation: sd-scaleIn 0.3s ease-out;
-}
 
 /* Botones del modal */
 .sd-btn-cancelar,
 .sd-btn-confirmar-aceptar,
 .sd-btn-confirmar-eliminar {
-  padding: 12px 28px; /* Más espacio */
+  padding: 12px 28px;
   border-radius: 8px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
   font-size: 1rem;
   border: none;
-  min-width: 120px; /* Más anchura */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra sutil */
+  min-width: 120px;
 }
 
 .sd-btn-cancelar {
@@ -252,34 +269,46 @@
   background-color: #e2e6ea;
   border-color: #adb5bd;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px #e74c3c(0,0,0,0.15);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .sd-btn-confirmar-aceptar {
-  background-color: #27ae60; /* Verde más vibrante */
+  background-color: #27ae60;
   color: white;
-  box-shadow: 0 2px 5px rgba(46, 204, 113, 0.3); /* Sombra verde */
 }
 
 .sd-btn-confirmar-aceptar:hover {
-  background-color: #27ae60;
+  background-color: #219653;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(46, 204, 113, 0.4); /* Sombra verde más intensa al hover */
+  box-shadow: 0 2px 5px rgba(39, 174, 96, 0.3);
 }
 
 .sd-btn-confirmar-eliminar {
   background-color: #e74c3c;
   color: white;
-  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3); /* Sombra roja */
 }
 
 .sd-btn-confirmar-eliminar:hover {
   background-color: #c0392b;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(231, 76, 60, 0.4); /* Sombra roja más intensa al hover */
+  box-shadow: 0 2px 5px rgba(231, 76, 60, 0.3);
 }
 
-/* Animación */
+.sd-btn-cancelar:disabled,
+.sd-btn-confirmar-aceptar:disabled,
+.sd-btn-confirmar-eliminar:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Animaciones */
+@keyframes sd-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes sd-scaleIn {
   from {
     transform: scale(0.95);
@@ -288,5 +317,28 @@
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sd-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .sd-modal-content {
+    padding: 20px;
+  }
+  
+  .sd-modal-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .sd-btn-cancelar,
+  .sd-btn-confirmar-aceptar,
+  .sd-btn-confirmar-eliminar {
+    width: 100%;
   }
 }

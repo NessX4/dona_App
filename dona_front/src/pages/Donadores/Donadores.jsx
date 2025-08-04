@@ -1,7 +1,7 @@
 // Luna FLores Yamileth Guadalupe
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import logoDona from "../../assets/Logotipo.png";
+import DonadoresHeader from "../../components/DonadoresHeader";
 import "./Donadores.css";
 
 const Donadores = () => {
@@ -13,15 +13,14 @@ const Donadores = () => {
     };
 
     const confirmLogout = () => {
-    setModalOpen(false);
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("usuarioId");
-    localStorage.removeItem("rol");
+        setModalOpen(false);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("usuarioId");
+        localStorage.removeItem("rol");
 
-    navigate("/login"); // Mejor redirigir al login
-};
-
+        navigate("/login"); // Mejor redirigir al login
+    };
 
     const cancelLogout = () => {
         setModalOpen(false);
@@ -29,29 +28,8 @@ const Donadores = () => {
 
     return (
         <div className="bienvenida-donador">
-            <div className="topbar">
-                <p>Bienvenido, Donador - ¡Gracias por tu generosidad!</p>
-            </div>
-
-            <header>
-                <div className="container">
-                    <div className="logo">
-                        <img src={logoDona} alt="Logo Dona" />
-                        <NavLink to="/donadores" className="dona-text">
-                            DonaApp
-                        </NavLink>
-                    </div>
-                    <nav>
-                        <NavLink to="/donadores/donaciones">Mis Donaciones</NavLink>
-                        <NavLink to="/donadores/solicitudes">Solicitudes</NavLink>
-                        <NavLink to="/donadores/notificaciones">Notificaciones</NavLink>                         
-                       <NavLink to="/donadores/perfil">Mi Perfil</NavLink>
-                        <button onClick={handleLogout} className="donar-btn">
-                            Salir
-                        </button>
-                    </nav>
-                </div>
-            </header>
+            {/* Usamos el header importado */}
+            <DonadoresHeader />
 
             {/* Modal Confirmación Salir */}
             {modalOpen && (
@@ -59,7 +37,6 @@ const Donadores = () => {
                     <div className="modal">
                         <h3>¿Estás seguro que deseas salir?</h3>
                         <div className="modal-buttons">
-                              
                             <button className="btn-confirm" onClick={confirmLogout}>
                                 Sí, salir
                             </button>

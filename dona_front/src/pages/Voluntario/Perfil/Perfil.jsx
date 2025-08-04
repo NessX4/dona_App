@@ -182,7 +182,7 @@ const Perfil = () => {
           </h1>
 
           {!editarVisible && perfil && (
-            <button className="btn-editar-pr" onClick={handleEditar}>
+            <button className="btn-editarVoluntario-pr" onClick={handleEditar}>
               <FiEdit />
               Editar Perfil
             </button>

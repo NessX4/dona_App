@@ -11,7 +11,8 @@ const SolicitudesDonador = () => {
   const [sdError, setSdError] = useState(null);
   const [sdSolicitudAEliminar, setSdSolicitudAEliminar] = useState(null);
   const [sdSolicitudAAceptar, setSdSolicitudAAceptar] = useState(null);
-  const [eliminando, setEliminando] = useState(false);
+  const [procesandoAceptar, setProcesandoAceptar] = useState(false);
+  const [procesandoEliminar, setProcesandoEliminar] = useState(false);
 
   const sdCargarDatos = async () => {
     try {
@@ -79,22 +80,19 @@ const SolicitudesDonador = () => {
 
   const sdConfirmarAceptar = async () => {
     if (!sdSolicitudAAceptar) return;
+    setProcesandoAceptar(true);
 
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/solicitudes/solicitudes/${sdSolicitudAAceptar}/`,
         {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ estado: "Aceptada" }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Error al actualizar la solicitud");
-      }
+      if (!response.ok) throw new Error("Error al actualizar la solicitud");
 
       setSolicitudes((prev) =>
         prev.map((sol) =>
@@ -104,6 +102,8 @@ const SolicitudesDonador = () => {
       setSdSolicitudAAceptar(null);
     } catch (error) {
       alert("Error al aceptar la solicitud: " + error.message);
+    } finally {
+      setProcesandoAceptar(false);
     }
   };
 
@@ -121,30 +121,27 @@ const SolicitudesDonador = () => {
 
   const sdEliminarSolicitud = async () => {
     if (!sdSolicitudAEliminar) return;
-
-    setEliminando(true);
+    setProcesandoEliminar(true);
 
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/solicitudes/solicitudes/${sdSolicitudAEliminar}/`,
         {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Error al eliminar la solicitud");
-      }
+      if (!response.ok) throw new Error("Error al eliminar la solicitud");
 
-      setSolicitudes((prev) => prev.filter((sol) => sol.id !== sdSolicitudAEliminar));
+      setSolicitudes((prev) =>
+        prev.filter((sol) => sol.id !== sdSolicitudAEliminar)
+      );
       setSdSolicitudAEliminar(null);
     } catch (error) {
       alert("Error al eliminar la solicitud: " + error.message);
     } finally {
-      setEliminando(false);
+      setProcesandoEliminar(false);
     }
   };
 
@@ -165,7 +162,6 @@ const SolicitudesDonador = () => {
           <table className="sd-table">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Publicación</th>
                 <th>Receptor</th>
                 <th>Estado</th>
@@ -176,31 +172,44 @@ const SolicitudesDonador = () => {
             <tbody>
               {sdSolicitudesFiltradas.map((solicitud) => (
                 <tr key={solicitud.id} className="sd-table-row">
-                  <td className="sd-table-cell">{solicitud.id}</td>
-                  <td className="sd-table-cell">{solicitud.publicacionDetalle?.titulo || "N/A"}</td>
-                  <td className="sd-table-cell">{solicitud.receptorDetalle?.nombre || "N/A"}</td>
                   <td className="sd-table-cell">
-                    <span className={`sd-status sd-status-${solicitud.estado.toLowerCase()}`}>
+                    {solicitud.publicacionDetalle?.titulo || "N/A"}
+                  </td>
+                  <td className="sd-table-cell">
+                    {solicitud.receptorDetalle?.nombre || "N/A"}
+                  </td>
+                  <td className="sd-table-cell">
+                    <span
+                      className={`sd-status sd-status-${solicitud.estado.toLowerCase()}`}
+                    >
                       {solicitud.estado}
                     </span>
                   </td>
-                  <td className="sd-table-cell">{solicitud.comentarios || "-"}</td>
+                  <td className="sd-table-cell">
+                    {solicitud.comentarios || "-"}
+                  </td>
                   <td className="sd-table-cell sd-actions">
                     <button
                       className="sd-btn-aceptar"
-                      onClick={() => sdAceptarSolicitud(solicitud.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        sdAceptarSolicitud(solicitud.id);
+                      }}
                       title="Aceptar"
                       aria-label="Aceptar solicitud"
-                      disabled={solicitud.estado === "Aceptada"}
+                      disabled={solicitud.estado === "Aceptada" || procesandoAceptar}
                     >
                       <FiCheck size={18} />
                     </button>
                     <button
                       className="sd-btn-eliminar"
-                      onClick={() => sdConfirmarEliminar(solicitud.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        sdConfirmarEliminar(solicitud.id);
+                      }}
                       title="Eliminar"
                       aria-label="Eliminar solicitud"
-                      disabled={eliminando}
+                      disabled={procesandoEliminar}
                     >
                       <FiTrash2 size={18} />
                     </button>
@@ -211,59 +220,57 @@ const SolicitudesDonador = () => {
           </table>
         )}
 
-        {/* Modal de confirmación de aceptación */}
+        {/* Modal de aceptación */}
         {sdSolicitudAAceptar && (
           <div className="sd-modal-overlay" onClick={sdCancelarAceptar}>
-            <div 
-              className="sd-modal-content" 
-              onClick={(e) => e.stopPropagation()}
-            >
-              <p className="sd-modal-message">¿Estás seguro que deseas aceptar esta solicitud?</p>
-              
+            <div className="sd-modal-content" onClick={(e) => e.stopPropagation()}>
+              <p className="sd-modal-message">
+                ¿Estás seguro que deseas aceptar esta solicitud?
+              </p>
               <div className="sd-modal-buttons">
                 <button
                   className="sd-btn-cancelar"
                   onClick={sdCancelarAceptar}
-                  disabled={eliminando}
+                  disabled={procesandoAceptar}
                 >
                   Cancelar
                 </button>
                 <button
                   className="sd-btn-confirmar-aceptar"
                   onClick={sdConfirmarAceptar}
-                  disabled={eliminando}
+                  disabled={procesandoAceptar}
                 >
-                  {eliminando ? "Procesando..." : "Aceptar"}
+                  {procesandoAceptar ? "Procesando..." : "Sí, Aceptar"}
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Modal de confirmación de eliminación */}
+        {/* Modal de eliminación */}
         {sdSolicitudAEliminar && (
           <div className="sd-modal-overlay" onClick={sdCancelarEliminar}>
-            <div 
-              className="sd-modal-content" 
-              onClick={(e) => e.stopPropagation()}
-            >
-              <p className="sd-modal-message">¿Estás seguro que deseas eliminar esta solicitud?</p>
-              <p className="sd-modal-warning">Esta acción no se puede deshacer</p>
-              
+            <div className="sd-modal-content" onClick={(e) => e.stopPropagation()}>
+              <div className="sd-modal-icon">
+              </div>
+              <p className="sd-modal-message">
+                ¿Estás seguro que deseas eliminar esta solicitud?
+              </p>
+
               <div className="sd-modal-buttons">
                 <button
                   className="sd-btn-cancelar"
                   onClick={sdCancelarEliminar}
-                  disabled={eliminando}
+                  disabled={procesandoEliminar}
                 >
                   Cancelar
                 </button>
                 <button
                   className="sd-btn-confirmar-eliminar"
                   onClick={sdEliminarSolicitud}
-                  disabled={eliminando}
+                  disabled={procesandoEliminar}
                 >
-                  {eliminando ? "Eliminando..." : "Eliminar"}
+                  {procesandoEliminar ? "Eliminando..." : "Sí, Eliminar"}
                 </button>
               </div>
             </div>
