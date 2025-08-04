@@ -1,4 +1,9 @@
 // src/components/admin/Sidebar.jsx
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Barra lateral del panel administrativo con acceso a módulos principales.
+ */
+
 import React from 'react';
 import donaLogo from '/src/assets/Donalogo.png'; // Asegúrate que esta ruta es correcta
 import { NavLink } from 'react-router-dom';

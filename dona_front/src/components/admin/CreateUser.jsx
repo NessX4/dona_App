@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Formulario para registrar usuarios de diferentes roles dentro del sistema.
+ */
+
 import React, { useState, useEffect } from 'react';
 import '../../styles/admin.css';
 import fondoDecorativo from '../../assets/DonalogoHD.png';

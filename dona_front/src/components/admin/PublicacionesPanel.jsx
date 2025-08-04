@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Lista y gestiona las publicaciones de donaciones realizadas por los donadores.
+ */
+
 import React, { useEffect, useState } from 'react';
 import '../../styles/admin.css';
 import { useNavigate } from 'react-router-dom';

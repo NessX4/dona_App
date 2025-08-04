@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Vista para confirmar la eliminación de una sucursal si no tiene relaciones activas.
+ */
+
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import fondoDecorativo from "../../assets/DonalogoHD.png";

@@ -1,6 +1,14 @@
 /* AdminLogin.css - estilo coherente con el panel administrativo */
 
 /* Reset básico */
+
+/*
+ * Responsable: Mariela Higuera
+ * Descripción: Estilos para la interfaz de login de administradores.
+ */
+
+
+ 
 * {
   box-sizing: border-box;
   margin: 0;

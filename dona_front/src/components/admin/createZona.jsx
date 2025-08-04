@@ -1,4 +1,11 @@
 // src/components/admin/CreateZona.jsx
+
+/*
+ * Responsable: Mariela Higuera
+ * Descripción: Formulario para crear una nueva zona geográfica.
+ */
+
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/admin.css";

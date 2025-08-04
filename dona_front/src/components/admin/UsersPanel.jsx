@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Muestra la tabla de usuarios y permite acceder a sus acciones CRUD en el panel administrativo.
+ */
+
 import React, { useEffect, useState } from 'react';
 import '../../styles/admin.css';
 import { useNavigate } from 'react-router-dom';

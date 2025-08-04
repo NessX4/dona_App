@@ -1,3 +1,9 @@
+/**
+ * Responsable: Mariela Higuera, Vanessa Balderas
+ * Descripción: Sección de configuración del sistema para ajustes administrativos.
+ */
+
+
 import React, { useRef } from 'react';
 import '../../styles/admin.css';
 

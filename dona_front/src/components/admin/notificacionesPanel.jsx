@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Muestra y gestiona las notificaciones dentro del panel administrativo.
+ */
+
 import React, { useEffect, useState } from 'react';
 import '../../styles/admin.css';
 import { FaCheckCircle, FaUndoAlt } from 'react-icons/fa';

@@ -1,4 +1,11 @@
 // src/components/admin/EditPublicacion.jsx
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Permite editar los datos de una publicación ya registrada.
+ */
+
+
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import fondoDecorativo from '../../assets/DonalogoHD.png';

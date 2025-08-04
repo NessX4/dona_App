@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Barra superior con navegación, bienvenida y acceso a configuración o logout.
+ */
+
 import React, { useState, useEffect } from "react";
 import "../../styles/admin.css";
 import { NavLink } from "react-router-dom";

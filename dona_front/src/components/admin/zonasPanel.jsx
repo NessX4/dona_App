@@ -1,4 +1,10 @@
 // src/componentes/admin/ZonasPanel.jsx
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Visualiza y gestiona las zonas geográficas disponibles en DonaApp.
+ */
+
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/admin.css";

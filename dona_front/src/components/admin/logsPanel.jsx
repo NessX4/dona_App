@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Muestra el historial de logs del sistema administrativo para auditoría de acciones.
+ */
+
 import React, { useEffect, useState } from 'react';
 import '../../styles/admin.css';
 

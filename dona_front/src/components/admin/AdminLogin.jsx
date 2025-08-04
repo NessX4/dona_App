@@ -1,3 +1,9 @@
+/*
+ * Responsable: Mariela Higuera
+ * Descripción: Componente exclusivo para el login de administradores en el sistema.
+ */
+
+
 import React, { useState } from "react";
 import "./AdminLogin.css";
 import logoDona from "../../assets/Logotipo.png";

@@ -1,3 +1,10 @@
+
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Administra las solicitudes de donaciones, permitiendo ver detalles, editar o acceder a su historial.
+ */
+
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/admin.css';
