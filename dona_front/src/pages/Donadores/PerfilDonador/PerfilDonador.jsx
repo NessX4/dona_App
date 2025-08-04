@@ -1,6 +1,7 @@
-// Luna FLores Yamileth Guadalupe
+// Luna Flores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import DonadoresHeader from "../../../components/DonadoresHeader";
+import SucursalesDonadores from "./SucursalesDonadores";
 import {
   FiUser,
   FiMail,
@@ -10,7 +11,6 @@ import {
   FiEdit,
   FiSave,
   FiX,
-  FiCheck,
 } from "react-icons/fi";
 import "./PerfilDonador.css";
 
@@ -18,6 +18,7 @@ const PerfilDonador = () => {
   const [perfil, setPerfil] = useState(null);
   const [editarVisible, setEditarVisible] = useState(false);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+  const [mostrarSucursales, setMostrarSucursales] = useState(false);
   const [formData, setFormData] = useState({
     usuarioId: null,
     nombreUsuario: "",
@@ -74,11 +75,8 @@ const PerfilDonador = () => {
   const handleEditar = () => setEditarVisible(true);
   const handleCerrar = () => {
     setEditarVisible(false);
-    if (perfil) {
-      setFormData({ ...perfil });
-    }
+    if (perfil) setFormData({ ...perfil });
   };
-
   const handleCambio = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -91,14 +89,12 @@ const PerfilDonador = () => {
 
   const confirmarActualizacion = async () => {
     try {
-      // Cambios para usuario
       const usuarioCambios = {};
       if (formData.nombreUsuario !== perfil.nombreUsuario)
         usuarioCambios.nombre = formData.nombreUsuario;
       if (formData.correo !== perfil.correo)
         usuarioCambios.correo = formData.correo;
 
-      // Cambios para donador
       const donadorCambios = {};
       if (formData.nombreLugar !== perfil.nombreLugar)
         donadorCambios.nombre_lugar = formData.nombreLugar;
@@ -113,7 +109,6 @@ const PerfilDonador = () => {
       if (formData.horarioCierre !== perfil.horarioCierre)
         donadorCambios.horario_cierre = formData.horarioCierre;
 
-      // PATCH usuario si hay cambios
       if (Object.keys(usuarioCambios).length > 0) {
         const resUsuario = await fetch(
           `http://localhost:8000/api/usuarios/usuarios/${formData.usuarioId}/`,
@@ -123,13 +118,9 @@ const PerfilDonador = () => {
             body: JSON.stringify(usuarioCambios),
           }
         );
-        if (!resUsuario.ok) {
-          const errorText = await resUsuario.text();
-          throw new Error(`Error al actualizar usuario: ${errorText}`);
-        }
+        if (!resUsuario.ok) throw new Error("Error al actualizar usuario");
       }
 
-      // PATCH donador si hay cambios
       if (Object.keys(donadorCambios).length > 0) {
         const resDonador = await fetch(
           `http://localhost:8000/api/usuarios/donadores/${formData.donadorId}/`,
@@ -139,10 +130,7 @@ const PerfilDonador = () => {
             body: JSON.stringify(donadorCambios),
           }
         );
-        if (!resDonador.ok) {
-          const errorText = await resDonador.text();
-          throw new Error(`Error al actualizar donador: ${errorText}`);
-        }
+        if (!resDonador.ok) throw new Error("Error al actualizar donador");
       }
 
       setPerfil({ ...formData });
@@ -155,9 +143,28 @@ const PerfilDonador = () => {
     }
   };
 
-  const cancelarActualizacion = () => {
-    setMostrarConfirmacion(false);
-  };
+  const cancelarActualizacion = () => setMostrarConfirmacion(false);
+
+  // 👉 SPA con Sucursales - asegura donadorId definido
+  if (mostrarSucursales) {
+    if (!perfil || !perfil.donadorId) {
+      return (
+        <>
+          <DonadoresHeader />
+          <p>Cargando datos del donador...</p>
+        </>
+      );
+    }
+    return (
+      <>
+        <DonadoresHeader />
+        <SucursalesDonadores
+          donadorId={perfil.donadorId}
+          onVolver={() => setMostrarSucursales(false)}
+        />
+      </>
+    );
+  }
 
   return (
     <>
@@ -170,10 +177,19 @@ const PerfilDonador = () => {
           </h1>
 
           {!editarVisible && perfil && (
-            <button className="btn-editar-pr" onClick={handleEditar}>
-              <FiEdit />
-              Editar Perfil
-            </button>
+            <div className="contenedor-boton-derecha">
+              <button
+                className="btn-sucursalesDona-pr"
+                onClick={() => setMostrarSucursales(true)}
+              >
+                <FiHome />
+                Ver Sucursales
+              </button>
+              <button className="btn-perfil-pr" onClick={handleEditar}>
+                <FiEdit />
+                Editar Perfil
+              </button>
+            </div>
           )}
 
           {editarVisible && (
@@ -353,7 +369,7 @@ const PerfilDonador = () => {
                 className="DatosActDonador-cancel"
                 onClick={cancelarActualizacion}
               >
-               Cancelar
+                Cancelar
               </button>
               <button
                 className="DatosActDonador-confirm"
@@ -361,7 +377,6 @@ const PerfilDonador = () => {
               >
                 Confirmar
               </button>
-              
             </div>
           </div>
         </div>

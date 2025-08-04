@@ -188,7 +188,7 @@ const PerfilRefugio = () => {
           </h1>
           {!state.editando ? (
             <button
-              className="btn-editar-pr"
+              className="btn-editarRefugio-pr"
               onClick={() => setState((prev) => ({ ...prev, editando: true }))}
             >
               <FiEdit /> Editar perfil

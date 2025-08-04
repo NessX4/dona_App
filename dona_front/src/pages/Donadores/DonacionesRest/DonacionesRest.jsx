@@ -1,3 +1,4 @@
+// Luna Flores Yamileth Guadalupe
 import React, { useEffect, useState } from "react";
 import { FiPlus, FiEdit, FiSave, FiTrash2, FiX } from "react-icons/fi";
 import DonadoresHeader from "../../../components/DonadoresHeader";
@@ -91,12 +92,14 @@ const DonacionesRest = () => {
       setArchivos(archivosData.results || archivosData);
 
       const publicacionesArray = publicacionesData.results || publicacionesData;
-      const publicacionesFiltradas = publicacionesArray.filter((pub) => {
-        const sucursal = (sucursalesData.results || sucursalesData).find(
-          (s) => s.id === pub.sucursal
-        );
-        return sucursal && sucursal.donador === donadorId;
-      });
+      const publicacionesFiltradas = publicacionesArray
+        .filter((pub) => {
+          const sucursal = (sucursalesData.results || sucursalesData).find(
+            (s) => s.id === pub.sucursal
+          );
+          return sucursal && sucursal.donador === donadorId;
+        })
+        .sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion));
 
       setPublicaciones(publicacionesFiltradas);
 
@@ -230,8 +233,8 @@ const DonacionesRest = () => {
         const pubActualizada = await resPub.json();
         setPublicaciones((prev) =>
           prev.map((pub) =>
-            pub.id === publicacionEditandoId ? pubActualizada : pub
-          )
+            pub.id === publicacionEditandoId ? { ...pubActualizada, fecha_publicacion: pub.fecha_publicacion } : pub
+          ).sort((a, b) => new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion))
         );
       }
 
@@ -274,8 +277,14 @@ const DonacionesRest = () => {
 
   const handleMostrarFormulario = () => setMostrarFormulario(true);
   const handleOcultarFormulario = () => setMostrarFormulario(false);
-  const agregarPublicacionEnLista = (nueva) =>
-    setPublicaciones((prev) => [nueva, ...prev]);
+
+  const agregarPublicacionEnLista = (nueva) => {
+    setPublicaciones((prev) => 
+      [nueva, ...prev].sort((a, b) => 
+        new Date(b.fecha_publicacion) - new Date(a.fecha_publicacion)
+      )
+    );
+  };
 
   return (
     <>
@@ -319,7 +328,7 @@ const DonacionesRest = () => {
 
               if (publicacionEditandoId === pub.id) {
                 return (
-                  <div key={pub.id} className="publicacion-card publicacion-editando">
+                  <div key={`editing-${pub.id}`} className="publicacion-card publicacion-editando">
                     <div className="contenido-publicacion">
                       <input
                         name="titulo"
@@ -410,7 +419,7 @@ const DonacionesRest = () => {
               }
 
               return (
-                <div key={pub.id} className="publicacion-card">
+                <div key={`publicacion-${pub.id}`} className="publicacion-card">
                   <div className="contenido-publicacion">
                     <h2>{pub.titulo}</h2>
                     {imagen && (

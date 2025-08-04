@@ -1,6 +1,7 @@
-    // Luna FLores Yamileth Guadalupe
+// Luna Flores Yamileth Guadalupe
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
 import logoDona from "../assets/Logotipo.png";
 
 const DonadoresHeader = () => {
@@ -18,11 +19,16 @@ const DonadoresHeader = () => {
     localStorage.removeItem("usuarioId");
     localStorage.removeItem("rol");
 
-    navigate("/login"); // Mejor redirigir al login
-};
+    navigate("/login");
+  };
 
   const cancelLogout = () => {
     setShowModal(false);
+  };
+
+  const handleForceNavigate = (path) => (e) => {
+    e.preventDefault();
+    window.location.href = path;
   };
 
   return (
@@ -43,30 +49,35 @@ const DonadoresHeader = () => {
             <NavLink
               to="/donadores/donaciones"
               className={({ isActive }) => (isActive ? "active-link" : "")}
+              onClick={handleForceNavigate("/donadores/donaciones")}
             >
               Mis Donaciones
             </NavLink>
             <NavLink
               to="/donadores/solicitudes"
               className={({ isActive }) => (isActive ? "active-link" : "")}
+              onClick={handleForceNavigate("/donadores/solicitudes")}
             >
               Solicitudes
             </NavLink>
             <NavLink
               to="/donadores/notificaciones"
               className={({ isActive }) => (isActive ? "active-link" : "")}
+              onClick={handleForceNavigate("/donadores/notificaciones")}
             >
               Notificaciones
             </NavLink>
             <NavLink
               to="/donadores/perfil"
               className={({ isActive }) => (isActive ? "active-link" : "")}
+              onClick={handleForceNavigate("/donadores/perfil")}
             >
               Mi Perfil
             </NavLink>
 
             <button onClick={handleLogout} className="donar-btn">
-              Salir
+              <FiLogOut style={{ marginRight: "6px" }} />
+              Cerrar sesión
             </button>
           </nav>
         </div>
@@ -83,7 +94,6 @@ const DonadoresHeader = () => {
               <button onClick={cancelLogout} className="modal-Dona3">
                 Cancelar
               </button>
-
             </div>
           </div>
         </div>

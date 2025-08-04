@@ -1,0 +1,165 @@
+/* Luna FLores Yamileth Guadalupe */
+:root {
+  --color-principal: #e74c3c;
+  --color-exito: #2ecc71;
+  --color-exito-hover: #27ae60;
+  --color-texto: #2c3e50;
+  --color-borde: #e0e0e0;
+}
+
+.NuevaSucursal-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px 15px 30px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--color-texto);
+  text-align: center; 
+}
+
+.NuevaSucursal-container h3 {
+  color: var(--color-principal);
+  margin-bottom: 1.8rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.NuevaSucursal-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 2rem;
+  background: #ffffff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: none;
+  justify-items: center;
+}
+
+.NuevaSucursal-form label {
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center; 
+  width: 100%; 
+}
+
+.NuevaSucursal-form input,
+.NuevaSucursal-form select {
+  width: 80%; 
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-family: inherit;
+  color: var(--color-texto);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  background: #fff;
+  margin-top: 0.25rem;
+  text-align: center; 
+}
+
+.NuevaSucursal-form input:focus,
+.NuevaSucursal-form select:focus {
+  outline: none;
+  border-color: var(--color-principal);
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
+}
+
+.NuevaSucursal-error {
+  grid-column: 1 / -1;
+  color: var(--color-principal);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.NuevaSucursal-buttons {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.CancelarNuevaSucursalDona {
+  width: 160px;
+  height: 42px;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  font-size: 16px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.CancelarNuevaSucursalDona:hover:not(:disabled) {
+  background-color: #e2e6ea;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.CrearNuevaSucursalDona {
+  width: 160px;
+  height: 42px;
+  padding: 8px 12px;
+  background-color: #27ae60;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(39, 174, 96, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.CrearNuevaSucursalDona:hover:not(:disabled) {
+  background-color: var(--color-exito-hover);
+  box-shadow: 0 5px 10px rgba(39, 174, 96, 0.4);
+}
+
+.CrearNuevaSucursalDona:disabled,
+.CancelarNuevaSucursalDona:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 600px) {
+  .NuevaSucursal-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+  }
+
+  .NuevaSucursal-form label {
+    align-items: center; 
+    text-align: center;
+    width: 100%;
+  }
+
+  .NuevaSucursal-form input,
+  .NuevaSucursal-form select {
+    width: 100%;
+    text-align: center;
+  }
+
+  .NuevaSucursal-buttons {
+    justify-content: center;
+  }
+}
