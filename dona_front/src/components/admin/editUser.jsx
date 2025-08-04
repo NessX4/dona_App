@@ -27,14 +27,15 @@ const EditUser = () => {
 
   useEffect(() => {
     const fetchZonas = async () => {
-      try {
-        const res = await fetch('http://127.0.0.1:8000/api/zonas/zonas/');
-        const data = await res.json();
-        setZonas(data);
-      } catch (err) {
-        console.error('Error al cargar zonas:', err);
-      }
-    };
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/zonas/zonas/');
+    const data = await res.json();
+    const zonasActivas = data.filter(z => !z.nombre.toLowerCase().includes('inactiva'));
+    setZonas(zonasActivas);
+  } catch (err) {
+    console.error('Error al cargar zonas:', err);
+  }
+};
 
     const fetchUsuario = async () => {
       try {
@@ -135,7 +136,7 @@ const EditUser = () => {
   return (
     <div className="main-content">
       <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
-      <h2 className="titulo-principal">✏️ Editar Usuario</h2>
+      <h2 className="titulo-principal">✏️ Editar usuario</h2>
 
       <div className="rol-destacado">{ROLES_MAP[usuario.rol]}</div>
 

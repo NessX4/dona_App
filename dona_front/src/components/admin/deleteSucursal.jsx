@@ -119,7 +119,7 @@ const DeleteSucursal = () => {
   return (
     <div className="main-content">
       <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
-      <h2>🗑️ Eliminar Sucursal</h2>
+      <h2>🗑️ Eliminar sucursal</h2>
 
       <table className="user-summary-table">
         <tbody>

@@ -166,7 +166,7 @@ const Configuracion = () => {
   // LOGS
   const handleExportLogs = () => {
     exportCSV(
-      'http://localhost:8000/api/logs/',
+      'http://localhost:8000/api/usuarios/logs/',
       'logs.csv',
       ['ID', 'Acción', 'Modelo', 'Objeto ID', 'Fecha', 'Usuario'],
       log => [log.id, log.accion, log.modelo, log.objeto_id, log.fecha, log.usuario || '—'].join(',')
@@ -193,6 +193,7 @@ const Configuracion = () => {
               <td style={{ textAlign: 'center' }}>
                 {fila.input ? (
                   <>
+                  
                     <input
                       type="file"
                       accept=".sql"
@@ -214,53 +215,46 @@ const Configuracion = () => {
 
   return (
     <div className="main-content">
-      <h2>⚙️ Panel de Configuración</h2>
-      <p className="descripcion-config">
-        Desde aquí puedes administrar exportaciones del sistema, respaldos y restauraciones de la base de datos.
-      </p>
+
+      
+      
+      <h2 style={{ marginTop: '10px' }}>⚙️ Panel de configuración</h2>
+      <p className="descripcion-config" style={{ marginBottom: '40px' }}>
+  Desde aquí puedes administrar exportaciones del sistema, respaldos y restauraciones de la base de datos.
+</p>
+
 
       {/* 💾 NUEVO PANEL BASE DE DATOS */}
-      {renderTabla("💾 Base de Datos", [
+     {renderTabla(<><i className="fas fa-database" style={{ marginRight: '10px' }}></i>Base de datos</>,[
         { nombre: 'Exportar BD', desc: 'Descarga un respaldo completo en formato .sql', onClick: handleExportDatabase, boton: 'Exportar' },
         { nombre: 'Restaurar BD', desc: 'Sube un archivo .sql para restaurar datos', onClick: handleRestoreDatabase, input: true },
         { nombre: 'Resetear BD', desc: 'Borra todos los datos, mantiene la estructura', onClick: handleResetDatabase, boton: 'Resetear' },
       ])}
 
       {/* 🧑‍🤝‍🧑 POR ROL */}
-      {renderTabla("🧑‍🤝‍🧑 Usuarios por Rol", [
+      {renderTabla(<><i className="fas fa-users" style={{ marginRight: '10px' }}></i>Usuarios por rol</>, [
         { nombre: 'Donadores', desc: 'Entidades que publican donaciones', onClick: handleExportDonadores },
         { nombre: 'Voluntarios', desc: 'Personas que colaboran con el transporte', onClick: handleExportVoluntarios },
         { nombre: 'Receptores', desc: 'Refugios que reciben ayuda', onClick: handleExportReceptores },
       ])}
 
       {/* 📦 DONACIONES */}
-      {renderTabla("📦 Donaciones y Logística", [
+      {renderTabla(<><i className="fas fa-box-open" style={{ marginRight: '10px' }}></i>Donaciones y logística</>,  [
         { nombre: 'Publicaciones', desc: 'Donaciones activas en el sistema', onClick: handleExportPublicaciones },
         { nombre: 'Solicitudes', desc: 'Peticiones de entrega o retiro de ayuda', onClick: handleExportSolicitudes },
       ])}
 
       {/* 🌍 ZONAS */}
-      {renderTabla("🌍 Organización Geográfica", [
+      {renderTabla(<><i className="fas fa-map-marked-alt" style={{ marginRight: '10px' }}></i>Organización geográfica</>, [
         { nombre: 'Zonas', desc: 'Áreas operativas y sus códigos postales', onClick: handleExportZonas },
         { nombre: 'Sucursales', desc: 'Puntos físicos de los donadores', onClick: handleExportSucursales },
       ])}
 
       {/* 📝 LOGS */}
-      {renderTabla("📝 Auditoría del Sistema", [
+      {renderTabla(<><i className="fas fa-clipboard-list" style={{ marginRight: '10px' }}></i>Auditoría del sistema</>,[
         { nombre: 'Logs', desc: 'Registro de acciones administrativas', onClick: handleExportLogs },
       ])}
 
-      {/* 🔐 SEGURIDAD */}
-      <div className="tarjeta-dashboard2">
-        <h3>🔐 Seguridad</h3>
-        <p>Muy pronto podrás cambiar tu contraseña, correo electrónico o cerrar sesiones activas.</p>
-      </div>
-
-      {/* 🎨 PERSONALIZACIÓN */}
-      <div className="tarjeta-dashboard2">
-        <h3>🎨 Personalización</h3>
-        <p>Próximamente podrás elegir el tema visual e idioma preferido del panel.</p>
-      </div>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import fondoDecorativo from '../../assets/DonalogoHD.png';
 
 const CreateUser = () => {
   const [zonas, setZonas] = useState([]);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     rol: '',
     nombre: '',
@@ -30,7 +31,8 @@ const CreateUser = () => {
       try {
         const res = await fetch('http://127.0.0.1:8000/api/zonas/zonas/');
         const data = await res.json();
-        setZonas(data);
+        const zonasActivas = data.filter(z => !z.nombre.toLowerCase().includes('inactiva'));
+        setZonas(zonasActivas);
       } catch (err) {
         console.error('Error al cargar zonas:', err);
       }
@@ -43,23 +45,44 @@ const CreateUser = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{1,20}$/;
+
+    if (!formData.nombre) newErrors.nombre = "El nombre es requerido";
+    if (!formData.correo || !emailRegex.test(formData.correo)) newErrors.correo = "Correo inválido";
+    if (!formData.password || !passwordRegex.test(formData.password))
+      newErrors.password = "Debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número";
+    if (formData.password !== formData.confirmPassword)
+      newErrors.confirmPassword = "Las contraseñas no coinciden";
+    if (formData.telefono && !phoneRegex.test(formData.telefono))
+      newErrors.telefono = "Solo números, hasta 20 dígitos";
+    if (formData.rol === '2' && (!formData.capacidad || parseInt(formData.capacidad) <= 0))
+      newErrors.capacidad = "Debe ser un número positivo";
+
+    return newErrors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newErrors = validateForm();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert('❌ Las contraseñas no coinciden');
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      const firstError = Object.keys(newErrors)[0];
+      const errorField = document.querySelector(`[name="${firstError}"]`);
+      if (errorField) errorField.focus();
       return;
     }
 
-    if (formData.telefono.length > 20) {
-      alert('❌ El teléfono no puede tener más de 20 caracteres');
-      return;
-    }
+    setErrors({}); // limpiar errores
 
     const usuarioBase = {
       nombre: formData.nombre,
       correo: formData.correo,
-      password: formData.password, 
+      password: formData.password,
       rol: parseInt(formData.rol)
     };
 
@@ -73,7 +96,7 @@ const CreateUser = () => {
 
     const basePayload = {
       usuario: usuarioBase,
-      telefono: formData.telefono,
+      telefono: formData.telefono
     };
 
     if (formData.rol === '1') {
@@ -113,29 +136,37 @@ const CreateUser = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(`❌ Error al crear ${endpoint}:
-${JSON.stringify(data, null, 2)}`);
-        return;
-      }
+  const backendErrors = {};
 
-      alert(`¡Registro creado con éxito!`);
+  for (const key in data) {
+    if (Array.isArray(data[key])) {
+      if (key === "correo") backendErrors.correo = "El correo ya está registrado o es inválido";
+      else if (key === "telefono") backendErrors.telefono = "El teléfono es obligatorio";
+      else backendErrors[key] = data[key][0];  // Mensaje genérico por si acaso
+    }
+  }
+
+  setErrors(backendErrors);
+  const firstError = Object.keys(backendErrors)[0];
+  const errorField = document.querySelector(`[name="${firstError}"]`);
+  if (errorField) errorField.focus();
+  return;
+}
+
+
+      alert('¡Registro creado con éxito!');
       window.location.href = '/admin/#/usuarios';
     } catch (err) {
-      alert('❌ Error inesperado: ' + err.message);
+      setErrors({ general: 'Error inesperado: ' + err.message });
     }
   };
 
   return (
     <div className="main-content" style={{ position: 'relative' }}>
-      <img
-        src={fondoDecorativo}
-        alt="Decoración DonaApp"
-        className="decorative-image"
-      />
+      <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
       <h2 className="titulo-principal">➕ Crear nuevo usuario</h2>
       <div className="edit-card compacta">
         <form onSubmit={handleSubmit} className="user-form">
-
           <div className="form-group">
             <label>Rol:</label>
             <select name="rol" value={formData.rol} onChange={handleChange} required>
@@ -146,26 +177,27 @@ ${JSON.stringify(data, null, 2)}`);
             </select>
           </div>
 
-          <div className="form-group">
-            <label>Nombre:</label>
-            <input name="nombre" value={formData.nombre} onChange={handleChange} required />
-          </div>
+          {/* Campos comunes */}
+          {[
+            { label: 'Nombre', name: 'nombre' },
+            { label: 'Correo', name: 'correo', type: 'email' },
+            { label: 'Contraseña', name: 'password', type: 'password' },
+            { label: 'Confirmar Contraseña', name: 'confirmPassword', type: 'password' },
+          ].map(({ label, name, type = 'text' }) => (
+            <div className="form-group" key={name}>
+              <label>{label}:</label>
+              <input
+                name={name}
+                type={type}
+                value={formData[name]}
+                onChange={handleChange}
+                className={errors[name] ? 'input-error' : ''}
+              />
+              {errors[name] && <div className="error-text">{errors[name]}</div>}
+            </div>
+          ))}
 
-          <div className="form-group">
-            <label>Correo:</label>
-            <input type="email" name="correo" value={formData.correo} onChange={handleChange} required />
-          </div>
-
-          <div className="form-group">
-            <label>Contraseña:</label>
-            <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-          </div>
-
-          <div className="form-group">
-            <label>Confirmar Contraseña:</label>
-            <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
-          </div>
-
+          {/* Campos específicos */}
           {formData.rol === '1' && (
             <>
               <div className="form-group">
@@ -178,7 +210,13 @@ ${JSON.stringify(data, null, 2)}`);
               </div>
               <div className="form-group">
                 <label>Teléfono:</label>
-                <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
+                <input
+                  name="telefono"
+                  value={formData.telefono}
+                  onChange={handleChange}
+                  className={errors.telefono ? 'input-error' : ''}
+                />
+                {errors.telefono && <div className="error-text">{errors.telefono}</div>}
               </div>
               <div className="form-group">
                 <label>Descripción:</label>
@@ -207,7 +245,13 @@ ${JSON.stringify(data, null, 2)}`);
               </div>
               <div className="form-group">
                 <label>Teléfono:</label>
-                <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
+                <input
+                  name="telefono"
+                  value={formData.telefono}
+                  onChange={handleChange}
+                  className={errors.telefono ? 'input-error' : ''}
+                />
+                {errors.telefono && <div className="error-text">{errors.telefono}</div>}
               </div>
               <div className="form-group">
                 <label>Dirección:</label>
@@ -215,7 +259,14 @@ ${JSON.stringify(data, null, 2)}`);
               </div>
               <div className="form-group">
                 <label>Capacidad:</label>
-                <input type="number" name="capacidad" value={formData.capacidad} onChange={handleChange} />
+                <input
+                  type="number"
+                  name="capacidad"
+                  value={formData.capacidad}
+                  onChange={handleChange}
+                  className={errors.capacidad ? 'input-error' : ''}
+                />
+                {errors.capacidad && <div className="error-text">{errors.capacidad}</div>}
               </div>
               <div className="form-group">
                 <label>Horario de apertura:</label>
@@ -232,7 +283,13 @@ ${JSON.stringify(data, null, 2)}`);
             <>
               <div className="form-group">
                 <label>Teléfono:</label>
-                <input name="telefono" maxLength="20" value={formData.telefono} onChange={handleChange} />
+                <input
+                  name="telefono"
+                  value={formData.telefono}
+                  onChange={handleChange}
+                  className={errors.telefono ? 'input-error' : ''}
+                />
+                {errors.telefono && <div className="error-text">{errors.telefono}</div>}
               </div>
               <div className="form-group">
                 <label>Zona:</label>
@@ -248,15 +305,12 @@ ${JSON.stringify(data, null, 2)}`);
             </>
           )}
 
-
+          {errors.general && <div className="error-text">{errors.general}</div>}
 
           <button type="submit" className="guardar-btn">
-  <i className="fas fa-save" style={{ color: 'white', marginRight: '13px' }}></i>
-  Crear Usuario
-</button>
-
-
-
+            <i className="fas fa-save" style={{ color: 'white', marginRight: '13px' }}></i>
+            Crear Usuario
+          </button>
         </form>
       </div>
     </div>

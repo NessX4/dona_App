@@ -119,81 +119,135 @@ const PublicacionesPanel = () => {
 
   return (
     <div className="main-content">
-      <h2>📦 Gestión de Publicaciones</h2>
+
+
+
+
+      <h2 style={{ marginTop: '10px' }}>
+  <i className="fas fa-box-open" style={{ marginRight: '10px', color: '#333' }}></i>
+  Gestión de publicaciones
+</h2>
+
+
 
       <button className="create-user-btn" onClick={() => navigate('/publicaciones/crear')}>
-        ➕ Crear Publicación
+        ➕ Crear publicación
       </button>
 
       <div className="filtro-barra">
-        <input
-          type="text"
-          placeholder="🔍 Buscar por título"
-          value={filtroTitulo}
-          onChange={(e) => setFiltroTitulo(e.target.value)}
-        />
+  <input
+    type="text"
+    placeholder="🔍 Buscar por título"
+    value={filtroTitulo}
+    onChange={(e) => setFiltroTitulo(e.target.value)}
+    className="input-busqueda"
+    style={{
+      marginTop: '15px',
+      marginBottom: '-10px'
+    }}
+  />
 
-        <select value={estadoFiltro} onChange={(e) => setEstadoFiltro(e.target.value)}>
-          <option value="">Todos los estados</option>
-          {estadosDonacion.map(estado => (
-            <option key={estado.id} value={estado.nombre}>{estado.nombre}</option>
-          ))}
-        </select>
+  <label
+    className="checkbox-label"
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      whiteSpace: 'nowrap',
+      marginLeft: '6px',
+      fontSize: '14px',
+      marginTop: '8px',
+      marginRight: '8px',
+      gap: '8px'
+    }}
+  >
+    <span>Activos primero</span>
+    <input
+      type="checkbox"
+      checked={activosPrimero}
+      onChange={(e) => setActivosPrimero(e.target.checked)}
+      style={{
+        width: '18px',
+        height: '18px',
+        cursor: 'pointer',
+        marginTop: '18px'
+      }}
+    />
+  </label>
 
-        Ordenar por: 
-        <select value={ordenTitulo} onChange={(e) => setOrdenTitulo(e.target.value)}>
-          <option value="az">A → Z</option>
-          <option value="za">Z → A</option>
-        </select>
-      </div>
+  <select
+    value={estadoFiltro}
+    onChange={(e) => setEstadoFiltro(e.target.value)}
+    className="filtro-select"
+  >
+    <option value="">Todos los estados</option>
+    {estadosDonacion.map((estado) => (
+      <option key={estado.id} value={estado.nombre}>
+        {estado.nombre}
+      </option>
+    ))}
+  </select>
 
+  Ordenar por:
+  <select
+    value={ordenTitulo}
+    onChange={(e) => setOrdenTitulo(e.target.value)}
+    className="filtro-select"
+  >
+    <option value="az">A → Z</option>
+    <option value="za">Z → A</option>
+  </select>
+</div>
+
+
+<div className="espaciado-negativo"></div>
       <table className="user-table">
         <thead>
-          <tr>
-            <th>Título</th>
-            <th>Sucursal</th>
-            <th>Zona</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
-            <tr>
-              <td colSpan="5" className="text-center text-gray-500 py-4">
-                ⏳ Cargando publicaciones...
-              </td>
-            </tr>
-          ) : publicacionesFiltradas.length === 0 ? (
-            <tr>
-              <td colSpan="5" className="text-center text-gray-500 py-4">
-                No hay publicaciones que coincidan con los filtros aplicados.
-              </td>
-            </tr>
-          ) : (
-            publicacionesFiltradas.map(publi => {
-              const sucursal = obtenerSucursal(publi.sucursal);
-              const estadoNombre = obtenerNombreEstado(publi.estado);
-              const claseEstado = obtenerClaseEstado(estadoNombre);
+  <tr>
+    <th style={{ textAlign: 'center' }}>Título</th>
+    <th style={{ textAlign: 'center' }}>Sucursal</th>
+    <th style={{ textAlign: 'center' }}>Zona</th>
+    <th style={{ textAlign: 'center' }}>Estado</th>
+    <th style={{ textAlign: 'center' }}>Acciones</th>
+  </tr>
+</thead>
+<tbody>
+  {loading ? (
+    <tr>
+      <td colSpan="5" style={{ textAlign: 'center' }} className="text-gray-500 py-4">
+        ⏳ Cargando publicaciones...
+      </td>
+    </tr>
+  ) : publicacionesFiltradas.length === 0 ? (
+    <tr>
+      <td colSpan="5" style={{ textAlign: 'center' }} className="text-gray-500 py-4">
+        No hay publicaciones que coincidan con los filtros aplicados.
+      </td>
+    </tr>
+  ) : (
+    publicacionesFiltradas.map(publi => {
+      const sucursal = obtenerSucursal(publi.sucursal);
+      const estadoNombre = obtenerNombreEstado(publi.estado);
+      const claseEstado = obtenerClaseEstado(estadoNombre);
 
-              return (
-                <tr key={publi.id}>
-                  <td>{publi.titulo}</td>
-                  <td>{sucursal?.nombre || 'Sucursal desconocida'}</td>
-                  <td>{publi.zona ? obtenerZona(publi.zona) : '—'}</td>
-                  <td>
-                    <button className={claseEstado}>{estadoNombre}</button>
-                  </td>
-                  <td>
-                    <button className="view-btn" onClick={() => abrirModal(publi)}>🔍 Ver más</button>
-                    <button className="edit-btn" onClick={() => navigate(`/publicaciones/editar/${publi.id}`)}>✏️ Editar</button>
-                    <button className="delete-btn" onClick={() => navigate(`/publicaciones/eliminar/${publi.id}`)}>🗑️ Eliminar</button>
-                  </td>
-                </tr>
-              );
-            })
-          )}
-        </tbody>
+      return (
+        <tr key={publi.id}>
+          <td style={{ textAlign: 'center' }}>{publi.titulo}</td>
+          <td style={{ textAlign: 'center' }}>{sucursal?.nombre || 'Sucursal desconocida'}</td>
+          <td style={{ textAlign: 'center' }}>{publi.zona ? obtenerZona(publi.zona) : '—'}</td>
+          <td style={{ textAlign: 'center' }}>
+            <button className={claseEstado}>{estadoNombre}</button>
+          </td>
+          <td style={{ textAlign: 'center' }}>
+            <button className="view-btn" onClick={() => abrirModal(publi)}>🔍 Ver más</button>
+            <button className="edit-btn" onClick={() => navigate(`/publicaciones/editar/${publi.id}`)}>✏️ Editar</button>
+            <button className="delete-btn" onClick={() => navigate(`/publicaciones/eliminar/${publi.id}`)}>🗑️ Eliminar</button>
+          </td>
+        </tr>
+      );
+    })
+  )}
+</tbody>
+
       </table>
 
       {modalAbierto && publicacionSeleccionada && (() => {

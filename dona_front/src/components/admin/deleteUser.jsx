@@ -136,7 +136,7 @@ const DeleteUser = () => {
         alt="Decoración DonaApp"
         className="decorative-image"
       />
-      <h2>🗑️ Eliminar Usuario</h2>
+      <h2>🗑️ Eliminar usuario</h2>
       <div className="rol-destacado">{ROLES_MAP[usuario.rol]}</div>
       <table className="user-summary-table">
         <tbody>

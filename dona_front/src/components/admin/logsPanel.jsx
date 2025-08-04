@@ -68,23 +68,26 @@ const LogsPanel = () => {
 
   return (
     <div className="main-content">
-      <h2>📜 Panel de Logs</h2>
+      <h2>
+        <i className="fas fa-history" style={{ marginRight: '10px', color: '#333' }}></i>
+        Panel de Logs
+      </h2>
 
       <div className="filtro-barra">
         <input
           type="text"
-          placeholder="🔍 Buscar por usuario"
+          placeholder="🔍 Buscar"
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
         />
 
-        <label>Ordenar por:</label>
+        Ordenar por:
         <select value={ordenFecha} onChange={(e) => setOrdenFecha(e.target.value)}>
           <option value="recientes">Más recientes primero</option>
           <option value="antiguas">Más antiguas primero</option>
         </select>
 
-        <label>Filtrar por tipo:</label>
+        Filtrar por tipo:
         <select value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
           <option value="todos">Todos</option>
           <option value="create">Creaciones</option>
@@ -93,34 +96,48 @@ const LogsPanel = () => {
         </select>
       </div>
 
+
+
+<div className="espaciado-negativo"></div>
+<div style={{ height: '5px' }}></div>
       <table className="user-table">
         <thead>
           <tr>
-            <th>Fecha</th>
-            <th>Usuario</th>
-            <th>Acción</th>
-            <th>Tipo</th>
-            <th>Detalle</th>
+            <th style={{ textAlign: 'center' }}>Fecha</th>
+            <th style={{ textAlign: 'center' }}>Usuario</th>
+            <th style={{ textAlign: 'center' }}>Acción</th>
+            <th style={{ textAlign: 'center' }}>Tipo</th>
+            <th style={{ textAlign: 'center' }}>Detalle</th>
           </tr>
         </thead>
 
         <tbody>
           {loading ? (
             <tr>
-              <td colSpan="5" className="text-center">⏳ Cargando logs...</td>
+              <td colSpan="5" style={{ textAlign: 'center' }}>⏳ Cargando logs...</td>
             </tr>
           ) : logsFiltrados.length === 0 ? (
             <tr>
-              <td colSpan="5" className="text-center">No hay registros que coincidan con la búsqueda.</td>
+              <td colSpan="5" style={{ textAlign: 'center' }}>No hay registros que coincidan con la búsqueda.</td>
             </tr>
           ) : (
             logsFiltrados.map((log) => (
               <tr key={log.id}>
-                <td>{new Date(log.fecha).toLocaleString()}</td>
-                <td>{log.usuario || '—'}</td>
-                <td>{log.accion}</td>
-                <td><span className={getBadgeClass(log.accion)}>{getCrudType(log.accion)}</span></td>
-                <td>{log.detalle}</td>
+                <td style={{ textAlign: 'center' }}>
+                  {new Date(log.fecha).toLocaleString()}
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  {log.usuario || '—'}
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  {log.accion}
+                </td>
+                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                  <span className={getBadgeClass(log.accion)}>{getCrudType(log.accion)}</span>
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  {log.detalle}
+                </td>
               </tr>
             ))
           )}

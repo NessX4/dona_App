@@ -1,3 +1,4 @@
+// src/componentes/admin/ZonasPanel.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/admin.css";
@@ -10,7 +11,7 @@ const ZonasPanel = () => {
   const [ordenNombre, setOrdenNombre] = useState('az');
   const [ciudadesDisponibles, setCiudadesDisponibles] = useState([]);
   const [activosPrimero, setActivosPrimero] = useState(false);
-  const [loading, setLoading] = useState(true); // 🚩 nuevo estado
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -33,7 +34,7 @@ const ZonasPanel = () => {
       } catch (error) {
         console.error("❌ Error al cargar zonas o ubicaciones:", error);
       } finally {
-        setLoading(false); // ✅ termina de cargar
+        setLoading(false);
       }
     };
 
@@ -69,13 +70,16 @@ const ZonasPanel = () => {
 
   return (
     <div className="main-content">
-      <h2>🗺️ Gestión de Zonas</h2>
+      <h2 style={{ marginTop: '10px' }}>
+        <i className="fas fa-map-marked-alt" style={{ marginRight: '10px', color: '#333' }}></i>
+        Gestión de zonas
+      </h2>
 
       <button
         className="create-user-btn"
         onClick={() => navigate("/zonas/crear")}
       >
-        ➕ Crear Zona
+        ➕ Crear zona
       </button>
 
       {/* Filtros */}
@@ -85,7 +89,39 @@ const ZonasPanel = () => {
           placeholder="🔍 Buscar por nombre"
           value={nombreFiltro}
           onChange={(e) => setNombreFiltro(e.target.value)}
+          className="input-busqueda"
+          style={{
+            marginTop: '15px',
+            marginBottom: '-10px'
+          }}
         />
+
+        <label
+          className="checkbox-label"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            whiteSpace: 'nowrap',
+            marginLeft: '6px',
+            fontSize: '14px',
+            marginTop: '8px',
+            marginRight: '8px',
+            gap: '8px'
+          }}
+        >
+          <span>Activos primero</span>
+          <input
+            type="checkbox"
+            checked={activosPrimero}
+            onChange={(e) => setActivosPrimero(e.target.checked)}
+            style={{
+              width: '18px',
+              height: '18px',
+              cursor: 'pointer',
+              marginTop: '18px'
+            }}
+          />
+        </label>
 
         <select value={ciudadFiltro} onChange={(e) => setCiudadFiltro(e.target.value)}>
           <option value="">Todas las ciudades</option>
@@ -96,16 +132,6 @@ const ZonasPanel = () => {
           ))}
         </select>
 
-        <label className="checkbox-label">
-          Activos primero
-          <input
-            type="checkbox"
-            checked={activosPrimero}
-            onChange={(e) => setActivosPrimero(e.target.checked)}
-            style={{ marginLeft: "8px" }}
-          />
-        </label>
-
         Ordenar por:
         <select value={ordenNombre} onChange={(e) => setOrdenNombre(e.target.value)}>
           <option value="az">A → Z</option>
@@ -113,66 +139,61 @@ const ZonasPanel = () => {
         </select>
       </div>
 
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Dirección</th>
-            <th>CP</th>
-            <th>Ciudad</th>
-            <th>Estado</th>
-            <th>Estatus</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
 
-        <tbody>
-          {loading ? (
-            <tr>
-              <td colSpan="7" className="text-center text-gray-500 py-4">
-                ⏳ Cargando zonas...
-              </td>
-            </tr>
-          ) : zonasFiltradas.length === 0 ? (
-            <tr>
-              <td colSpan="7" className="text-center text-gray-500 py-4">
-                No hay zonas que coincidan con los filtros aplicados.
-              </td>
-            </tr>
-          ) : (
-            zonasFiltradas.map((zona) => (
-              <tr key={zona.id}>
-                <td>{zona.nombre.replace(/ *\(?inactiva\)?/i, "").trim()}</td>
-                <td>{obtenerDireccion(zona)}</td>
-                <td>{zona.codigo_postal}</td>
-                <td>{zona.ciudad}</td>
-                <td>{zona.estado}</td>
-                <td>
-                  <span
-                    className={`estado-btn ${esZonaActiva(zona) ? "activo" : "inactivo"}`}
-                  >
-                    {esZonaActiva(zona) ? "✅ Activo" : "⛔ Inactivo"}
-                  </span>
-                </td>
-                <td>
-                  <button
-                    className="edit-btn"
-                    onClick={() => navigate(`/zonas/editar/${zona.id}`)}
-                  >
-                    ✏️ Editar
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => navigate(`/zonas/eliminar/${zona.id}`)}
-                  >
-                    🗑️ Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+<div className="espaciado-negativo"></div>
+      <table className="user-table">
+  <thead>
+    <tr>
+      <th style={{ textAlign: 'center' }}>Nombre</th>
+      <th style={{ textAlign: 'center' }}>Dirección</th>
+      <th style={{ textAlign: 'center' }}>CP</th>
+      <th style={{ textAlign: 'center' }}>Ciudad</th>
+      <th style={{ textAlign: 'center' }}>Estado</th>
+      <th style={{ textAlign: 'center' }}>Estatus</th>
+      <th style={{ textAlign: 'center' }}>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {loading ? (
+      <tr>
+        <td colSpan="7" style={{ textAlign: 'center' }} className="text-gray-500 py-4">
+          ⏳ Cargando zonas...
+        </td>
+      </tr>
+    ) : zonasFiltradas.length === 0 ? (
+      <tr>
+        <td colSpan="7" style={{ textAlign: 'center' }} className="text-gray-500 py-4">
+          No hay zonas que coincidan con los filtros aplicados.
+        </td>
+      </tr>
+    ) : (
+      zonasFiltradas.map((zona) => (
+        <tr key={zona.id}>
+          <td style={{ textAlign: 'center' }}>
+            {zona.nombre.replace(/ *\(?inactiva\)?/i, "").trim()}
+          </td>
+          <td style={{ textAlign: 'center' }}>{obtenerDireccion(zona)}</td>
+          <td style={{ textAlign: 'center' }}>{zona.codigo_postal}</td>
+          <td style={{ textAlign: 'center' }}>{zona.ciudad}</td>
+          <td style={{ textAlign: 'center' }}>{zona.estado}</td>
+          <td style={{ textAlign: 'center' }}>
+            <span className={`estado-btn ${esZonaActiva(zona) ? "activo" : "inactivo"}`}>
+              {esZonaActiva(zona) ? "✅ Activo" : "⛔ Inactivo"}
+            </span>
+          </td>
+          <td style={{ textAlign: 'center' }}>
+            <button className="edit-btn" onClick={() => navigate(`/zonas/editar/${zona.id}`)}>
+              ✏️ Editar
+            </button>
+            <button className="delete-btn" onClick={() => navigate(`/zonas/eliminar/${zona.id}`)}>
+              🗑️ Eliminar
+            </button>
+          </td>
+        </tr>
+      ))
+    )}
+  </tbody>
+</table>
     </div>
   );
 };

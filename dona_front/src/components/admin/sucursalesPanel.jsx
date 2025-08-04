@@ -73,30 +73,64 @@ const SucursalesPanel = () => {
 
   return (
     <div className="main-content">
-      <h2>🏪 Gestión de Sucursales</h2>
+
+      <h2 style={{ marginTop: '10px' }}>
+  <i className="fas fa-store" style={{ marginRight: '10px', color: '#333' }}></i>
+  Gestión de sucursales
+</h2>
+
 
       <button className="create-user-btn" onClick={() => navigate("/sucursales/crear")}>
-        ➕ Crear Sucursales
+        ➕ Crear sucursales
       </button>
+
+
+
 
       <div className="filtro-barra">
         <input
           type="text"
-          placeholder="🔍 Buscar"
+          placeholder="🔍 Buscar por nombre"
           value={filtroTexto}
           onChange={(e) => setFiltroTexto(e.target.value)}
           className="input-busqueda"
+          style={{
+            marginTop: '15px',
+            marginBottom: '-10px'
+            }}
         />
 
-        <label className="checkbox-label" style={{ marginLeft: "10px" }}>
-          Activos primero
-          <input
-            type="checkbox"
-            checked={activosPrimero}
-            onChange={(e) => setActivosPrimero(e.target.checked)}
-            style={{ marginLeft: "8px" }}
-          />
-        </label>
+      <label
+  className="checkbox-label"
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    whiteSpace: 'nowrap',
+    marginLeft: '6px',
+    fontSize: '14px',
+    marginTop: '8px',
+    marginRight: '8px',
+    gap: '8px'  // Espacio entre texto y checkbox
+  }}
+>
+  <span>Activos primero</span>
+  <input
+    type="checkbox"
+    checked={activosPrimero}
+    onChange={(e) => setActivosPrimero(e.target.checked)}
+    style={{
+      width: '18px',
+      height: '18px',
+      cursor: 'pointer',
+      marginTop: '18px'
+    }}
+    
+  />
+</label>
+
+
+
+
 
         <select
           value={zonaSeleccionada}
@@ -121,64 +155,69 @@ const SucursalesPanel = () => {
           <option value="za">Z → A</option>
         </select>
       </div>
+      
+<div className="espaciado-negativo"></div>
+
+
 
       <table className="user-table">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Dirección</th>
-            <th>Zona</th>
-            <th>Representante</th>
-            <th>Estatus</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
-            <tr>
-              <td colSpan="6" className="text-center text-gray-500 py-4">
-                ⏳ Cargando sucursales...
-              </td>
-            </tr>
-          ) : sucursalesFiltradas.length === 0 ? (
-            <tr>
-              <td colSpan="6" className="text-center text-gray-500 py-4">
-                No hay sucursales que coincidan con los filtros aplicados.
-              </td>
-            </tr>
-          ) : (
-            sucursalesFiltradas.map((sucursal) => (
-              <tr key={sucursal.id}>
-                <td>{sucursal.nombre.replace(/ *\(?inactiva\)?/i, "").trim()}</td>
-                <td>{sucursal.direccion}</td>
-                <td>{obtenerZona(sucursal.zona)}</td>
-                <td>{sucursal.representante}</td>
-                <td>
-                  <span
-                    className={`estado-btn ${esSucursalActiva(sucursal) ? "activo" : "inactivo"}`}
-                  >
-                    {esSucursalActiva(sucursal) ? "✅ Activo" : "⛔ Inactivo"}
-                  </span>
-                </td>
-                <td>
-                  <button
-                    className="edit-btn"
-                    onClick={() => navigate(`/sucursales/editar/${sucursal.id}`)}
-                  >
-                    ✏️ Editar
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => navigate(`/sucursales/eliminar/${sucursal.id}`)}
-                  >
-                    🗑️ Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+  <thead>
+    <tr>
+      <th style={{ textAlign: 'center' }}>Nombre</th>
+      <th style={{ textAlign: 'center' }}>Dirección</th>
+      <th style={{ textAlign: 'center' }}>Zona</th>
+      <th style={{ textAlign: 'center' }}>Representante</th>
+      <th style={{ textAlign: 'center' }}>Estatus</th>
+      <th style={{ textAlign: 'center' }}>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {loading ? (
+      <tr>
+        <td colSpan="6" style={{ textAlign: 'center' }} className="text-gray-500 py-4">
+          ⏳ Cargando sucursales...
+        </td>
+      </tr>
+    ) : sucursalesFiltradas.length === 0 ? (
+      <tr>
+        <td colSpan="6" style={{ textAlign: 'center' }} className="text-gray-500 py-4">
+          No hay sucursales que coincidan con los filtros aplicados.
+        </td>
+      </tr>
+    ) : (
+      sucursalesFiltradas.map((sucursal) => (
+        <tr key={sucursal.id}>
+          <td style={{ textAlign: 'center' }}>{sucursal.nombre.replace(/ *\(?inactiva\)?/i, "").trim()}</td>
+          <td style={{ textAlign: 'center' }}>{sucursal.direccion}</td>
+          <td style={{ textAlign: 'center' }}>{obtenerZona(sucursal.zona)}</td>
+          <td style={{ textAlign: 'center' }}>{sucursal.representante}</td>
+          <td style={{ textAlign: 'center' }}>
+            <span
+              className={`estado-btn ${esSucursalActiva(sucursal) ? "activo" : "inactivo"}`}
+            >
+              {esSucursalActiva(sucursal) ? "✅ Activo" : "⛔ Inactivo"}
+            </span>
+          </td>
+          <td style={{ textAlign: 'center' }}>
+            <button
+              className="edit-btn"
+              onClick={() => navigate(`/sucursales/editar/${sucursal.id}`)}
+            >
+              ✏️ Editar
+            </button>
+            <button
+              className="delete-btn"
+              onClick={() => navigate(`/sucursales/eliminar/${sucursal.id}`)}
+            >
+              🗑️ Eliminar
+            </button>
+          </td>
+        </tr>
+      ))
+    )}
+  </tbody>
+</table>
+
     </div>
   );
 };

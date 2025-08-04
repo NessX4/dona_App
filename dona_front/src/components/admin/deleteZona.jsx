@@ -117,7 +117,7 @@ const DeleteZona = () => {
         className="decorative-image"
       />
 
-      <h2>🗑️ Eliminar Zona</h2>
+      <h2>🗑️ Eliminar zona</h2>
 
       <table className="user-summary-table">
         <tbody>

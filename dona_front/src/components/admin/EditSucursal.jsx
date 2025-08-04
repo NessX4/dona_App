@@ -120,7 +120,7 @@ const EditSucursal = () => {
   return (
     <div className="main-content">
       <img src={fondoDecorativo} alt="Decoración" className="decorative-image" />
-      <h2 className="titulo-principal">✏️ Editar Sucursal</h2>
+      <h2 className="titulo-principal">✏️ Editar sucursal</h2>
 
       <div className="edit-card compacta">
         <form className="user-form" onSubmit={handleSubmit}>
