@@ -1,3 +1,9 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Muestra la información de un usuario y permite confirmar su eliminación.
+ */
+
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import fondoDecorativo from '../../assets/DonalogoHD.png';
@@ -136,7 +142,7 @@ const DeleteUser = () => {
         alt="Decoración DonaApp"
         className="decorative-image"
       />
-      <h2>🗑️ Eliminar Usuario</h2>
+      <h2>🗑️ Eliminar usuario</h2>
       <div className="rol-destacado">{ROLES_MAP[usuario.rol]}</div>
       <table className="user-summary-table">
         <tbody>

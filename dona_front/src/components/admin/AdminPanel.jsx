@@ -1,4 +1,10 @@
 // src/components/admin/AdminPanel.jsx
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Componente contenedor del panel administrativo con rutas y navegación.
+ */
+
+
 import React from 'react';
 import '../../styles/admin.css';
 import { Routes, Route } from 'react-router-dom';

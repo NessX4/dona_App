@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Vista para confirmar la eliminación de una sucursal si no tiene relaciones activas.
+ */
+
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import fondoDecorativo from "../../assets/DonalogoHD.png";
@@ -119,7 +124,7 @@ const DeleteSucursal = () => {
   return (
     <div className="main-content">
       <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
-      <h2>🗑️ Eliminar Sucursal</h2>
+      <h2>🗑️ Eliminar sucursal</h2>
 
       <table className="user-summary-table">
         <tbody>

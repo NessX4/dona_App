@@ -1,3 +1,10 @@
+
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Administra las solicitudes de donaciones, permitiendo ver detalles, editar o acceder a su historial.
+ */
+
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/admin.css';
@@ -86,19 +93,34 @@ const SolicitudesPanel = () => {
 
   return (
     <div className="main-content">
-      <h2>📮 Gestión de Solicitudes</h2>
+
+
+      
+      <h2 style={{ marginTop: '10px' }}>
+  <i className="fas fa-envelope-open-text" style={{ marginRight: '10px', color: '#333' }}></i>
+  Gestión de solicitudes
+</h2>
 
       <button className="create-user-btn" onClick={() => navigate('/solicitudes/crear')}>
-        ➕ Crear Solicitud
+        ➕ Crear solicitud
       </button>
 
       <div className="filtro-barra">
-        <input
-          type="text"
-          placeholder="🔍 Buscar por título"
-          value={filtroTexto}
-          onChange={(e) => setFiltroTexto(e.target.value)}
-        />
+         <input
+    type="text"
+    placeholder="🔍 Buscar por título"
+    value={filtroTexto}
+    onChange={(e) => setFiltroTexto(e.target.value)}
+    className="input-busqueda"
+    style={{
+      marginTop: '15px',
+      marginBottom: '10px'
+    }}
+  />
+
+
+
+
 
         <select value={estadoFiltro} onChange={(e) => setEstadoFiltro(e.target.value)}>
           <option value="">Todos los estados</option>
@@ -114,50 +136,61 @@ const SolicitudesPanel = () => {
         </select>
       </div>
 
-      <table className="user-table">
-        <thead>
-          <tr>
-            <th>Publicación</th>
-            <th>Sucursal</th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {loading ? (
-            <tr>
-              <td colSpan="5" className="text-center py-4">⏳ Cargando solicitudes...</td>
-            </tr>
-          ) : solicitudesFiltradas.length === 0 ? (
-            <tr>
-              <td colSpan="5" className="text-center py-4">
-                No hay solicitudes que coincidan con los filtros aplicados.
-              </td>
-            </tr>
-          ) : (
-            solicitudesFiltradas.map((s) => {
-              const pub = getPublicacion(s.publicacion);
-              const suc = getSucursal(pub?.sucursal);
-              const estadoNombre = getEstadoNombre(s.estado);
-              const claseEstado = obtenerClaseEstado(estadoNombre);
 
-              return (
-                <tr key={s.id}>
-                  <td>{pub?.titulo || '—'}</td>
-                  <td>{suc?.nombre || '—'}</td>
-                  <td>{new Date(s.fecha_solicitud).toLocaleDateString()}</td>
-                  <td><span className={claseEstado}>{estadoNombre}</span></td>
-                  <td>
-                    <button className="view-btn" onClick={() => abrirModal(s)}>🔍 Ver más</button>
-                    <button className="edit-btn" onClick={() => navigate(`/solicitudes/editar/${s.id}`)}>✏️ Editar</button>
-                    <button className="delete-btn" onClick={() => navigate(`/solicitudes/historial/${s.id}`)}>📜 Eliminar historial</button>
-                  </td>
-                </tr>
-              );
-            })
-          )}
-        </tbody>
+<div className="espaciado-negativo"></div>
+<div style={{ height: '5px' }}></div>
+
+
+ 
+      <table className="user-table">
+        
+<thead>
+  <tr>
+    <th style={{ textAlign: 'center' }}>Publicación</th>
+    <th style={{ textAlign: 'center' }}>Sucursal</th>
+    <th style={{ textAlign: 'center' }}>Fecha</th>
+    <th style={{ textAlign: 'center' }}>Estado</th>
+    <th style={{ textAlign: 'center' }}>Acciones</th>
+  </tr>
+</thead>
+
+<tbody>
+  {loading ? (
+    <tr>
+      <td colSpan="5" className="text-center py-4">⏳ Cargando solicitudes...</td>
+    </tr>
+  ) : solicitudesFiltradas.length === 0 ? (
+    <tr>
+      <td colSpan="5" className="text-center py-4">
+        No hay solicitudes que coincidan con los filtros aplicados.
+      </td>
+    </tr>
+  ) : (
+    solicitudesFiltradas.map((s) => {
+      const pub = getPublicacion(s.publicacion);
+      const suc = getSucursal(pub?.sucursal);
+      const estadoNombre = getEstadoNombre(s.estado);
+      const claseEstado = obtenerClaseEstado(estadoNombre);
+
+      return (
+        <tr key={s.id}>
+          <td style={{ textAlign: 'center' }}>{pub?.titulo || '—'}</td>
+          <td style={{ textAlign: 'center' }}>{suc?.nombre || '—'}</td>
+          <td style={{ textAlign: 'center' }}>{new Date(s.fecha_solicitud).toLocaleDateString()}</td>
+          <td style={{ textAlign: 'center' }}>
+            <span className={claseEstado}>{estadoNombre}</span>
+          </td>
+          <td style={{ textAlign: 'center' }}>
+            <button className="view-btn" onClick={() => abrirModal(s)}>🔍 Ver más</button>
+            <button className="edit-btn" onClick={() => navigate(`/solicitudes/editar/${s.id}`)}>✏️ Editar</button>
+            <button className="delete-btn" onClick={() => navigate(`/solicitudes/historial/${s.id}`)}>📜 Eliminar historial</button>
+          </td>
+        </tr>
+      );
+    })
+  )}
+</tbody>
+
       </table>
 
       {/* Modal con detalles */}

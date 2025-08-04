@@ -1,4 +1,11 @@
 // src/components/admin/EditZona.jsx
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Permite modificar los datos de una zona existente.
+ */
+
+
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../styles/admin.css";

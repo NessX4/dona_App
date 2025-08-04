@@ -1,4 +1,11 @@
 // src/components/admin/EditPublicacion.jsx
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Permite editar los datos de una publicación ya registrada.
+ */
+
+
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import fondoDecorativo from '../../assets/DonalogoHD.png';
@@ -96,7 +103,7 @@ const EditPublicacion = () => {
   return (
     <div className="main-content">
       <img src={fondoDecorativo} alt="Decoración DonaApp" className="decorative-image" />
-      <h2 className="titulo-principal">✏️ Editar Publicación</h2>
+      <h2 className="titulo-principal">✏️ Editar publicación</h2>
 
       <div className="edit-card compacta">
         <form className="user-form">

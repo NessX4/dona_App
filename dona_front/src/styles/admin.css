@@ -1,4 +1,10 @@
-/* ===============================
+/*
+ * Responsable: Mariela Higuera
+ * Descripción: Estilos generales para el panel de administración de DonaApp.
+ */
+
+
+ /* ===============================
    Estilos Generales
    =============================== */
 body {
@@ -2281,3 +2287,29 @@ table {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
+
+
+
+
+.espaciado-negativo {
+  margin-top:-9px !important;
+}
+
+
+
+
+.input-error {
+  border: 2px solid #e63946;
+  background-color: #fff5f5;
+}
+
+.error-text {
+  color: #e63946;
+  font-size: 0.85rem;
+  margin-top: 3px;
+  margin-bottom: 10px;
+}
+
+
+
+

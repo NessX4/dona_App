@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Formulario para registrar una nueva sucursal vinculada a un donador.
+ */
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/admin.css";

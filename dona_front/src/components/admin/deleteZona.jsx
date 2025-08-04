@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Vista para confirmar la eliminación de una zona sin entidades relacionadas.
+ */
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import fondoDecorativo from '../../assets/DonalogoHD.png';
@@ -117,7 +122,7 @@ const DeleteZona = () => {
         className="decorative-image"
       />
 
-      <h2>🗑️ Eliminar Zona</h2>
+      <h2>🗑️ Eliminar zona</h2>
 
       <table className="user-summary-table">
         <tbody>

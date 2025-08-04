@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Formulario para registrar una nueva publicación de donación.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,7 +22,7 @@ const CreatePublicacion = () => {
     sucursal: '',
     zona: '',
     ubicacion: '',
-    estado: 1  // ← valor por defecto, no editable desde el form
+    estado: 1  // Valor por defecto, activo
   });
 
   useEffect(() => {
@@ -28,8 +33,16 @@ const CreatePublicacion = () => {
           fetch('http://localhost:8000/api/zonas/zonas/')
         ]);
 
-        setSucursales(await sucursalesRes.json());
-        setZonas(await zonasRes.json());
+        const sucursalesData = await sucursalesRes.json();
+        const zonasData = await zonasRes.json();
+
+        // FILTRAR SUCURSALES Y ZONAS QUE NO DIGAN 'inactiva' en el nombre
+        setSucursales(
+          sucursalesData.filter(s => !s.nombre.toLowerCase().includes('inactiva'))
+        );
+        setZonas(
+          zonasData.filter(z => !z.nombre.toLowerCase().includes('inactiva'))
+        );
       } catch (err) {
         console.error('Error al cargar sucursales o zonas:', err);
       }
@@ -73,9 +86,8 @@ const CreatePublicacion = () => {
       });
 
       if (res.ok) {
-      alert(`¡Publicación creada con éxito!`);
+        alert(`¡Publicación creada con éxito!`);
         window.location.href = '/admin/#/publicaciones';
-
       } else {
         const errorData = await res.json();
         console.error('❌ Error en POST:', errorData);

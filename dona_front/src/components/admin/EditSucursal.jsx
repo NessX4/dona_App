@@ -1,3 +1,8 @@
+/**
+ * Responsable: Mariela Higuera
+ * Descripción: Formulario para editar la información de una sucursal vinculada a un donador.
+ */
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/admin.css";
@@ -120,7 +125,7 @@ const EditSucursal = () => {
   return (
     <div className="main-content">
       <img src={fondoDecorativo} alt="Decoración" className="decorative-image" />
-      <h2 className="titulo-principal">✏️ Editar Sucursal</h2>
+      <h2 className="titulo-principal">✏️ Editar sucursal</h2>
 
       <div className="edit-card compacta">
         <form className="user-form" onSubmit={handleSubmit}>
