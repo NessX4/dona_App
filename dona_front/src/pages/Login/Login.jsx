@@ -178,7 +178,7 @@ export default function Login() {
           nombre: usuarioForm.nombre,
           correo: usuarioForm.correo,
           password: usuarioForm.password,
-          rol: 4,
+          rol: 2,
         },
         nombre_lugar: refugioForm.nombre,
         encargado: refugioForm.encargado,
@@ -221,7 +221,7 @@ export default function Login() {
           nombre: usuarioForm.nombre,
           correo: usuarioForm.correo,
           password: usuarioForm.password,
-          rol: 5,
+          rol: 3,
         },
         telefono: voluntarioForm.telefono,
         zona: voluntarioForm.zona_id
