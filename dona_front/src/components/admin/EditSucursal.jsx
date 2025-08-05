@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../../styles/admin.css";
-import fondoDecorativo from "../../assets/donalogohd.png";
+import fondoDecorativo from "../../assets/DonalogoHD.png";
 
 const EditSucursal = () => {
   const { id } = useParams();

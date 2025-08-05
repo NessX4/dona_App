@@ -1,4 +1,4 @@
-//Angel Alejandro Chavez Castillon
+// Angel Alejandro Chavez Castillon
 
 import React, { useEffect, useState } from "react";
 import RefugioHeader from "../../../components/RefugioHeader";
@@ -13,7 +13,6 @@ import {
 import "./DonacionesDisponibles.css";
 
 const DonacionesDisponibles = () => {
-  const [donaciones, setDonaciones] = useState([]);
   const [publicaciones, setPublicaciones] = useState([]);
   const [sucursales, setSucursales] = useState([]);
   const [estados, setEstados] = useState([]);
@@ -26,9 +25,7 @@ const DonacionesDisponibles = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Obtener todas las APIs en paralelo
         const [
-          donacionesRes,
           publicacionesRes,
           sucursalesRes,
           estadosRes,
@@ -45,7 +42,6 @@ const DonacionesDisponibles = () => {
         ]);
 
         const [
-          donacionesData,
           publicacionesData,
           sucursalesData,
           estadosData,
@@ -53,7 +49,6 @@ const DonacionesDisponibles = () => {
           categoriasData,
           archivosData,
         ] = await Promise.all([
-          donacionesRes.json(),
           publicacionesRes.json(),
           sucursalesRes.json(),
           estadosRes.json(),
@@ -62,7 +57,6 @@ const DonacionesDisponibles = () => {
           archivosRes.json(),
         ]);
 
-        setDonaciones(donacionesData);
         setPublicaciones(publicacionesData);
         setSucursales(sucursalesData);
         setEstados(estadosData);
@@ -102,14 +96,12 @@ const DonacionesDisponibles = () => {
     return archivosAdjuntos.filter((a) => a.publicacion === pubId);
   };
 
-  const filtrarDonaciones = () => {
-    if (filtro === "todas") return donaciones;
-    return donaciones.filter(
-      (donacion) => donacion.estado.toLowerCase() === filtro
-    );
-  };
-
-  const donacionesFiltradas = filtrarDonaciones();
+const publicacionesFiltradas = () => {
+  if (filtro === "todas") return publicaciones;
+  return publicaciones.filter(
+    (p) => getEstadoNombre(p.estado)?.toLowerCase() === filtro
+  );
+};
 
   return (
     <>
@@ -145,38 +137,30 @@ const DonacionesDisponibles = () => {
           <div className="loading">
             <p>Cargando donaciones...</p>
           </div>
-        ) : donacionesFiltradas.length === 0 ? (
+        ) : publicacionesFiltradas().length === 0 ? (
           <div className="no-donaciones">
             <FiPackage size={48} />
             <p>No hay donaciones disponibles</p>
           </div>
         ) : (
           <div className="donaciones-grid">
-            {donacionesFiltradas.map((donacion) => {
-              const publicacion = publicaciones.find(
-                (p) => p.id === donacion.publicacion_id
-              );
-              const comidasAsociadas = publicacion
-                ? getComidaPorPublicacion(publicacion.id)
-                : [];
-              const archivosAsociados = publicacion
-                ? getArchivosPorPublicacion(publicacion.id)
-                : [];
+            {publicacionesFiltradas().map((publicacion) => {
+              const comidasAsociadas = getComidaPorPublicacion(publicacion.id);
+              const archivosAsociados = getArchivosPorPublicacion(publicacion.id);
 
               return (
-                <div key={donacion.id} className="donacion-card">
+                <div key={publicacion.id} className="donacion-card">
                   <div className="donacion-header">
-                    <h3>{publicacion?.titulo || donacion.tipo}</h3>
-                    <span
-                      className={`estado-badge ${donacion.estado.toLowerCase()}`}
-                    >
-                      {donacion.estado === "disponible" ? (
-                        <FiCheckCircle size={16} />
-                      ) : (
-                        <FiClock size={16} />
-                      )}
-                      {getEstadoNombre(donacion.estado_id)}
-                    </span>
+                    <h3>{publicacion.titulo || "Sin título"}</h3>
+                    <span className={`estado-badge ${getEstadoNombre(publicacion.estado)?.toLowerCase()}`}>
+  {getEstadoNombre(publicacion.estado) === "Disponible" ? (
+    <FiCheckCircle size={16} />
+  ) : (
+    <FiClock size={16} />
+  )}
+  {getEstadoNombre(publicacion.estado)}
+</span>
+
                   </div>
 
                   <div className="donacion-body">
@@ -193,45 +177,33 @@ const DonacionesDisponibles = () => {
                       <div className="info-item">
                         <FiPackage className="info-icon" />
                         <span>
-                          {publicacion?.cantidad || donacion.cantidad}{" "}
-                          {donacion.unidad || "unidades"}
+                          {publicacion.cantidad} {publicacion.unidad || "unidades"}
                         </span>
                       </div>
                       <div className="info-item">
                         <FiCalendar className="info-icon" />
                         <span>
                           Disponible hasta:{" "}
-                          {publicacion?.fecha_caducidad
-                            ? new Date(
-                                publicacion.fecha_caducidad
-                              ).toLocaleDateString()
-                            : new Date(
-                                donacion.fecha_disponibilidad
-                              ).toLocaleDateString()}
+                          {new Date(publicacion.fecha_caducidad).toLocaleDateString()}
                         </span>
                       </div>
                       <div className="info-item">
                         <FiUser className="info-icon" />
                         <span>
-                          Donante: {donacion.donante_nombre || "Anónimo"}
+                          Donante: {publicacion.donante_nombre || "Anónimo"}
                         </span>
                       </div>
                       <div className="info-item">
                         <FiTruck className="info-icon" />
                         <span>
-                          Ubicación:{" "}
-                          {publicacion
-                            ? getSucursalNombre(publicacion.sucursal)
-                            : donacion.ubicacion}
+                          Ubicación: {getSucursalNombre(publicacion.sucursal)}
                         </span>
                       </div>
                     </div>
 
                     <div className="donacion-descripcion">
                       <p>
-                        {publicacion?.descripcion ||
-                          donacion.descripcion ||
-                          "Sin descripción adicional"}
+                        {publicacion.descripcion || "Sin descripción adicional"}
                       </p>
                     </div>
 
@@ -251,13 +223,13 @@ const DonacionesDisponibles = () => {
                     )}
                   </div>
 
-                  <div className="donacion-actions">
-                    <button className="btn-primary">
-                      {donacion.estado === "disponible"
-                        ? "Solicitar Donación"
-                        : "Ver Detalles"}
-                    </button>
-                  </div>
+<div className="donacion-actions">
+  <button className="btn-primary">
+    {getEstadoNombre(publicacion.estado) === "Disponible"
+      ? "Solicitar Donación"
+      : "Ver Detalles"}
+  </button>
+</div>
                 </div>
               );
             })}
