@@ -23,14 +23,21 @@ def export_database(request):
     filepath = os.path.join(settings.BASE_DIR, filename)
 
     command = [
-        "pg_dump",
-        "-U", settings.DATABASES["default"]["USER"],  # Usuario de la base de datos
-        "-h", settings.DATABASES["default"].get("HOST", "localhost"),  # Host de la base de datos
-        "-p", str(settings.DATABASES["default"].get("PORT", 5432)),    # Puerto de la base de datos
-        "-F", "p",  # formato texto plano
-        "-f", filepath,  # Archivo de salida
-        settings.DATABASES["default"]["NAME"]  # Nombre de la base de datos
-    ]
+    "pg_dump",
+    "-U", settings.DATABASES["default"]["USER"],
+    "-h", settings.DATABASES["default"].get("HOST", "localhost"),
+    "-p", str(settings.DATABASES["default"].get("PORT", 5432)),
+    "--inserts",
+    "--column-inserts",
+    "--encoding=UTF8",
+    "--data-only",       # Asegura que exporte solo datos
+    "--schema=public",
+    "--no-owner",
+    "--no-privileges",
+    "-f", filepath,
+    settings.DATABASES["default"]["NAME"]
+]
+
 
     env = os.environ.copy()
     env["PGPASSWORD"] = settings.DATABASES["default"]["PASSWORD"]  # Contraseña de la base de datos
