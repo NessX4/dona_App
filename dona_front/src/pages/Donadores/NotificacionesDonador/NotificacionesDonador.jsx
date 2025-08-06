@@ -23,13 +23,13 @@ const NotificacionesDonador = () => {
         return res.json();
       })
       .then((data) => {
-        const adaptadas = data
-          .filter((n) => n.usuario === parseInt(usuarioId))
-          .map((n) => ({
-            ...n,
-            titulo: "Notificación",
-            leida: n.leido,
-          }));
+      const adaptadas = data
+      .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+      .map((n) => ({
+      ...n,
+      titulo: "Notificación",
+      leida: n.leido,
+      }));
         setNotificaciones(adaptadas);
       })
       .catch((error) => {
@@ -41,7 +41,6 @@ const NotificacionesDonador = () => {
     setNotificacionActiva(notificacion);
     setEditarVisible(true);
 
-    // Marcar como leída solo si no está leída
     if (!notificacion.leida) {
       setNotificaciones((prev) =>
         prev.map((n) =>
@@ -66,7 +65,7 @@ const NotificacionesDonador = () => {
 
   const eliminarNotificacion = async () => {
     if (!notificacionEliminar) return;
-    
+
     const id = notificacionEliminar.id;
     setEliminando(true);
 

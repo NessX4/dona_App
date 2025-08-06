@@ -294,50 +294,25 @@ INSERT INTO public.donaciones_comida (id, nombre, cantidad, ingredientes, catego
 --
 -- Data for Name: notificaciones_notificacion; Type: TABLE DATA; Schema: public; Owner: -
 --
+-- Notificación para el Donador
+INSERT INTO public.notificaciones_notificacion (id, tipo, mensaje, fecha, leido, usuario_id)
+VALUES (101, 'donacion', 'El refugio Refugio Esperanza ha solicitado tu donación.', NOW(), false, 2);
 
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (1, ' Nuevo Donador registrado: Roberto Martínez', '2025-07-29 21:07:49.166518-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (2, ' Nuevo Donador registrado: Roberto Martínez', '2025-07-29 21:07:49.17438-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (3, ' Nuevo Donador registrado: Giovanni Bianchi', '2025-07-29 21:09:31.78214-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (4, ' Nuevo Donador registrado: Giovanni Bianchi', '2025-07-29 21:09:31.786518-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (5, ' Nuevo Donador registrado: María Fernández', '2025-07-29 21:11:11.959714-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (6, ' Nuevo Donador registrado: María Fernández', '2025-07-29 21:11:11.965554-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (7, ' Nuevo Donador registrado: Carlos Sánchez', '2025-07-29 21:22:48.973951-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (8, ' Nuevo Donador registrado: Carlos Sánchez', '2025-07-29 21:22:48.978774-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (9, ' Nuevo Donador registrado: Ana García', '2025-07-29 21:24:05.926411-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (10, ' Nuevo Donador registrado: Ana García', '2025-07-29 21:24:05.931586-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (11, ' Nuevo Donador registrado: Luis Ramírez', '2025-07-29 21:25:16.077291-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (12, ' Nuevo Donador registrado: Luis Ramírez', '2025-07-29 21:25:16.083325-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (13, ' Nuevo Receptor registrado: Juan Morales', '2025-07-29 21:31:59.897553-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (14, ' Nuevo Receptor registrado: Juan Morales', '2025-07-29 21:31:59.899845-07', false, 8);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (15, ' Nuevo Receptor registrado: Dra. Laura Méndez', '2025-07-29 21:34:14.427057-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (16, ' Nuevo Receptor registrado: Dra. Laura Méndez', '2025-07-29 21:34:14.428971-07', false, 8);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (17, ' Nuevo Receptor registrado: Dra. Laura Méndez', '2025-07-29 21:34:14.43018-07', false, 9);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (18, ' Nuevo Receptor registrado: Lic. Carlos Ramírez', '2025-07-29 21:35:22.249605-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (19, ' Nuevo Receptor registrado: Lic. Carlos Ramírez', '2025-07-29 21:35:22.251292-07', false, 8);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (20, ' Nuevo Receptor registrado: Lic. Carlos Ramírez', '2025-07-29 21:35:22.25197-07', false, 9);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (21, ' Nuevo Receptor registrado: Lic. Carlos Ramírez', '2025-07-29 21:35:22.252534-07', false, 10);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (22, ' Nuevo Receptor registrado: Hna. María Fernández', '2025-07-29 21:38:51.219187-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (23, ' Nuevo Receptor registrado: Hna. María Fernández', '2025-07-29 21:38:51.221014-07', false, 8);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (24, ' Nuevo Receptor registrado: Hna. María Fernández', '2025-07-29 21:38:51.221751-07', false, 9);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (25, ' Nuevo Receptor registrado: Hna. María Fernández', '2025-07-29 21:38:51.222317-07', false, 10);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (26, ' Nuevo Receptor registrado: Hna. María Fernández', '2025-07-29 21:38:51.222805-07', false, 11);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (27, ' Nuevo Voluntario registrado: Ana García López', '2025-08-02 21:47:52.807851-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (28, ' Nuevo Voluntario registrado: Ana García López', '2025-08-02 21:47:52.81487-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (29, ' Nuevo Voluntario registrado: Carlos Méndez Ruiz', '2025-08-02 21:50:34.466843-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (30, ' Nuevo Voluntario registrado: Carlos Méndez Ruiz', '2025-08-02 21:50:34.474216-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (31, ' Nuevo Voluntario registrado: María Fernández Soto', '2025-08-02 21:51:13.244625-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (32, ' Nuevo Voluntario registrado: María Fernández Soto', '2025-08-02 21:51:13.252752-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (33, ' Nuevo Voluntario registrado: Jorge Ramírez Morales', '2025-08-02 21:51:49.447247-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (34, ' Nuevo Voluntario registrado: Jorge Ramírez Morales', '2025-08-02 21:51:49.453489-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (35, ' Nuevo Voluntario registrado: Lucía Sánchez Castro', '2025-08-02 21:52:26.087389-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (36, ' Nuevo Voluntario registrado: Lucía Sánchez Castro', '2025-08-02 21:52:26.09396-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (37, ' Nuevo Donador registrado: Ricardo Ochoa Martínez', '2025-08-04 14:35:35.872643-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (38, ' Nuevo Donador registrado: Ricardo Ochoa Martínez', '2025-08-04 14:35:35.88249-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (39, ' Nuevo Receptor registrado: Hermana María del Carmen Ríos', '2025-08-04 14:37:06.794813-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (40, ' Nuevo Receptor registrado: Hermana María del Carmen Ríos', '2025-08-04 14:37:06.79622-07', false, 18);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (41, ' Nuevo Voluntario registrado: Fernanda Gutiérrez López', '2025-08-04 14:39:28.865594-07', false, 1);
-INSERT INTO public.notificaciones_notificacion (id, mensaje, fecha, leido, usuario_id) VALUES (42, ' Nuevo Voluntario registrado: Fernanda Gutiérrez López', '2025-08-04 14:39:28.874173-07', false, 1);
+-- Notificación para el Refugio
+INSERT INTO public.notificaciones_notificacion (id, tipo, mensaje, fecha, leido, usuario_id)
+VALUES (102, 'sistema', 'Has solicitado una donación publicada por Carlos Ramírez.', NOW(), false, 3);
 
+-- Notificación para Voluntario 1
+INSERT INTO public.notificaciones_notificacion (id, tipo, mensaje, fecha, leido, usuario_id)
+VALUES (103, 'voluntario', 'El refugio Refugio Esperanza ha solicitado una donación disponible.', NOW(), false, 4);
+
+-- Notificación para Voluntario 2
+INSERT INTO public.notificaciones_notificacion (id, tipo, mensaje, fecha, leido, usuario_id)
+VALUES (104, 'voluntario', 'El refugio Refugio Esperanza ha solicitado una donación disponible.', NOW(), false, 5);
+
+-- Notificación para Voluntario 3
+INSERT INTO public.notificaciones_notificacion (id, tipo, mensaje, fecha, leido, usuario_id)
+VALUES (105, 'voluntario', 'El refugio Refugio Esperanza ha solicitado una donación disponible.', NOW(), false, 6);
 
 --
 -- Data for Name: usuarios_receptor; Type: TABLE DATA; Schema: public; Owner: -

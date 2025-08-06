@@ -29,7 +29,8 @@ const NotificacionesRefugio = () => {
         );
         if (!res.ok) throw new Error("Error al cargar notificaciones");
         const data = await res.json();
-        const notifs = (data.results || data).map((notif) => ({
+        const notifs = (data.results || data)
+        .map((notif) => ({
           id: notif.id,
           tipo: notif.tipo || "sistema",
           titulo: notif.titulo || "Notificación",
