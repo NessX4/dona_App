@@ -1,25 +1,17 @@
-/* Variables de color (coherentes con el dashboard) */
-/* DonacionesDisponibles.css */
 :root {
   --primary-color: #e74c3c;
   --primary-dark: #c0392b;
-  --primary-light: #ff6b5b;
-  --secondary-color: #3498db;
-  --success-color: #2ecc71;
-  --warning-color: #f39c12;
-  --danger-color: #e74c3c;
   --white: #ffffff;
   --light-gray: #f9f9f9;
-  --medium-gray: #ecf0f1;
   --dark-gray: #7f8c8d;
-  --text-dark: #2c3e50;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
 }
 
-/* Estilos base */
 .donaciones-container {
   padding: 30px 20px;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   background-color: var(--light-gray);
   min-height: calc(100vh - 120px);
@@ -29,218 +21,152 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.donaciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
-.donaciones-header h1 {
-  color: var(--text-dark);
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin: 0;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-.donaciones-header h1::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100px;
-  height: 3px;
-  background-color: var(--primary-color);
-}
-
-/* Filtros */
-.filtros {
-  display: flex;
-  gap: 10px;
-}
-
-.filtro-btn {
-  padding: 8px 16px;
-  border: 1px solid var(--medium-gray);
-  background-color: var(--white);
-  color: var(--dark-gray);
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.filtro-btn:hover {
-  background-color: var(--medium-gray);
-}
-
-.filtro-btn.active {
-  background-color: var(--primary-color);
-  color: var(--white);
-  border-color: var(--primary-color);
-}
-
-/* Grid de donaciones */
-.donaciones-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 25px;
-}
-
-/* Tarjeta de donación */
 .donacion-card {
   background-color: var(--white);
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow: var(--shadow);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease;
+  position: relative;
 }
 
 .donacion-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
 }
 
-.donacion-header {
-  padding: 15px 20px;
-  border-bottom: 1px solid var(--medium-gray);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.donacion-header h3 {
-  margin: 0;
-  color: var(--text-dark);
-  font-size: 1.2rem;
-}
-
-.estado-badge {
-  padding: 6px 12px;
-  border-radius: 20px;
+.estado-badge-card {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--success-color);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 15px;
   font-size: 0.8rem;
-  font-weight: 600;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.estado-badge.disponible {
-  background-color: var(--success-color);
-  color: var(--white);
-}
-
-.estado-badge.pendiente {
+.estado-badge-card:has(svg + "Pendiente") {
   background-color: var(--warning-color);
-  color: var(--white);
 }
 
-.donacion-body {
-  padding: 20px;
+.donacion-imagen img,
+.placeholder-imagen {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  background-color: #ececec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donacion-contenido {
+  padding: 10px 15px;
   flex-grow: 1;
 }
 
-.donacion-imagen {
-  width: 100%;
-  margin-bottom: 15px;
+.donacion-contenido h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
 }
 
-.donacion-imagen img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
-  border-bottom: 1px solid var(--color-borde);
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-}
-
-.donacion-info {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.info-item {
+.donacion-contenido p {
+  margin: 5px 0;
+  color: var(--dark-gray);
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--text-dark);
-}
-
-.info-icon {
-  color: var(--primary-color);
-  min-width: 20px;
-}
-
-.donacion-descripcion {
-  padding: 15px 0;
-  border-top: 1px solid var(--medium-gray);
-  color: var(--dark-gray);
-  line-height: 1.5;
+  gap: 5px;
 }
 
 .donacion-actions {
-  padding: 0 20px 20px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 1px solid #eee;
 }
 
-.btn-primary {
-  width: 100%;
-  padding: 12px;
-  background-color: var(--primary-color);
-  color: var(--white);
+.btn-primary,
+.btn-secundario {
+  flex: 1;
+  padding: 8px;
   border: none;
   border-radius: 6px;
-  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: var(--primary-dark);
-}
-
-/* Estados vacío y loading */
-.no-donaciones,
-.loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 50px 20px;
-  background-color: var(--white);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  color: var(--dark-gray);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 20 5 0px;
   text-align: center;
 }
 
-.no-donaciones svg {
-  margin-bottom: 20px;
-  color: var(--medium-gray);
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .donaciones-container {
-    padding: 20px 15px;
-  }
+.btn-secundario {
+  background-color: #ddd;
+  color: #333;
+}
 
-  .donaciones-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
 
-  .filtros {
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 10px;
-  }
+.modal-contenido {
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
 
-  .donaciones-grid {
-    grid-template-columns: 1fr;
-  }
+.modal-botones {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 15px;
+}
+
+.btn-confirmar {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancelar,
+.btn-cerrar {
+  background-color: #ccc;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

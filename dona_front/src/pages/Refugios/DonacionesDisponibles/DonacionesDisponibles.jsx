@@ -20,6 +20,10 @@ const DonacionesDisponibles = () => {
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState("todas");
 
+  // Estados para los modales
+  const [modalDetalle, setModalDetalle] = useState(null);
+  const [modalConfirmacion, setModalConfirmacion] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,22 +77,25 @@ const DonacionesDisponibles = () => {
 
   const solicitarDonacion = async (idPublicacion) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/donaciones/publicaciones/${idPublicacion}/`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ estado: 8 }), // Estado "Pendiente"
-      });
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/donaciones/publicaciones/${idPublicacion}/`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ estado: 8 }), // Estado "Pendiente"
+        }
+      );
 
       if (!response.ok) throw new Error("Error al actualizar estado");
 
-      // Actualiza localmente el estado
       setPublicaciones((prev) =>
         prev.map((p) =>
           p.id === idPublicacion ? { ...p, estado: 8 } : p
         )
       );
+      setModalConfirmacion(null);
     } catch (error) {
       console.error("Error al solicitar donación:", error);
     }
@@ -102,15 +109,6 @@ const DonacionesDisponibles = () => {
   const getEstadoNombre = (id) => {
     const estado = estados.find((e) => e.id === id);
     return estado ? estado.nombre : "Desconocido";
-  };
-
-  const getComidaPorPublicacion = (pubId) => {
-    return comidas.filter((c) => c.publicacion === pubId);
-  };
-
-  const getCategoriaNombre = (id) => {
-    const categoria = categorias.find((cat) => cat.id === id);
-    return categoria ? categoria.nombre : "Desconocida";
   };
 
   const getArchivosPorPublicacion = (pubId) => {
@@ -138,9 +136,7 @@ const DonacionesDisponibles = () => {
               Todas
             </button>
             <button
-              className={`filtro-btn ${
-                filtro === "disponible" ? "active" : ""
-              }`}
+              className={`filtro-btn ${filtro === "disponible" ? "active" : ""}`}
               onClick={() => setFiltro("disponible")}
             >
               Disponibles
@@ -166,94 +162,51 @@ const DonacionesDisponibles = () => {
         ) : (
           <div className="donaciones-grid">
             {publicacionesFiltradas().map((publicacion) => {
-              const comidasAsociadas = getComidaPorPublicacion(publicacion.id);
               const archivosAsociados = getArchivosPorPublicacion(publicacion.id);
-
               return (
                 <div key={publicacion.id} className="donacion-card">
-                  <div className="donacion-header">
+                  <div className="estado-badge-card">
+                    {getEstadoNombre(publicacion.estado) === "Disponible" ? (
+                      <FiCheckCircle size={14} />
+                    ) : (
+                      <FiClock size={14} />
+                    )}
+                    {getEstadoNombre(publicacion.estado)}
+                  </div>
+                  <div className="donacion-imagen">
+                    {archivosAsociados.length > 0 ? (
+                      <img
+                        src={archivosAsociados[0].url}
+                        alt={archivosAsociados[0].tipo}
+                      />
+                    ) : (
+                      <div className="placeholder-imagen">Imagen</div>
+                    )}
+                  </div>
+                  <div className="donacion-contenido">
                     <h3>{publicacion.titulo || "Sin título"}</h3>
-                    <span className={`estado-badge ${getEstadoNombre(publicacion.estado)?.toLowerCase()}`}>
-                      {getEstadoNombre(publicacion.estado) === "Disponible" ? (
-                        <FiCheckCircle size={16} />
-                      ) : (
-                      <FiClock size={16} />
-                      )}
-                      {getEstadoNombre(publicacion.estado)}
-                    </span>
+                    <p className="cantidad">
+                      <FiPackage /> {publicacion.cantidad}{" "}
+                      {publicacion.unidad || "unidades"}
+                    </p>
+                    <p className="fecha">
+                      <FiCalendar />{" "}
+                      {new Date(publicacion.fecha_caducidad).toLocaleDateString()}
+                    </p>
                   </div>
-
-                  <div className="donacion-body">
-                    {archivosAsociados.length > 0 && (
-                      <div className="donacion-imagen">
-                        <img
-                          src={archivosAsociados[0].url}
-                          alt={archivosAsociados[0].tipo}
-                        />
-                      </div>
-                    )}
-
-                    <div className="donacion-info">
-                      <div className="info-item">
-                        <FiPackage className="info-icon" />
-                        <span>
-                          {publicacion.cantidad} {publicacion.unidad || "unidades"}
-                        </span>
-                      </div>
-                      <div className="info-item">
-                        <FiCalendar className="info-icon" />
-                        <span>
-                          Disponible hasta:{" "}
-                          {new Date(publicacion.fecha_caducidad).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="info-item">
-                        <FiUser className="info-icon" />
-                        <span>
-                          Donante: {publicacion.donador_nombre || "Anónimo"}
-                        </span>
-                      </div>
-                      <div className="info-item">
-                        <FiTruck className="info-icon" />
-                        <span>
-                          Ubicación: {getSucursalNombre(publicacion.sucursal)}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="donacion-descripcion">
-                      <p>
-                        {publicacion.descripcion || "Sin descripción adicional"}
-                      </p>
-                    </div>
-
-                    {comidasAsociadas.length > 0 && (
-                      <div className="donacion-comidas">
-                        <p>
-                          <strong>Comidas:</strong>
-                        </p>
-                        <div className="comidas-lista">
-                          {comidasAsociadas.map((c) => (
-                            <span key={c.id} className="comida-badge">
-                              {c.nombre} ({getCategoriaNombre(c.categoria)})
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
                   <div className="donacion-actions">
-                    {publicacion.estado === 1 ? (
+                    <button
+                      className="btn-secundario"
+                      onClick={() => setModalDetalle(publicacion)}
+                    >
+                      Ver Detalle
+                    </button>
+                    {publicacion.estado === 1 && (
                       <button
                         className="btn-primary"
-                        onClick={() => solicitarDonacion(publicacion.id)}
+                        onClick={() => setModalConfirmacion(publicacion)}
                       >
-                        Solicitar Donación
-                      </button>
-                    ) : (
-                      <button className="btn-secondary" disabled>
-                        Ver Detalles
+                        Solicitar
                       </button>
                     )}
                   </div>
@@ -263,6 +216,56 @@ const DonacionesDisponibles = () => {
           </div>
         )}
       </main>
+
+      {/* Modal Detalle */}
+      {modalDetalle && (
+        <div className="modal-overlay">
+          <div className="modal-contenido">
+            <h2>{modalDetalle.titulo}</h2>
+            <p>{modalDetalle.descripcion}</p>
+            <p>
+              <strong>Ubicación:</strong>{" "}
+              {getSucursalNombre(modalDetalle.sucursal)}
+            </p>
+            <p>
+              <strong>Donante:</strong> {modalDetalle.donador_nombre}
+            </p>
+            <p>
+              <strong>Fecha caducidad:</strong>{" "}
+              {new Date(modalDetalle.fecha_caducidad).toLocaleDateString()}
+            </p>
+            <button
+              className="btn-cerrar"
+              onClick={() => setModalDetalle(null)}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Confirmación */}
+      {modalConfirmacion && (
+        <div className="modal-overlay">
+          <div className="modal-contenido">
+            <h3>¿Deseas solicitar esta donación?</h3>
+            <div className="modal-botones">
+              <button
+                className="btn-confirmar"
+                onClick={() => solicitarDonacion(modalConfirmacion.id)}
+              >
+                Sí, solicitar
+              </button>
+              <button
+                className="btn-cancelar"
+                onClick={() => setModalConfirmacion(null)}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
