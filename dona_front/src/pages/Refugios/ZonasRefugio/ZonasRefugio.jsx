@@ -7,7 +7,7 @@ import "./ZonasRefugio.css";
 
 const ZonasRefugios = () => {
   const [zonas, setZonas] = useState([]);
-  const [restaurantes, setRestaurantes] = useState([]);
+  const [sucursales, setSucursales] = useState([]);
   const [voluntarios, setVoluntarios] = useState([]);
 
   useEffect(() => {
@@ -19,16 +19,18 @@ const ZonasRefugios = () => {
       .then(setZonas)
       .catch((error) => console.error("Error al cargar zonas:", error));
 
-    fetch("http://localhost:8000/api/usuarios/receptores/")
+    fetch("http://localhost:8000/api/donaciones/sucursales/")
       .then((res) => {
-        if (!res.ok) throw new Error("Error al obtener restaurantes");
+        if (!res.ok) throw new Error("Error al obtener sucursales");
         return res.json();
       })
       .then((data) => {
-        const activos = data.filter((r) => r.usuario?.activo);
-        setRestaurantes(activos);
+        const activas = data.filter(
+          (s) => s.donador?.usuario?.activo
+        );
+        setSucursales(activas);
       })
-      .catch((error) => console.error("Error al cargar restaurantes:", error));
+      .catch((error) => console.error("Error al cargar sucursales:", error));
 
     fetch("http://localhost:8000/api/usuarios/voluntarios/")
       .then((res) => {
@@ -43,8 +45,8 @@ const ZonasRefugios = () => {
   }, []);
 
   const obtenerRecursosPorZona = (zonaId) => {
-    const restaurantesZona = restaurantes.filter(
-      (r) => Number(r.zona) === Number(zonaId)
+    const restaurantesZona = sucursales.filter(
+      (s) => Number(s.zona) === Number(zonaId)
     );
     const voluntariosZona = voluntarios.filter(
       (v) => Number(v.zona) === Number(zonaId)
@@ -65,7 +67,7 @@ const ZonasRefugios = () => {
             </div>
             <div className="stat-card">
               <Utensils size={24} className="info-icon" />
-              <span>{restaurantes.length} Restaurantes</span>
+              <span>{sucursales.length} Restaurantes</span>
             </div>
             <div className="stat-card">
               <Users size={24} className="info-icon" />
@@ -113,7 +115,7 @@ const ZonasRefugios = () => {
                           {restaurantesZona.map((r) => (
                             <li key={r.id} className="info-item">
                               <div>
-                                <h5>{r.nombre_lugar}</h5>
+                                <h5>{r.nombre}</h5>
                                 <p>{r.direccion}</p>
                                 <div className="resource-meta">
                                   <span>
