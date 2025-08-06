@@ -1,4 +1,5 @@
 /* Variables de color (coherentes con el dashboard) */
+/* DonacionesDisponibles.css */
 :root {
   --primary-color: #e74c3c;
   --primary-dark: #c0392b;
@@ -139,6 +140,21 @@
 .donacion-body {
   padding: 20px;
   flex-grow: 1;
+}
+
+.donacion-imagen {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.donacion-imagen img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid var(--color-borde);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 
 .donacion-info {

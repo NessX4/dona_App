@@ -1,5 +1,5 @@
 // Angel Alejandro Chavez Castillon
-
+// DonacionesDisponibles.jsx
 import React, { useEffect, useState } from "react";
 import RefugioHeader from "../../../components/RefugioHeader";
 import {
@@ -153,15 +153,14 @@ const publicacionesFiltradas = () => {
                   <div className="donacion-header">
                     <h3>{publicacion.titulo || "Sin título"}</h3>
                     <span className={`estado-badge ${getEstadoNombre(publicacion.estado)?.toLowerCase()}`}>
-  {getEstadoNombre(publicacion.estado) === "Disponible" ? (
-    <FiCheckCircle size={16} />
-  ) : (
-    <FiClock size={16} />
-  )}
-  {getEstadoNombre(publicacion.estado)}
-</span>
-
-                  </div>
+                      {getEstadoNombre(publicacion.estado) === "Disponible" ? (
+                        <FiCheckCircle size={16} />
+                      ) : (
+                      <FiClock size={16} />
+                      )}
+                      {getEstadoNombre(publicacion.estado)}
+                      </span>
+                      </div>
 
                   <div className="donacion-body">
                     {archivosAsociados.length > 0 && (
@@ -222,14 +221,14 @@ const publicacionesFiltradas = () => {
                       </div>
                     )}
                   </div>
-
-<div className="donacion-actions">
-  <button className="btn-primary">
-    {getEstadoNombre(publicacion.estado) === "Disponible"
-      ? "Solicitar Donación"
-      : "Ver Detalles"}
-  </button>
-</div>
+                  
+                  <div className="donacion-actions">
+                    <button className="btn-primary">
+                      {getEstadoNombre(publicacion.estado) === "Disponible"
+                      ? "Solicitar Donación"
+                      : "Ver Detalles"}
+                      </button>
+                      </div>
                 </div>
               );
             })}
