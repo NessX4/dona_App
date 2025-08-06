@@ -189,7 +189,7 @@ const publicacionesFiltradas = () => {
                       <div className="info-item">
                         <FiUser className="info-icon" />
                         <span>
-                          Donante: {publicacion.donante_nombre || "Anónimo"}
+                          Donante: {publicacion.donador_nombre || "Anónimo"}
                         </span>
                       </div>
                       <div className="info-item">

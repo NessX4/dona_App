@@ -30,6 +30,16 @@ class SucursalSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PublicacionSerializer(serializers.ModelSerializer):
+    donador_nombre = serializers.SerializerMethodField()
+    
     class Meta:
         model = Publicacion
         fields = '__all__'
+        extra_fields = ['donador_nombre']
+        
+    def get_donador_nombre(self, obj):
+        return (
+            obj.sucursal.donador.nombre_lugar
+            if obj.sucursal and obj.sucursal.donador
+            else "Anónimo"
+        )

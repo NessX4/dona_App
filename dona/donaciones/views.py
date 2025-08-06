@@ -29,5 +29,5 @@ class SucursalViewSet(viewsets.ModelViewSet):
     serializer_class = SucursalSerializer
 
 class PublicacionViewSet(viewsets.ModelViewSet):
-    queryset = Publicacion.objects.all()
+    queryset = Publicacion.objects.select_related('sucursal__donador').all()
     serializer_class = PublicacionSerializer
