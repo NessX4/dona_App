@@ -73,6 +73,30 @@ const DonacionesDisponibles = () => {
     fetchData();
   }, []);
 
+const solicitarDonacion = async (idPublicacion) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/donaciones/publicaciones/${idPublicacion}/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ estado: 8 }), // Estado "Pendiente"
+    });
+
+    if (!response.ok) throw new Error("Error al actualizar estado");
+
+    // Actualiza localmente el estado
+    setPublicaciones((prev) =>
+      prev.map((p) =>
+        p.id === idPublicacion ? { ...p, estado: 8 } : p
+      )
+    );
+  } catch (error) {
+    console.error("Error al solicitar donación:", error);
+  }
+};
+
+
   const getSucursalNombre = (id) => {
     const sucursal = sucursales.find((s) => s.id === id);
     return sucursal ? sucursal.nombre : "Desconocido";
@@ -224,12 +248,21 @@ const publicacionesFiltradas = () => {
                   </div>
 
 <div className="donacion-actions">
-  <button className="btn-primary">
-    {getEstadoNombre(publicacion.estado) === "Disponible"
-      ? "Solicitar Donación"
-      : "Ver Detalles"}
-  </button>
+  {publicacion.estado === 1 ? (
+    <button
+      className="btn-primary"
+      onClick={() => solicitarDonacion(publicacion.id)}
+    >
+      Solicitar Donación
+    </button>
+  ) : (
+    <button className="btn-secondary" disabled>
+      Ver Detalles
+    </button>
+  )}
 </div>
+
+
                 </div>
               );
             })}

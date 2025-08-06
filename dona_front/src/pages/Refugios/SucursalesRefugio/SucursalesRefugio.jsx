@@ -12,8 +12,9 @@ const SucursalesRefugio = () => {
     const fetchSucursales = async () => {
       try {
         const response = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
+          "http://127.0.0.1:8000/api/donaciones/sucursales/"
         );
+        if (!response.ok) throw new Error("Error al obtener sucursales");
         const data = await response.json();
         setSucursales(data);
       } catch (error) {
@@ -43,23 +44,29 @@ const SucursalesRefugio = () => {
             {sucursales.map((sucursal) => (
               <div className="donacion-card" key={sucursal.id}>
                 <div className="donacion-header">
-                  <h3>{sucursal.name}</h3>
+                  <h3>{sucursal.nombre}</h3>
                   <span className="estado-badge disponible">Activa</span>
                 </div>
                 <div className="donacion-body">
                   <div className="donacion-info">
-                    <div className="info-item">
-                      <span className="info-icon">📍</span>
-                      {sucursal.address.street}, {sucursal.address.city}
-                    </div>
-                    <div className="info-item">
-                      <span className="info-icon">📞</span>
-                      {sucursal.phone}
-                    </div>
-                    <div className="info-item">
-                      <span className="info-icon">✉️</span>
-                      {sucursal.email}
-                    </div>
+                    {sucursal.direccion && (
+                      <div className="info-item">
+                        <span className="info-icon">📍</span>
+                        {sucursal.direccion}
+                      </div>
+                    )}
+                    {sucursal.telefono && (
+                      <div className="info-item">
+                        <span className="info-icon">📞</span>
+                        {sucursal.telefono}
+                      </div>
+                    )}
+                    {sucursal.correo && (
+                      <div className="info-item">
+                        <span className="info-icon">✉️</span>
+                        {sucursal.correo}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-/*Angel Alejandro Chavez Castillon A*/
+/* Angel Alejandro Chavez Castillon A */
 
 import React, { useEffect, useState } from "react";
 import RefugioHeader from "../../../components/RefugioHeader";
@@ -11,42 +11,44 @@ const ZonasRefugios = () => {
   const [voluntarios, setVoluntarios] = useState([]);
 
   useEffect(() => {
-    // Obtener zonas
     fetch("http://localhost:8000/api/zonas/zonas/")
-      .then((response) => {
-        if (!response.ok) throw new Error("Error al obtener zonas");
-        return response.json();
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al obtener zonas");
+        return res.json();
       })
-      .then((data) => setZonas(data))
+      .then(setZonas)
       .catch((error) => console.error("Error al cargar zonas:", error));
 
-    // Obtener restaurantes donadores
-    fetch("http://localhost:8000/api/restaurantes/")
-      .then((response) => {
-        if (!response.ok) throw new Error("Error al obtener restaurantes");
-        return response.json();
+    fetch("http://localhost:8000/api/usuarios/receptores/")
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al obtener restaurantes");
+        return res.json();
       })
-      .then((data) => setRestaurantes(data))
+      .then((data) => {
+        const activos = data.filter((r) => r.usuario?.activo);
+        setRestaurantes(activos);
+      })
       .catch((error) => console.error("Error al cargar restaurantes:", error));
 
-    // Obtener voluntarios
-    fetch("http://localhost:8000/api/voluntarios/")
-      .then((response) => {
-        if (!response.ok) throw new Error("Error al obtener voluntarios");
-        return response.json();
+    fetch("http://localhost:8000/api/usuarios/voluntarios/")
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al obtener voluntarios");
+        return res.json();
       })
-      .then((data) => setVoluntarios(data))
+      .then((data) => {
+        const activos = data.filter((v) => v.usuario?.activo);
+        setVoluntarios(activos);
+      })
       .catch((error) => console.error("Error al cargar voluntarios:", error));
   }, []);
 
   const obtenerRecursosPorZona = (zonaId) => {
     const restaurantesZona = restaurantes.filter(
-      (rest) => Number(rest.zona) === Number(zonaId)
+      (r) => Number(r.zona) === Number(zonaId)
     );
     const voluntariosZona = voluntarios.filter(
-      (vol) => Number(vol.zona) === Number(zonaId)
+      (v) => Number(v.zona) === Number(zonaId)
     );
-
     return { restaurantesZona, voluntariosZona };
   };
 
@@ -104,18 +106,20 @@ const ZonasRefugios = () => {
                       <h4>Restaurantes donadores</h4>
                       {restaurantesZona.length === 0 ? (
                         <div className="no-resources">
-                          No hay restaurantes registrados en esta zona
+                          No hay restaurantes registrados en esta zona.
                         </div>
                       ) : (
                         <ul className="resources-list">
-                          {restaurantesZona.map((restaurante) => (
-                            <li key={restaurante.id} className="info-item">
+                          {restaurantesZona.map((r) => (
+                            <li key={r.id} className="info-item">
                               <div>
-                                <h5>{restaurante.nombre}</h5>
-                                <p>{restaurante.direccion}</p>
+                                <h5>{r.nombre_lugar}</h5>
+                                <p>{r.direccion}</p>
                                 <div className="resource-meta">
-                                  <span>Horario: {restaurante.horario}</span>
-                                  <span>Contacto: {restaurante.telefono}</span>
+                                  <span>
+                                    Horario: {r.horario_apertura} - {r.horario_cierre}
+                                  </span>
+                                  <span>Contacto: {r.telefono}</span>
                                 </div>
                               </div>
                             </li>
@@ -126,22 +130,16 @@ const ZonasRefugios = () => {
                       <h4>Voluntarios disponibles</h4>
                       {voluntariosZona.length === 0 ? (
                         <div className="no-resources">
-                          No hay voluntarios registrados en esta zona
+                          No hay voluntarios registrados en esta zona.
                         </div>
                       ) : (
                         <ul className="resources-list">
-                          {voluntariosZona.map((voluntario) => (
-                            <li key={voluntario.id} className="info-item">
+                          {voluntariosZona.map((v) => (
+                            <li key={v.id} className="info-item">
                               <div>
-                                <h5>{voluntario.nombre}</h5>
-                                <p>
-                                  Disponibilidad: {voluntario.disponibilidad}
-                                </p>
+                                <h5>{v.usuario?.nombre}</h5>
                                 <div className="resource-meta">
-                                  <span>
-                                    Habilidades: {voluntario.habilidades}
-                                  </span>
-                                  <span>Contacto: {voluntario.telefono}</span>
+                                  <span>Contacto: {v.telefono}</span>
                                 </div>
                               </div>
                             </li>
