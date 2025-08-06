@@ -5,7 +5,7 @@ from .models import (
 )
 from .serializers import (
     EstadoDonacionSerializer, CategoriaComidaSerializer, ArchivoAdjuntoSerializer,
-    ComidaSerializer, SucursalSerializer, PublicacionSerializer
+    ComidaSerializer, SucursalSerializer, SucursalWriteSerializer, PublicacionSerializer
 )
 
 class EstadoDonacionViewSet(viewsets.ModelViewSet):
@@ -26,8 +26,12 @@ class ComidaViewSet(viewsets.ModelViewSet):
 
 class SucursalViewSet(viewsets.ModelViewSet):
     queryset = Sucursal.objects.all()
-    serializer_class = SucursalSerializer
 
+    def get_serializer_class(self):
+        if self.action in ['create', 'update', 'partial_update']:
+            return SucursalWriteSerializer
+        return SucursalSerializer
+        
 class PublicacionViewSet(viewsets.ModelViewSet):
     queryset = Publicacion.objects.select_related('sucursal__donador').all()
     serializer_class = PublicacionSerializer

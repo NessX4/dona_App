@@ -1,4 +1,4 @@
-//Luna FLores Yamileth Guadalupe
+// Luna Flores Yamileth Guadalupe
 import React, { useState, useEffect } from "react";
 import "./NuevaSucursal.css";
 
@@ -16,11 +16,9 @@ const NuevaSucursal = ({ donadorId, onSuccess, onCancel }) => {
 
   const [zonas, setZonas] = useState([]);
   const [ubicaciones, setUbicaciones] = useState([]);
-
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState(null);
 
-  // Cargar zonas y ubicaciones desde API al montar el componente
   useEffect(() => {
     const cargarZonas = async () => {
       try {
@@ -68,7 +66,12 @@ const NuevaSucursal = ({ donadorId, onSuccess, onCancel }) => {
       const response = await fetch("http://localhost:8000/api/donaciones/sucursales/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, donador: donadorId }),
+        body: JSON.stringify({
+          ...formData,
+          zona: parseInt(formData.zona),
+          ubicacion: parseInt(formData.ubicacion),
+          donador: parseInt(donadorId),
+        }),
       });
 
       if (!response.ok) {

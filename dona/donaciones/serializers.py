@@ -41,6 +41,11 @@ class DonadorSucursalSerializer(serializers.ModelSerializer):
         model = Donador
         fields = ['id', 'nombre_lugar', 'usuario']
 
+# --- SUCURSAL SERIALIZER plano ---
+class SucursalWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sucursal
+        fields = '__all__'
 
 # --- SUCURSAL SERIALIZER MODIFICADO ---
 class SucursalSerializer(serializers.ModelSerializer):
