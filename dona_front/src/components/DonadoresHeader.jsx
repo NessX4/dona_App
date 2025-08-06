@@ -14,10 +14,14 @@ const DonadoresHeader = () => {
 
   const confirmLogout = () => {
     setShowModal(false);
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("usuarioId");
-    localStorage.removeItem("rol");
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("usuario");
+  localStorage.removeItem("rol");
+  localStorage.removeItem("usuarioId");
+  localStorage.removeItem("donadorId");
+  localStorage.removeItem("receptorId");
+  localStorage.removeItem("voluntarioId");
 
     navigate("/login");
   };

@@ -46,8 +46,10 @@ export default function Login() {
       // Guardar en localStorage
 localStorage.setItem("accessToken", data.access);
 localStorage.setItem("refreshToken", data.refresh);
-localStorage.setItem("usuarioId", data.usuario_id);
+localStorage.setItem("usuario", JSON.stringify(data.usuario));
 localStorage.setItem("rol", data.rol);
+localStorage.setItem("usuarioId", data.usuario_id);
+
 
 if (data.donador_id) {
   localStorage.setItem("donadorId", data.donador_id);

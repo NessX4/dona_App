@@ -22,10 +22,6 @@ const SolicitudesDonador = () => {
         fetch("http://127.0.0.1:8000/api/donaciones/sucursales/"),
       ]);
 
-      if (!solicRes.ok) throw new Error("Error al obtener solicitudes");
-      if (!pubRes.ok) throw new Error("Error al obtener publicaciones");
-      if (!sucRes.ok) throw new Error("Error al obtener sucursales");
-
       const [solicData, pubData, sucData] = await Promise.all([
         solicRes.json(),
         pubRes.json(),
@@ -42,7 +38,6 @@ const SolicitudesDonador = () => {
         ) || null;
 
         let receptorSucursal = null;
-
         if (typeof solicitud.receptor === "object" && solicitud.receptor !== null) {
           receptorSucursal = solicitud.receptor;
         } else {
@@ -59,6 +54,8 @@ const SolicitudesDonador = () => {
       });
 
       setSolicitudes(solicitudesConDetalles);
+      setPublicaciones(publicacionesArray);
+      setSucursales(sucursalesArray);
       setSdLoading(false);
     } catch (err) {
       setSdError(err.message);
@@ -83,25 +80,46 @@ const SolicitudesDonador = () => {
     setProcesandoAceptar(true);
 
     try {
+      // 1. Marcar solicitud como completada
       const response = await fetch(
         `http://127.0.0.1:8000/api/solicitudes/solicitudes/${sdSolicitudAAceptar}/`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ estado: "Aceptada" }),
+          body: JSON.stringify({ estado: "Completada" }),
         }
       );
 
       if (!response.ok) throw new Error("Error al actualizar la solicitud");
 
+      // 2. Obtener ID de la publicación relacionada
+      const solicitudActual = solicitudes.find((s) => s.id === sdSolicitudAAceptar);
+      const publicacionId = solicitudActual?.publicacion;
+
+      // 3. Cambiar estado de la publicación (9 = Completada)
+      if (publicacionId) {
+        const pubResponse = await fetch(
+          `http://127.0.0.1:8000/api/donaciones/publicaciones/${publicacionId}/`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ estado: 9 }),
+          }
+        );
+
+        if (!pubResponse.ok) throw new Error("Error al actualizar la publicación");
+      }
+
+      // 4. Refrescar estado local
       setSolicitudes((prev) =>
         prev.map((sol) =>
-          sol.id === sdSolicitudAAceptar ? { ...sol, estado: "Aceptada" } : sol
+          sol.id === sdSolicitudAAceptar ? { ...sol, estado: "Completada" } : sol
         )
       );
+
       setSdSolicitudAAceptar(null);
     } catch (error) {
-      alert("Error al aceptar la solicitud: " + error.message);
+      alert("Error al completar la solicitud: " + error.message);
     } finally {
       setProcesandoAceptar(false);
     }
@@ -165,7 +183,6 @@ const SolicitudesDonador = () => {
                 <th>Publicación</th>
                 <th>Receptor</th>
                 <th>Estado</th>
-                <th>Comentarios</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -185,9 +202,6 @@ const SolicitudesDonador = () => {
                       {solicitud.estado}
                     </span>
                   </td>
-                  <td className="sd-table-cell">
-                    {solicitud.comentarios || "-"}
-                  </td>
                   <td className="sd-table-cell sd-actions">
                     <button
                       className="sd-btn-aceptar"
@@ -195,9 +209,9 @@ const SolicitudesDonador = () => {
                         e.stopPropagation();
                         sdAceptarSolicitud(solicitud.id);
                       }}
-                      title="Aceptar"
-                      aria-label="Aceptar solicitud"
-                      disabled={solicitud.estado === "Aceptada" || procesandoAceptar}
+                      title="Completar"
+                      aria-label="Completar solicitud"
+                      disabled={solicitud.estado === "Completada" || procesandoAceptar}
                     >
                       <FiCheck size={18} />
                     </button>
@@ -220,12 +234,11 @@ const SolicitudesDonador = () => {
           </table>
         )}
 
-        {/* Modal de aceptación */}
         {sdSolicitudAAceptar && (
           <div className="sd-modal-overlay" onClick={sdCancelarAceptar}>
             <div className="sd-modal-content" onClick={(e) => e.stopPropagation()}>
               <p className="sd-modal-message">
-                ¿Estás seguro que deseas aceptar esta solicitud?
+                ¿Estás seguro que deseas marcar esta solicitud como completada?
               </p>
               <div className="sd-modal-buttons">
                 <button
@@ -240,23 +253,19 @@ const SolicitudesDonador = () => {
                   onClick={sdConfirmarAceptar}
                   disabled={procesandoAceptar}
                 >
-                  {procesandoAceptar ? "Procesando..." : "Sí, Aceptar"}
+                  {procesandoAceptar ? "Procesando..." : "Sí, Completar"}
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Modal de eliminación */}
         {sdSolicitudAEliminar && (
           <div className="sd-modal-overlay" onClick={sdCancelarEliminar}>
             <div className="sd-modal-content" onClick={(e) => e.stopPropagation()}>
-              <div className="sd-modal-icon">
-              </div>
               <p className="sd-modal-message">
                 ¿Estás seguro que deseas eliminar esta solicitud?
               </p>
-
               <div className="sd-modal-buttons">
                 <button
                   className="sd-btn-cancelar"

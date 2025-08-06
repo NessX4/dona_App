@@ -55,7 +55,7 @@ const SolicitudesPanel = () => {
   const getPublicacion = (id) => publicaciones.find(p => p.id === id);
   const getSucursal = (id) => sucursales.find(s => s.id === id);
   const getReceptor = (id) => receptores.find(r => r.id === id);
-  const getEstadoNombre = (estadoId) => estadosDonacion.find(e => e.id === parseInt(estadoId))?.nombre || '—';
+  const getEstadoNombre = (estado) => estado || '—';
 
   const obtenerClaseEstado = (estadoNombre) => {
     switch (estadoNombre?.toLowerCase()) {

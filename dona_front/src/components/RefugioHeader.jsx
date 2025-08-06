@@ -12,11 +12,14 @@ const RefugioHeader = () => {
 
   const confirmLogout = () => {
     // Limpiar todos los datos del usuario en localStorage
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("usuarioId");
-    localStorage.removeItem("rol");
-    localStorage.removeItem("receptorId");  // Asegúrate de limpiar también el ID del refugio
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("usuario");
+  localStorage.removeItem("rol");
+  localStorage.removeItem("usuarioId");
+  localStorage.removeItem("donadorId");
+  localStorage.removeItem("receptorId");
+  localStorage.removeItem("voluntarioId");
 
     setShowLogoutModal(false);
     navigate("/login"); // Redirige al login
