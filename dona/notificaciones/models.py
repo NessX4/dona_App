@@ -6,3 +6,4 @@ class Notificacion(models.Model):
     mensaje = models.TextField()
     fecha = models.DateTimeField(auto_now_add=True)
     leido = models.BooleanField(default=False)
+    tipo = models.CharField(max_length=20, default='sistema')

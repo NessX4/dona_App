@@ -26,7 +26,7 @@ const RefugioHeader = () => {
           <div className="logo">
             <img src={logoDona} alt="Logo Dona" />
             <NavLink to="/refugio" className="dona-text">
-              DonaApp Refugios
+              DonaApp 
             </NavLink>
           </div>
           <nav>
@@ -34,7 +34,7 @@ const RefugioHeader = () => {
               to="/refugio/dashboard"
               className={({ isActive }) => (isActive ? "active-link" : "")}
             >
-              Dashboard
+              
             </NavLink>
             <NavLink
               to="/refugio/donaciones-disponibles"

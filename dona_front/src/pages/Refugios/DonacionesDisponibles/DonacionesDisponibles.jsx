@@ -76,30 +76,57 @@ const DonacionesDisponibles = () => {
   }, []);
 
   const solicitarDonacion = async (idPublicacion) => {
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/donaciones/publicaciones/${idPublicacion}/`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ estado: 8 }), // Estado "Pendiente"
-        }
-      );
+  try {
+    // 1. Cambiar estado de la publicación
+    const patchResponse = await fetch(
+      `http://127.0.0.1:8000/api/donaciones/publicaciones/${idPublicacion}/`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ estado: 8 }), // Estado "Pendiente"
+      }
+    );
 
-      if (!response.ok) throw new Error("Error al actualizar estado");
+      if (!patchResponse.ok) throw new Error("Error al actualizar estado");
 
-      setPublicaciones((prev) =>
-        prev.map((p) =>
-          p.id === idPublicacion ? { ...p, estado: 8 } : p
-        )
-      );
-      setModalConfirmacion(null);
-    } catch (error) {
-      console.error("Error al solicitar donación:", error);
-    }
-  };
+      // 2. Crear la solicitud
+    const receptorId = localStorage.getItem("receptorId");
+    if (!receptorId) throw new Error("No se encontró el ID del receptor");
+
+    const solicitudResponse = await fetch(
+      "http://127.0.0.1:8000/api/solicitudes/solicitudes/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          publicacion: idPublicacion,
+          receptor: parseInt(receptorId),
+          estado: "Pendiente",
+          comentarios: "",
+        }),
+      }
+    );
+
+    if (!solicitudResponse.ok) throw new Error("Error al crear la solicitud");
+
+    // 3. Actualizar estado local
+    setPublicaciones((prev) =>
+      prev.map((p) =>
+        p.id === idPublicacion ? { ...p, estado: 8 } : p
+      )
+    );
+
+    setModalConfirmacion(null);
+    alert("Donación solicitada exitosamente.");
+  } catch (error) {
+    console.error("Error al solicitar donación:", error);
+    alert("Hubo un problema al solicitar la donación.");
+  }
+};
 
   const getSucursalNombre = (id) => {
     const sucursal = sucursales.find((s) => s.id === id);
