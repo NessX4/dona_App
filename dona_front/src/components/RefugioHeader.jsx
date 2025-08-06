@@ -9,10 +9,19 @@ const RefugioHeader = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleLogout = () => setShowLogoutModal(true);
+
   const confirmLogout = () => {
-    navigate("/");
+    // Limpiar todos los datos del usuario en localStorage
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("usuarioId");
+    localStorage.removeItem("rol");
+    localStorage.removeItem("receptorId");  // Asegúrate de limpiar también el ID del refugio
+
     setShowLogoutModal(false);
+    navigate("/login"); // Redirige al login
   };
+
   const cancelLogout = () => setShowLogoutModal(false);
 
   return (
