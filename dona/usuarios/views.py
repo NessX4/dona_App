@@ -52,14 +52,39 @@ def login_jwt(request):
     usuario = authenticate(request, username=correo, password=password)
     if usuario is not None:
         refresh = RefreshToken.for_user(usuario)
-        return Response({
+
+        response_data = {
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             'usuario_id': usuario.id,
-            'rol': usuario.rol.nombre
-        })
-    else:
-        return Response({"error": "Correo o contraseña incorrectos"}, status=status.HTTP_401_UNAUTHORIZED)
+            'rol': usuario.rol.nombre,
+        }
+
+        # Añadir ID específico según el rol
+        if usuario.rol.nombre == "Donador":
+            try:
+                donador = Donador.objects.get(usuario=usuario)
+                response_data["donador_id"] = donador.id
+            except Donador.DoesNotExist:
+                pass
+
+        elif usuario.rol.nombre == "Refugio":
+            try:
+                receptor = Receptor.objects.get(usuario=usuario)
+                response_data["receptor_id"] = receptor.id
+            except Receptor.DoesNotExist:
+                pass
+
+        elif usuario.rol.nombre == "Voluntario":
+            try:
+                voluntario = Voluntario.objects.get(usuario=usuario)
+                response_data["voluntario_id"] = voluntario.id
+            except Voluntario.DoesNotExist:
+                pass
+
+        return Response(response_data)
+
+    return Response({"error": "Correo o contraseña incorrectos"}, status=status.HTTP_401_UNAUTHORIZED)
 
 # Obtener info del usuario logueado
 @api_view(['GET'])

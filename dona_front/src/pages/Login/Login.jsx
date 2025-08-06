@@ -44,21 +44,32 @@ export default function Login() {
       }
 
       // Guardar en localStorage
-      localStorage.setItem("accessToken", data.access);
-      localStorage.setItem("refreshToken", data.refresh);
-      localStorage.setItem("usuarioId", data.usuario_id);
-      localStorage.setItem("rol", data.rol);
+localStorage.setItem("accessToken", data.access);
+localStorage.setItem("refreshToken", data.refresh);
+localStorage.setItem("usuarioId", data.usuario_id);
+localStorage.setItem("rol", data.rol);
 
-      // Redirección por rol usando navigate
-      if (data.rol === "Donador") {
-        navigate("/donadores");
-      } else if (data.rol === "Refugio") {
-        navigate("/refugio/dashboard");
-      } else if (data.rol === "Voluntario") {
-        navigate("/voluntario");
-      } else {
-        navigate("/");
-      }
+if (data.donador_id) {
+  localStorage.setItem("donadorId", data.donador_id);
+}
+if (data.receptor_id) {
+  localStorage.setItem("receptorId", data.receptor_id);
+}
+if (data.voluntario_id) {
+  localStorage.setItem("voluntarioId", data.voluntario_id);
+}
+
+// Redirección por rol usando navigate
+if (data.rol === "Donador") {
+  navigate("/donadores");
+} else if (data.rol === "Refugio") {
+  navigate("/refugio/dashboard");
+} else if (data.rol === "Voluntario") {
+  navigate("/voluntario");
+} else {
+  navigate("/");
+}
+
     } catch (err) {
       alert(err.message);
       console.error("Error en login:", err);
